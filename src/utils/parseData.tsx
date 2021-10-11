@@ -26,4 +26,3 @@ export const parseData = (data: string): JSON | null => {
   return returnObject;
 };
 
-// let b = "adlahkjh qjwhek jahsdkj jk h -- [12] asdadasdasdas"
