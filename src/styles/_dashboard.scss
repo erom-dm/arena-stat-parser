@@ -1,0 +1,22 @@
+.dashboard {
+  background: $spanishGray;
+  border-radius: $br;
+  padding: 20px;
+  flex-grow: 1;
+  flex-shrink: 0;
+  width: 100%;
+  color: $auburn;
+
+  &__dropzone {
+    text-align: center;
+    padding: 15px;
+    height: 400px;
+    border: 1px dashed black;
+    border-radius: 5px;
+    font-size: 2rem;
+  }
+
+  &__output {
+    margin: 25px 0 0;
+  }
+}
