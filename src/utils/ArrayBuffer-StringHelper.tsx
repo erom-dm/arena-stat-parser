@@ -3,9 +3,11 @@ export function arrayBufferToString(buf: string | ArrayBuffer | null): string {
     return '{"error":true}';
   }
   let jsonKey: string = "";
-  new Uint8Array(buf).forEach(
-    (byte: number) => (jsonKey += String.fromCharCode(byte))
-  );
+  // ** works, but fails with unicode chars **
+  // new Uint8Array(buf).forEach(
+  //   (byte: number) => (jsonKey += String.fromCharCode(byte))
+  // );
+  jsonKey = new TextDecoder().decode(new Uint8Array(buf));
   return jsonKey;
 }
 

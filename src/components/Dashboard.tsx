@@ -21,18 +21,13 @@ const Dashboard: React.FC<dashboardProps> = (props) => {
       reader.onload = () => {
         // Do whatever you want with the file contents
         const binaryStr = reader.result;
-        console.log(arrayBufferToString(binaryStr));
-        setOutput(arrayBufferToString(binaryStr));
+        // console.log(arrayBufferToString(binaryStr));
+        setOutput(parseData(arrayBufferToString(binaryStr)));
       };
       reader.readAsArrayBuffer(file);
     });
   }, []);
   const { getRootProps, getInputProps } = useDropzone({ onDrop });
-  //
-  // let testStr = "asdada -- [12] a;lk asld aklkl -- [1] asd -- [299] }}";
-
-  let ast = parseData(output);
-  // let ast = parseData(testStr);
 
   return (
     <div className="dashboard">
@@ -40,7 +35,7 @@ const Dashboard: React.FC<dashboardProps> = (props) => {
         <input {...getInputProps()} />
         <p>Drag 'n' drop some files here, or click to select files</p>
       </div>
-      <div className={"dashboard__output"}>{JSON.stringify(ast)}</div>
+      <div className={"dashboard__output"}>{JSON.stringify(output)}</div>
     </div>
   );
 
