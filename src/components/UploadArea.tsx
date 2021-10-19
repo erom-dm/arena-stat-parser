@@ -3,6 +3,7 @@ import { parseData } from "../utils/parseData";
 import { arrayBufferToString } from "../utils/ArrayBuffer-StringHelper";
 import { useDropzone } from "react-dropzone";
 import { mergeState } from "../utils/stateManagement";
+import { filterRawData } from "../utils/dataSetHelpers";
 
 export type landingProps = {
   lcHandler: React.Dispatch<React.SetStateAction<boolean>>;
@@ -22,7 +23,8 @@ const UploadArea: React.FC<landingProps> = ({ lcHandler, lcVal }) => {
       reader.onload = () => {
         const binaryStr = reader.result;
         const parsedData = parseData(arrayBufferToString(binaryStr));
-        mergeState(parsedData);
+        const filteredData = filterRawData(parsedData);
+        mergeState(filteredData);
         lcHandler(!lcVal);
         setText("File successfully parsed");
       };
