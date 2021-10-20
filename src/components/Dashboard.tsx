@@ -2,11 +2,7 @@ import React, { useEffect, useState } from "react";
 import UploadArea from "./UploadArea";
 import { localStorageToState } from "../utils/stateManagement";
 import PieChart from "./PieChart";
-import {
-  ArenaMatch,
-  ModdedArenaMatch,
-  ModdedArenaTeam,
-} from "../Types/ArenaTypes";
+import { ModdedArenaMatch } from "../Types/ArenaTypes";
 
 export type dashboardProps = {
   className?: string;
@@ -25,11 +21,21 @@ const Dashboard: React.FC<dashboardProps> = (props) => {
 
   return (
     <div className="dashboard">
-      <UploadArea
-        lcHandler={setLocalStorageChanged}
-        lcVal={localStorageChanged}
-      />
-      {/*{matchData && <PieChart />}*/}
+      <div className="dashboard__top-bar">
+        <UploadArea
+          lcHandler={setLocalStorageChanged}
+          lcVal={localStorageChanged}
+        />
+        <div className="dashboard__filters">
+          <div className="dashboard__filters-btn">All data</div>
+          <div className="dashboard__filters-btn">Last session</div>
+        </div>
+      </div>
+      {matchData && (
+        <div className="dashboard__chart-container">
+          <PieChart />
+        </div>
+      )}
     </div>
   );
 };
