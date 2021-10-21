@@ -19,6 +19,7 @@ const BarChart: React.FC<BarChartProps> = ({ dataset }) => {
     colorEnd: 0.85,
     useEndAsStart: true,
   };
+  let totalMatchNumber = 0;
   const labelArr: (string | string[])[] = [];
   const dataArr: number[] = [];
   const winsArr: number[] = [];
@@ -26,6 +27,23 @@ const BarChart: React.FC<BarChartProps> = ({ dataset }) => {
   const options: any = {
     indexAxis: "y",
     responsive: true,
+    // defaults: {
+    //   font: {
+    //     family: "'Roboto', sans-serif",
+    //     size: 16,
+    //     color: "rgb(19,18,18)",
+    //   },
+    // },
+    scales: {
+      y: {
+        ticks: {
+          color: "#292F36",
+          font: { size: 15, family: "'Roboto', sans-serif" },
+          stepSize: 1,
+          beginAtZero: true,
+        },
+      },
+    },
     plugins: {
       tooltip: {
         callbacks: {
@@ -42,7 +60,13 @@ const BarChart: React.FC<BarChartProps> = ({ dataset }) => {
           },
         },
       },
-      legend: { display: false },
+      legend: {
+        display: false,
+        // labels: {
+        //   color: "black",
+        //   font: { size: 15 },
+        // },
+      },
     },
   };
   const data: ChartDataSet = {
@@ -69,6 +93,7 @@ const BarChart: React.FC<BarChartProps> = ({ dataset }) => {
   sortableEntries.sort((a, b) => b.matchCount - a.matchCount);
   sortableEntries.forEach((entry) => {
     const { matchCount, wins, teamComp } = entry;
+    totalMatchNumber += matchCount;
     labelArr.push([teamComp]);
     dataArr.push(matchCount);
     winsArr.push(wins);
@@ -80,10 +105,12 @@ const BarChart: React.FC<BarChartProps> = ({ dataset }) => {
     colorArray
   );
 
+  const chartTitle: string = `Matches Played: ${totalMatchNumber}`;
+
   return (
     <>
       <div className="header">
-        <h1 className="title">Chart Title</h1>
+        <h1 className="title">{chartTitle}</h1>
       </div>
       <Bar data={data} options={options} />
     </>
