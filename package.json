@@ -53,5 +53,5 @@
     "gh-pages": "^3.2.3",
     "prettier": "2.4.1"
   },
-  "homepage": "erom-dm.github.io/arena-stat-parser"
+  "homepage": "http://erom-dm.github.io/arena-stat-parser"
 }
