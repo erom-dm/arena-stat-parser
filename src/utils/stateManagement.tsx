@@ -22,7 +22,7 @@ export function mergeState(filteredData: ModdedArenaMatch[]): void {
 }
 
 export function localStorageToState(
-  setReactState: React.Dispatch<React.SetStateAction<ModdedArenaMatch[] | null>>
+  setReactState: React.Dispatch<React.SetStateAction<ModdedArenaMatch[]>>
 ): void {
   const currentState = window.localStorage.getItem(INSTANCE_DATA);
   currentState && setReactState(JSON.parse(currentState));

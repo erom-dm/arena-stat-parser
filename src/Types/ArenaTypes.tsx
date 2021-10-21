@@ -20,16 +20,16 @@ export interface ArenaMatch {
 }
 
 export interface ModdedArenaMatch {
-  enteredTime?: number;
-  instanceID?: number;
-  instanceName?: string;
-  playerName?: string;
-  bracket?: number;
-  myTeam?: ModdedArenaTeam;
-  myTeamComp?: string[];
-  enemyTeam?: ModdedArenaTeam;
-  enemyTeamComp?: string[];
-  win?: boolean;
+  enteredTime: number;
+  instanceID: number;
+  instanceName: string;
+  playerName: string;
+  bracket: number;
+  myTeam: ModdedArenaTeam;
+  myTeamComp: string[];
+  enemyTeam: ModdedArenaTeam;
+  enemyTeamComp: string[];
+  win: boolean;
 }
 
 export interface ArenaTeam {
@@ -62,3 +62,34 @@ export interface ArenaPlayer {
 export interface ModdedArenaPlayer extends ArenaPlayer {
   name: string;
 }
+
+export interface TeamCompDataset {
+  [Key: string]: TeamCompObj;
+}
+
+export interface TeamCompObj {
+  matchCount: number;
+  wins: number;
+}
+
+export interface SortableTeamCompObj extends TeamCompObj {
+  teamComp: string;
+}
+
+export interface ChartDataSet {
+  labels: (string | string[])[];
+  datasets: {
+    label: string;
+    data: number[];
+    backgroundColor: string[];
+    borderColor: string[];
+    borderWidth: number;
+    hoverOffset: number;
+  }[];
+}
+
+export type ColorRangeInfo = {
+  colorStart: number;
+  colorEnd: number;
+  useEndAsStart?: boolean;
+};

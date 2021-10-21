@@ -12,7 +12,7 @@ const data = {
   ],
   datasets: [
     {
-      label: "# of Votes",
+      label: "games played",
       data: [12, 8, 7, 6, 1, 2],
       backgroundColor: [
         "rgba(255, 99, 132, 1)",
@@ -39,7 +39,7 @@ const data = {
 const PieChart = () => (
   <>
     <div className="header">
-      <h1 className="title">Pie Chart</h1>
+      <h1 className="title">Chart Title</h1>
     </div>
     <Pie data={data} />
   </>

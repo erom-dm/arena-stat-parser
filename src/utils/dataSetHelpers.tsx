@@ -4,9 +4,12 @@ import {
   arenaPlayerKeys,
   ModdedArenaMatch,
   ArenaTeam,
+  TeamCompDataset,
 } from "../Types/ArenaTypes";
 
+const DISCONNECTED = "!disconnected";
 const MY_CHARACTER_NAME: string = "Slít";
+const MY_TEAMMATE_NAME: string = "Induator";
 const ARENA_INSTANCE_IDS: number[] = [572, 562, 559]; // "Ruins of Lordaeron", "Blade's Edge Arena", "Nagrand Arena"
 const PLAYER_KEYS: arenaPlayerKeys[] = [
   "player1",
@@ -31,6 +34,12 @@ export function filterRawData(data: ArenaMatch[]): ModdedArenaMatch[] {
       instanceID: match.instanceID,
       instanceName: match.instanceName,
       playerName: match.playerName,
+      enemyTeamComp: [],
+      myTeamComp: [],
+      bracket: 0,
+      myTeam: {},
+      enemyTeam: {},
+      win: false,
     };
 
     const moddedMatchData = getModdedArenaData(match);
@@ -40,23 +49,6 @@ export function filterRawData(data: ArenaMatch[]): ModdedArenaMatch[] {
 
   return modifiedData;
 }
-
-// function arraysOfStringsAreEqual(teamComp1: string[], teamComp2: string[]) {
-//   teamComp1.sort();
-//   teamComp2.sort();
-//   let areEqual = true;
-//
-//   teamComp1.forEach((el, idx) => {
-//     if (el.toLowerCase() !== teamComp2[idx].toLowerCase()) {
-//       areEqual = false;
-//     }
-//   });
-//   return areEqual;
-// }
-//
-// const a = ["MAGE", "ROGUE"];
-// const b = ["ROGUE", "MAGE"];
-// const c = ["WARRIOR", "DRUID"];
 
 function getModdedArenaData(match: ArenaMatch): any {
   let myTeam: ArenaTeam, enemyTeam: ArenaTeam, win: boolean;
@@ -118,7 +110,7 @@ function getModdedTeamsAndTeamComps(
         name: name,
         ...teamObj[name],
       };
-  compArr.push(playerDCed ? "disconnected" : teamObj[name].class);
+  compArr.push(playerDCed ? DISCONNECTED : teamObj[name].class);
 }
 
 function fillNameArraysWithBlanks(
@@ -136,4 +128,40 @@ function fillNameArraysWithBlanks(
       enemyTeamNames.push(null);
     }
   }
+}
+
+export function createBasicChartDataset(
+  data: ModdedArenaMatch[]
+): TeamCompDataset {
+  const dataset: TeamCompDataset = {};
+  data.forEach((match) => {
+    const hasDCedPlayers =
+      match.enemyTeamComp.includes(DISCONNECTED) ||
+      match.myTeamComp.includes(DISCONNECTED);
+    const enemyTeamCompString = teamcompArrToString(match.enemyTeamComp);
+    if (hasDCedPlayers) {
+      fillTeamCompObject(dataset, "DC", match);
+    } else {
+      fillTeamCompObject(dataset, enemyTeamCompString, match);
+    }
+  });
+
+  return dataset;
+}
+
+function fillTeamCompObject(
+  obj: TeamCompDataset,
+  key: string,
+  match: ModdedArenaMatch
+): void {
+  if (obj[key]) {
+    obj[key].matchCount += 1;
+    match.win && obj[key].wins++;
+  } else {
+    obj[key] = { matchCount: 1, wins: Number(match.win) };
+  }
+}
+
+function teamcompArrToString(arr: string[]): string {
+  return arr.reduce((a, b) => a.concat("\\", b));
 }
