@@ -81,6 +81,7 @@ export interface ChartDataSet {
   datasets: {
     label: string;
     data: number[];
+    wins?: number[];
     backgroundColor: string[];
     borderColor: string[];
     borderWidth: number;

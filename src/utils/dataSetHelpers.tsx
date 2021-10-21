@@ -163,5 +163,5 @@ function fillTeamCompObject(
 }
 
 function teamcompArrToString(arr: string[]): string {
-  return arr.reduce((a, b) => a.concat("\\", b));
+  return arr.reduce((a, b) => a.concat(" \\ ", b));
 }
