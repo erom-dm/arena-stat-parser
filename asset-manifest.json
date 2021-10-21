@@ -1,0 +1,25 @@
+{
+  "files": {
+    "main.css": "/erom-dm.github.io/arena-stat-parser/static/css/main.01a33e37.chunk.css",
+    "main.js": "/erom-dm.github.io/arena-stat-parser/static/js/main.23dd62f7.chunk.js",
+    "main.js.map": "/erom-dm.github.io/arena-stat-parser/static/js/main.23dd62f7.chunk.js.map",
+    "runtime-main.js": "/erom-dm.github.io/arena-stat-parser/static/js/runtime-main.c0e8a9ad.js",
+    "runtime-main.js.map": "/erom-dm.github.io/arena-stat-parser/static/js/runtime-main.c0e8a9ad.js.map",
+    "static/css/2.679831fc.chunk.css": "/erom-dm.github.io/arena-stat-parser/static/css/2.679831fc.chunk.css",
+    "static/js/2.231cddcc.chunk.js": "/erom-dm.github.io/arena-stat-parser/static/js/2.231cddcc.chunk.js",
+    "static/js/2.231cddcc.chunk.js.map": "/erom-dm.github.io/arena-stat-parser/static/js/2.231cddcc.chunk.js.map",
+    "static/js/3.37b23475.chunk.js": "/erom-dm.github.io/arena-stat-parser/static/js/3.37b23475.chunk.js",
+    "static/js/3.37b23475.chunk.js.map": "/erom-dm.github.io/arena-stat-parser/static/js/3.37b23475.chunk.js.map",
+    "index.html": "/erom-dm.github.io/arena-stat-parser/index.html",
+    "static/css/2.679831fc.chunk.css.map": "/erom-dm.github.io/arena-stat-parser/static/css/2.679831fc.chunk.css.map",
+    "static/css/main.01a33e37.chunk.css.map": "/erom-dm.github.io/arena-stat-parser/static/css/main.01a33e37.chunk.css.map",
+    "static/js/2.231cddcc.chunk.js.LICENSE.txt": "/erom-dm.github.io/arena-stat-parser/static/js/2.231cddcc.chunk.js.LICENSE.txt"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.c0e8a9ad.js",
+    "static/css/2.679831fc.chunk.css",
+    "static/js/2.231cddcc.chunk.js",
+    "static/css/main.01a33e37.chunk.css",
+    "static/js/main.23dd62f7.chunk.js"
+  ]
+}
