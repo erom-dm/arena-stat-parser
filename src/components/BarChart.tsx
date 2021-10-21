@@ -27,13 +27,6 @@ const BarChart: React.FC<BarChartProps> = ({ dataset }) => {
   const options: any = {
     indexAxis: "y",
     responsive: true,
-    // defaults: {
-    //   font: {
-    //     family: "'Roboto', sans-serif",
-    //     size: 16,
-    //     color: "rgb(19,18,18)",
-    //   },
-    // },
     scales: {
       y: {
         ticks: {
@@ -62,10 +55,6 @@ const BarChart: React.FC<BarChartProps> = ({ dataset }) => {
       },
       legend: {
         display: false,
-        // labels: {
-        //   color: "black",
-        //   font: { size: 15 },
-        // },
       },
     },
   };
