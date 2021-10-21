@@ -1,0 +1,38 @@
+.dashboard {
+  background: $spanishGray;
+  border-radius: $br;
+  padding: 20px;
+  flex-grow: 1;
+  flex-shrink: 0;
+  width: 100%;
+  color: $auburn;
+
+  &__top-bar {
+    display: flex;
+  }
+
+  &__filters {
+    display: flex;
+    justify-content: center;
+    flex-grow: 1;
+    padding: 0 20px;
+
+    &-btn {
+      text-align: center;
+      margin: 0 10px;
+      padding: 20px;
+      border: 2px solid $orange;
+      color: $orange;
+      background: $gunmetal;
+      border-radius: $br;
+    }
+  }
+
+  &__chart-container {
+    text-align: center;
+    margin: 0 auto;
+    padding: 50px 0px;
+    //max-height: 720px;
+    width: 100%;
+  }
+}

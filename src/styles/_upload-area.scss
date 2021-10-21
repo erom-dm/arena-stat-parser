@@ -1,0 +1,11 @@
+.upload-area {
+  position: relative;
+  flex-shrink: 0;
+  bottom: 0;
+  padding: 20px;
+  border-radius: $br;
+  border: 2px solid $orange;
+  color: $orange;
+  background: $gunmetal;
+  text-align: center;
+}
