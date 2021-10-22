@@ -1,15 +1,14 @@
 import {
   ArenaMatch,
-  ModdedArenaTeam,
   arenaPlayerKeys,
-  ModdedArenaMatch,
   ArenaTeam,
+  ModdedArenaMatch,
+  ModdedArenaTeam,
   TeamCompDataset,
 } from "../Types/ArenaTypes";
 
 const DISCONNECTED = "!disconnected";
-const MY_CHARACTER_NAME: string = "Slít";
-const MY_TEAMMATE_NAME: string = "Induator";
+// const MY_TEAMMATE_NAME: string = "Induator";
 const ARENA_INSTANCE_IDS: number[] = [572, 562, 559]; // "Ruins of Lordaeron", "Blade's Edge Arena", "Nagrand Arena"
 const PLAYER_KEYS: arenaPlayerKeys[] = [
   "player1",
@@ -19,15 +18,24 @@ const PLAYER_KEYS: arenaPlayerKeys[] = [
   "player5",
 ];
 
-export function filterRawData(data: ArenaMatch[]): ModdedArenaMatch[] {
-  const filteredData = data.filter(
+export function filterJunkData(data: ArenaMatch[]): ArenaMatch[] {
+  return data.filter(
     (match) =>
       ARENA_INSTANCE_IDS.includes(match.instanceID) &&
-      match.playerName === MY_CHARACTER_NAME &&
       match.hasOwnProperty("purpleTeam") &&
       match.hasOwnProperty("goldTeam")
   );
-  const modifiedData: ModdedArenaMatch[] = [];
+}
+
+export function filterArenaMatches(
+  data: ArenaMatch[],
+  myCharName: string,
+  filterSkirmish: boolean
+): ModdedArenaMatch[] {
+  const filteredData = data.filter((match) => {
+    return match.playerName === myCharName;
+  });
+  let modifiedData: ModdedArenaMatch[] = [];
   filteredData.forEach((match) => {
     const moddedMatch: ModdedArenaMatch = {
       enteredTime: match.enteredTime,
@@ -46,13 +54,23 @@ export function filterRawData(data: ArenaMatch[]): ModdedArenaMatch[] {
     Object.assign(moddedMatch, moddedMatchData);
     modifiedData.push(moddedMatch);
   });
-
+  if (filterSkirmish) {
+    const filteredSkirmishes = modifiedData.filter(
+      (match) =>
+        !(
+          match.myTeam.player1?.teamMMR === 0 &&
+          match.enemyTeam.player1?.teamMMR === 0
+        )
+    );
+    modifiedData = filteredSkirmishes;
+  }
   return modifiedData;
 }
 
 function getModdedArenaData(match: ArenaMatch): any {
   let myTeam: ArenaTeam, enemyTeam: ArenaTeam, win: boolean;
-  if (match.goldTeam.hasOwnProperty(MY_CHARACTER_NAME)) {
+  const myCharName = match.playerName;
+  if (match.goldTeam.hasOwnProperty(myCharName)) {
     myTeam = match.goldTeam;
     enemyTeam = match.purpleTeam;
     win = !!match.winningFaction; //WIN

@@ -1,4 +1,6 @@
-export const parseData = (data: string): any => {
+import { ArenaMatch } from "../Types/ArenaTypes";
+
+export const parseData = (data: string): ArenaMatch[] => {
   // Get part of the string with actual instance data
   const start = data.lastIndexOf('["instances"] = ') + 17; // Only works if actual instance object is last in data set
   const newStr = data.slice(start);
@@ -16,7 +18,7 @@ export const parseData = (data: string): any => {
     .split(enumRegexp);
 
   // Parse all valid objects
-  let parsedData: string[] = [];
+  let parsedData: ArenaMatch[] = [];
   instanceDataArray.forEach((el, idx) => {
     try {
       parsedData.push(JSON.parse(el));
@@ -25,6 +27,5 @@ export const parseData = (data: string): any => {
       // console.log(e);
     }
   });
-
   return parsedData;
 };

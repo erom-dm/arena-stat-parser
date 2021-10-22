@@ -1,4 +1,5 @@
 @import "vars";
+@import "mixins";
 @import "upload-area";
 @import "dashboard";
 
@@ -27,6 +28,8 @@ h1, h2, h3, h4, h5, h6, p {
   align-items: center;
   position: relative;
   width: 100%;
+  height: auto;
+  min-height: 100vh;
   padding: 25px 25px;
   background: $gunmetal;
   color: $saffron;

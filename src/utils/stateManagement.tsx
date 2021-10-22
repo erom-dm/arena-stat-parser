@@ -1,14 +1,15 @@
 import React from "react";
-import { ModdedArenaMatch } from "../Types/ArenaTypes";
+import { ArenaMatch } from "../Types/ArenaTypes";
 
 export const INSTANCE_DATA = "instanceData";
+export const MY_CHAR_NAME = "myCharName";
 
-export function mergeState(filteredData: ModdedArenaMatch[]): void {
+export function mergeState(filteredData: ArenaMatch[]): void {
   const filterKey = "enteredTime";
   const state = window.localStorage.getItem(INSTANCE_DATA);
 
   if (!state) {
-    localStorage.setItem(INSTANCE_DATA, JSON.stringify(filteredData));
+    setLocalStorageField(INSTANCE_DATA, filteredData);
     return;
   }
   const parsedState = JSON.parse(state);
@@ -18,12 +19,17 @@ export function mergeState(filteredData: ModdedArenaMatch[]): void {
     ...new Map(mergedState.map((item) => [item[filterKey], item])).values(),
   ];
 
-  localStorage.setItem(INSTANCE_DATA, JSON.stringify(filteredState));
+  setLocalStorageField(INSTANCE_DATA, filteredState);
 }
 
 export function localStorageToState(
-  setReactState: React.Dispatch<React.SetStateAction<ModdedArenaMatch[]>>
+  key: string,
+  setReactState: React.Dispatch<React.SetStateAction<any>>
 ): void {
-  const currentState = window.localStorage.getItem(INSTANCE_DATA);
+  const currentState = window.localStorage.getItem(key);
   currentState && setReactState(JSON.parse(currentState));
+}
+
+export function setLocalStorageField(key: string, data: any): void {
+  localStorage.setItem(key, JSON.stringify(data));
 }

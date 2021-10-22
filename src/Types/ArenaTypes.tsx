@@ -94,3 +94,7 @@ export type ColorRangeInfo = {
   colorEnd: number;
   useEndAsStart?: boolean;
 };
+
+export type CharnameFormData = {
+  charName: string;
+};

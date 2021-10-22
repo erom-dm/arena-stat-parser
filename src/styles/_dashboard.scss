@@ -9,23 +9,40 @@
 
   &__top-bar {
     display: flex;
+    align-items: center;
   }
 
   &__filters {
     display: flex;
     justify-content: center;
+    align-items: center;
+    height: 38px;
     flex-grow: 1;
     padding: 0 20px;
 
     &-btn {
-      text-align: center;
-      margin: 0 10px;
-      padding: 20px;
-      border: 2px solid $orange;
-      color: $orange;
-      background: $gunmetal;
-      border-radius: $br;
+      @include button-default;
     }
+
+    form {
+      display: flex;
+      align-items: center;
+    }
+  }
+
+  &__charname-input {
+    margin: 0 5px 0 0;
+    border: none;
+    border-radius: $br;
+    padding: 10px 12px;
+  }
+
+  &__submit-charname {
+    height: 38px;
+    border: 2px solid $orange;
+    color: $orange;
+    background: $gunmetal;
+    border-radius: $br;
   }
 
   &__chart-container {
