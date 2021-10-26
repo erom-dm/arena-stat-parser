@@ -1,25 +1,25 @@
 {
   "files": {
-    "main.css": "/arena-stat-parser/static/css/main.50c20824.chunk.css",
-    "main.js": "/arena-stat-parser/static/js/main.3dd42e53.chunk.js",
-    "main.js.map": "/arena-stat-parser/static/js/main.3dd42e53.chunk.js.map",
-    "runtime-main.js": "/arena-stat-parser/static/js/runtime-main.d938d83f.js",
-    "runtime-main.js.map": "/arena-stat-parser/static/js/runtime-main.d938d83f.js.map",
+    "main.css": "/arena-stat-parser/static/css/main.01b1bedd.chunk.css",
+    "main.js": "/arena-stat-parser/static/js/main.b48e9a1f.chunk.js",
+    "main.js.map": "/arena-stat-parser/static/js/main.b48e9a1f.chunk.js.map",
+    "runtime-main.js": "/arena-stat-parser/static/js/runtime-main.e4f07f79.js",
+    "runtime-main.js.map": "/arena-stat-parser/static/js/runtime-main.e4f07f79.js.map",
     "static/css/2.679831fc.chunk.css": "/arena-stat-parser/static/css/2.679831fc.chunk.css",
-    "static/js/2.fb7f5ab9.chunk.js": "/arena-stat-parser/static/js/2.fb7f5ab9.chunk.js",
-    "static/js/2.fb7f5ab9.chunk.js.map": "/arena-stat-parser/static/js/2.fb7f5ab9.chunk.js.map",
-    "static/js/3.6197e5f6.chunk.js": "/arena-stat-parser/static/js/3.6197e5f6.chunk.js",
-    "static/js/3.6197e5f6.chunk.js.map": "/arena-stat-parser/static/js/3.6197e5f6.chunk.js.map",
+    "static/js/2.03a1a98a.chunk.js": "/arena-stat-parser/static/js/2.03a1a98a.chunk.js",
+    "static/js/2.03a1a98a.chunk.js.map": "/arena-stat-parser/static/js/2.03a1a98a.chunk.js.map",
+    "static/js/3.5f4e6fd0.chunk.js": "/arena-stat-parser/static/js/3.5f4e6fd0.chunk.js",
+    "static/js/3.5f4e6fd0.chunk.js.map": "/arena-stat-parser/static/js/3.5f4e6fd0.chunk.js.map",
     "index.html": "/arena-stat-parser/index.html",
     "static/css/2.679831fc.chunk.css.map": "/arena-stat-parser/static/css/2.679831fc.chunk.css.map",
-    "static/css/main.50c20824.chunk.css.map": "/arena-stat-parser/static/css/main.50c20824.chunk.css.map",
-    "static/js/2.fb7f5ab9.chunk.js.LICENSE.txt": "/arena-stat-parser/static/js/2.fb7f5ab9.chunk.js.LICENSE.txt"
+    "static/css/main.01b1bedd.chunk.css.map": "/arena-stat-parser/static/css/main.01b1bedd.chunk.css.map",
+    "static/js/2.03a1a98a.chunk.js.LICENSE.txt": "/arena-stat-parser/static/js/2.03a1a98a.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
-    "static/js/runtime-main.d938d83f.js",
+    "static/js/runtime-main.e4f07f79.js",
     "static/css/2.679831fc.chunk.css",
-    "static/js/2.fb7f5ab9.chunk.js",
-    "static/css/main.50c20824.chunk.css",
-    "static/js/main.3dd42e53.chunk.js"
+    "static/js/2.03a1a98a.chunk.js",
+    "static/css/main.01b1bedd.chunk.css",
+    "static/js/main.b48e9a1f.chunk.js"
   ]
 }
