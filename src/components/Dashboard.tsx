@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import UploadArea from "./UploadArea";
-import Select from "react-select";
 import {
   INSTANCE_DATA,
   localStorageToState,
@@ -9,6 +8,7 @@ import {
   setLocalStorageField,
 } from "../utils/stateManagement";
 import {
+  ArenaMatch,
   CharnameFormData,
   MatchSessions,
   ModdedArenaMatch,
@@ -26,14 +26,16 @@ export type dashboardProps = {
   className?: string;
 };
 
-const Dashboard: React.FC<dashboardProps> = (props) => {
+const Dashboard: React.FC<dashboardProps> = () => {
   const { register, handleSubmit } = useForm();
   const [myCharName, setMyCharName] = useState<string>("");
   const [matchData, setMatchData] = useState<ModdedArenaMatch[]>([]);
   const [sessionData, setSessionData] = useState<MatchSessions>({});
+  const [sessionSelection, setSessionSelection] = useState<number[]>([0]);
   const [localStorageChanged, setLocalStorageChanged] =
     useState<boolean>(false);
   const [chartDataset, setChartDataset] = useState<TeamCompDataset>({});
+
   useEffect(() => {
     localStorageToState(MY_CHAR_NAME, setMyCharName);
   }, []);
@@ -44,11 +46,18 @@ const Dashboard: React.FC<dashboardProps> = (props) => {
     if (stateIsPresent) {
       const parsedMatchData = JSON.parse(lsMatchState);
       const parsedCharData = JSON.parse(lsCharNameState);
-      stateIsPresent &&
-        setMatchData(filterArenaMatches(parsedMatchData, parsedCharData, true));
       stateIsPresent && setSessionData(getSessions(parsedMatchData));
+      if (sessionSelection.includes(0)) {
+        setMatchData(filterArenaMatches(parsedMatchData, parsedCharData, true));
+      } else {
+        const selectedMatches: ArenaMatch[] = [];
+        sessionSelection.forEach((sessionKey) => {
+          selectedMatches.push(...sessionData[sessionKey]);
+        });
+        setMatchData(filterArenaMatches(selectedMatches, parsedCharData, true));
+      }
     }
-  }, [localStorageChanged]);
+  }, [localStorageChanged, sessionSelection]);
   useEffect(
     () => setChartDataset(createBasicChartDataset(matchData)), // create dataset
     [matchData]
@@ -78,12 +87,10 @@ const Dashboard: React.FC<dashboardProps> = (props) => {
             </button>
           </form>
           {sessionData && (
-            <>
-              <div className="dashboard__filters-btn" onClick={() => {}}>
-                All data
-              </div>
-              <SessionSelect sessionData={sessionData} />
-            </>
+            <SessionSelect
+              onChange={setSessionSelection}
+              sessionData={sessionData}
+            />
           )}
         </div>
       </div>

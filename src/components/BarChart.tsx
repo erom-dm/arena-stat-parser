@@ -13,6 +13,10 @@ type BarChartProps = {
   dataset: TeamCompDataset;
 };
 
+function calcWinrate(matchCount: number, wins: number): string {
+  return ((wins / matchCount) * 100).toFixed(1);
+}
+
 const BarChart: React.FC<BarChartProps> = ({ dataset }) => {
   const colorRangeInfo: ColorRangeInfo = {
     colorStart: 0.1,
@@ -20,6 +24,9 @@ const BarChart: React.FC<BarChartProps> = ({ dataset }) => {
     useEndAsStart: true,
   };
   let totalMatchNumber = 0;
+  let totalWins = 0;
+  let totalLosses: number;
+  let totalWinrate: string;
   const labelArr: (string | string[])[] = [];
   const dataArr: number[] = [];
   const winsArr: number[] = [];
@@ -44,12 +51,11 @@ const BarChart: React.FC<BarChartProps> = ({ dataset }) => {
             const index = tooltip.dataIndex;
             const wins = tooltip.dataset.wins[index];
             const matchCount = tooltip.dataset.data[index];
-            const winrate: string = ((wins / matchCount) * 100).toFixed(1);
-            const textToDisplay = [
+            const winrate: string = calcWinrate(matchCount, wins);
+            return [
               `Wins: ${wins}, Losses: ${matchCount - wins}`,
               `WR: ${winrate}%`,
             ];
-            return textToDisplay;
           },
         },
       },
@@ -83,6 +89,7 @@ const BarChart: React.FC<BarChartProps> = ({ dataset }) => {
   sortableEntries.forEach((entry) => {
     const { matchCount, wins, teamComp } = entry;
     totalMatchNumber += matchCount;
+    totalWins += wins;
     labelArr.push([teamComp]);
     dataArr.push(matchCount);
     winsArr.push(wins);
@@ -93,8 +100,9 @@ const BarChart: React.FC<BarChartProps> = ({ dataset }) => {
     colorRangeInfo,
     colorArray
   );
-
-  const chartTitle: string = `Matches Played: ${totalMatchNumber}`;
+  totalLosses = totalMatchNumber - totalWins;
+  totalWinrate = calcWinrate(totalMatchNumber, totalWins);
+  const chartTitle: string = `Matches Played: ${totalMatchNumber}, Wins: ${totalWins}, Losses: ${totalLosses}, WR: ${totalWinrate}%,`;
 
   return (
     <>
