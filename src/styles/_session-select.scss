@@ -1,0 +1,10 @@
+.session-select {
+  margin: 0 0 0 15px;
+  width: 350px;
+  max-height: 62px;
+
+  &__control {
+    max-height: 62px;
+    overflow-y: scroll;
+  }
+}

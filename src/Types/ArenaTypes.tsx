@@ -102,3 +102,8 @@ export type CharnameFormData = {
 export type MatchSessions = {
   [Key: number]: ArenaMatch[];
 };
+
+export type SessionSelectOption = {
+  value: number;
+  label: string;
+};

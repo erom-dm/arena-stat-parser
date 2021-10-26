@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import UploadArea from "./UploadArea";
+import Select from "react-select";
 import {
   INSTANCE_DATA,
   localStorageToState,
@@ -19,6 +20,7 @@ import {
   filterArenaMatches,
 } from "../utils/dataSetHelpers";
 import { getSessions } from "../utils/dateManagement";
+import SessionSelect from "./SessionSelect";
 
 export type dashboardProps = {
   className?: string;
@@ -75,10 +77,14 @@ const Dashboard: React.FC<dashboardProps> = (props) => {
               Submit
             </button>
           </form>
-          <div className="dashboard__filters-btn" onClick={() => {}}>
-            All data
-          </div>
-          <div className="dashboard__filters-btn">Last session</div>
+          {sessionData && (
+            <>
+              <div className="dashboard__filters-btn" onClick={() => {}}>
+                All data
+              </div>
+              <SessionSelect sessionData={sessionData} />
+            </>
+          )}
         </div>
       </div>
       {matchData && (
