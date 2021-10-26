@@ -98,3 +98,7 @@ export type ColorRangeInfo = {
 export type CharnameFormData = {
   charName: string;
 };
+
+export type MatchSessions = {
+  [Key: number]: ArenaMatch[];
+};

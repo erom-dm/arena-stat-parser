@@ -9,6 +9,7 @@ import {
 } from "../utils/stateManagement";
 import {
   CharnameFormData,
+  MatchSessions,
   ModdedArenaMatch,
   TeamCompDataset,
 } from "../Types/ArenaTypes";
@@ -17,6 +18,7 @@ import {
   createBasicChartDataset,
   filterArenaMatches,
 } from "../utils/dataSetHelpers";
+import { getSessions } from "../utils/dateManagement";
 
 export type dashboardProps = {
   className?: string;
@@ -26,6 +28,7 @@ const Dashboard: React.FC<dashboardProps> = (props) => {
   const { register, handleSubmit } = useForm();
   const [myCharName, setMyCharName] = useState<string>("");
   const [matchData, setMatchData] = useState<ModdedArenaMatch[]>([]);
+  const [sessionData, setSessionData] = useState<MatchSessions>({});
   const [localStorageChanged, setLocalStorageChanged] =
     useState<boolean>(false);
   const [chartDataset, setChartDataset] = useState<TeamCompDataset>({});
@@ -35,15 +38,14 @@ const Dashboard: React.FC<dashboardProps> = (props) => {
   useEffect(() => {
     const lsMatchState = window.localStorage.getItem(INSTANCE_DATA);
     const lsCharNameState = window.localStorage.getItem(MY_CHAR_NAME);
-    lsMatchState &&
-      lsCharNameState &&
-      setMatchData(
-        filterArenaMatches(
-          JSON.parse(lsMatchState),
-          JSON.parse(lsCharNameState),
-          true
-        )
-      );
+    const stateIsPresent = lsMatchState && lsCharNameState;
+    if (stateIsPresent) {
+      const parsedMatchData = JSON.parse(lsMatchState);
+      const parsedCharData = JSON.parse(lsCharNameState);
+      stateIsPresent &&
+        setMatchData(filterArenaMatches(parsedMatchData, parsedCharData, true));
+      stateIsPresent && setSessionData(getSessions(parsedMatchData));
+    }
   }, [localStorageChanged]);
   useEffect(
     () => setChartDataset(createBasicChartDataset(matchData)), // create dataset
