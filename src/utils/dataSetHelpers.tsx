@@ -61,17 +61,23 @@ export function getModdedArenaMatches(data: ArenaMatch[]): ModdedArenaMatch[] {
   return modifiedData;
 }
 
-export function filterArenaMatches(
-  sessionData: MatchSessions,
-  myTeamSelection: string
+export function filterMatchData(
+  data: ModdedArenaMatch[],
+  selectedTeam: string
+): ModdedArenaMatch[] {
+  let filteredMatchData = data.filter(
+    (match) => match.myTeamName === selectedTeam
+  );
+  return filteredMatchData;
+}
+
+export function matchArrayFromSelectedSessions(
+  sessionData: MatchSessions
 ): ModdedArenaMatch[] {
   const filteredMatches: ModdedArenaMatch[] = [];
 
   sessionData.forEach((session) => {
-    const filteredByTeamName = session.filter(
-      (match) => match.myTeamName === myTeamSelection
-    );
-    filteredMatches.push(...filteredByTeamName);
+    filteredMatches.push(...session);
   });
 
   return filteredMatches;

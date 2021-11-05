@@ -9,8 +9,9 @@ import {
 import BarChart from "./BarChart";
 import {
   createBasicChartDataset,
-  filterArenaMatches,
+  matchArrayFromSelectedSessions,
   getModdedArenaMatches,
+  filterMatchData,
 } from "../utils/dataSetHelpers";
 import { getSessions } from "../utils/sessionManagement";
 import SessionSelect from "./SessionSelect";
@@ -22,10 +23,12 @@ export type dashboardProps = {
 };
 
 const Dashboard: React.FC<dashboardProps> = () => {
+  const [moddedMatchData, setModdedMatchData] = useState<ModdedArenaMatch[]>(
+    []
+  );
   const [myTeams, setMyTeams] = useState<string[]>([""]);
   const [myTeamSelection, setMyTeamSelection] = useState<string>("");
   const [sessionData, setSessionData] = useState<MatchSessions>(new Map());
-  const [filteredData, setFilteredData] = useState<ModdedArenaMatch[]>();
   const [sessionSelection, setSessionSelection] = useState<number[]>([0]);
   const [localStorageChanged, setLocalStorageChanged] =
     useState<boolean>(false);
@@ -37,33 +40,42 @@ const Dashboard: React.FC<dashboardProps> = () => {
     if (localStorageMatchState) {
       const parsedMatchData = JSON.parse(localStorageMatchState); // Get raw match data from storage
       const moddedMatchData = getModdedArenaMatches(parsedMatchData); // Get modified match data
-      setSessionData(getSessions(moddedMatchData)); //Get session Data
+      setModdedMatchData(moddedMatchData); // Put all modified match data in local state
       setMyTeams(getTeams(moddedMatchData)); // Get team data
     }
   }, [localStorageChanged]);
 
   useEffect(() => {
-    // Filter modified arena match data
+    // Apply filters to modded match data and create session data based on result
+    const filteredMatchData = filterMatchData(moddedMatchData, myTeamSelection);
+    setSessionData(getSessions(filteredMatchData));
+    setSessionSelection([0]);
+  }, [moddedMatchData, myTeamSelection]);
+
+  useEffect(() => {
+    // Filter by currently selected sessions
+    const selectedSessionData: ModdedArenaMatch[] = [];
     if (sessionData?.size) {
       if (sessionSelection.includes(0)) {
-        setFilteredData(filterArenaMatches(sessionData, myTeamSelection));
+        selectedSessionData.push(
+          ...matchArrayFromSelectedSessions(sessionData)
+        );
       } else {
         const selectedMatches: MatchSessions = new Map();
         sessionSelection.forEach((sessionKey) => {
           const session = sessionData.get(sessionKey);
           session && selectedMatches.set(sessionKey, session);
         });
-        setFilteredData(filterArenaMatches(selectedMatches, myTeamSelection));
+        selectedSessionData.push(
+          ...matchArrayFromSelectedSessions(selectedMatches)
+        );
       }
     }
-  }, [sessionData, sessionSelection, myTeamSelection]);
 
-  useEffect(
-    // Create dataset for chart component
-    () =>
-      filteredData && setChartDataset(createBasicChartDataset(filteredData)), // create dataset
-    [filteredData]
-  );
+    // Create chart dataset
+    selectedSessionData.length &&
+      setChartDataset(createBasicChartDataset(selectedSessionData));
+  }, [sessionData, sessionSelection]);
 
   return (
     <div className="dashboard">
@@ -84,7 +96,7 @@ const Dashboard: React.FC<dashboardProps> = () => {
           )}
         </div>
       </div>
-      {filteredData && (
+      {moddedMatchData && (
         <div className="dashboard__chart-container">
           <BarChart dataset={chartDataset} />
         </div>
