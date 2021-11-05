@@ -1,15 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { useForm } from "react-hook-form";
 import UploadArea from "./UploadArea";
+import { INSTANCE_DATA } from "../utils/stateManagement";
 import {
-  INSTANCE_DATA,
-  localStorageToState,
-  MY_CHAR_NAME,
-  setLocalStorageField,
-} from "../utils/stateManagement";
-import {
-  ArenaMatch,
-  CharnameFormData,
   MatchSessions,
   ModdedArenaMatch,
   TeamCompDataset,
@@ -18,55 +10,60 @@ import BarChart from "./BarChart";
 import {
   createBasicChartDataset,
   filterArenaMatches,
+  getModdedArenaMatches,
 } from "../utils/dataSetHelpers";
-import { getSessions } from "../utils/dateManagement";
+import { getSessions } from "../utils/sessionManagement";
 import SessionSelect from "./SessionSelect";
+import getTeams from "../utils/teamManagement";
+import TeamSelect from "./TeamSelect";
 
 export type dashboardProps = {
   className?: string;
 };
 
 const Dashboard: React.FC<dashboardProps> = () => {
-  const { register, handleSubmit } = useForm();
-  const [myCharName, setMyCharName] = useState<string>("");
-  const [matchData, setMatchData] = useState<ModdedArenaMatch[]>([]);
-  const [sessionData, setSessionData] = useState<MatchSessions>({});
+  const [myTeams, setMyTeams] = useState<string[]>([""]);
+  const [myTeamSelection, setMyTeamSelection] = useState<string>("");
+  const [sessionData, setSessionData] = useState<MatchSessions>(new Map());
+  const [filteredData, setFilteredData] = useState<ModdedArenaMatch[]>();
   const [sessionSelection, setSessionSelection] = useState<number[]>([0]);
   const [localStorageChanged, setLocalStorageChanged] =
     useState<boolean>(false);
   const [chartDataset, setChartDataset] = useState<TeamCompDataset>({});
 
   useEffect(() => {
-    localStorageToState(MY_CHAR_NAME, setMyCharName);
-  }, []);
+    // Local storage match data => Modified arena match data in local state
+    const localStorageMatchState = window.localStorage.getItem(INSTANCE_DATA);
+    if (localStorageMatchState) {
+      const parsedMatchData = JSON.parse(localStorageMatchState); // Get raw match data from storage
+      const moddedMatchData = getModdedArenaMatches(parsedMatchData); // Get modified match data
+      setSessionData(getSessions(moddedMatchData)); //Get session Data
+      setMyTeams(getTeams(moddedMatchData)); // Get team data
+    }
+  }, [localStorageChanged]);
+
   useEffect(() => {
-    const lsMatchState = window.localStorage.getItem(INSTANCE_DATA);
-    const lsCharNameState = window.localStorage.getItem(MY_CHAR_NAME);
-    const stateIsPresent = lsMatchState && lsCharNameState;
-    if (stateIsPresent) {
-      const parsedMatchData = JSON.parse(lsMatchState);
-      const parsedCharData = JSON.parse(lsCharNameState);
-      stateIsPresent && setSessionData(getSessions(parsedMatchData));
+    // Filter modified arena match data
+    if (sessionData?.size) {
       if (sessionSelection.includes(0)) {
-        setMatchData(filterArenaMatches(parsedMatchData, parsedCharData, true));
+        setFilteredData(filterArenaMatches(sessionData, myTeamSelection));
       } else {
-        const selectedMatches: ArenaMatch[] = [];
+        const selectedMatches: MatchSessions = new Map();
         sessionSelection.forEach((sessionKey) => {
-          selectedMatches.push(...sessionData[sessionKey]);
+          const session = sessionData.get(sessionKey);
+          session && selectedMatches.set(sessionKey, session);
         });
-        setMatchData(filterArenaMatches(selectedMatches, parsedCharData, true));
+        setFilteredData(filterArenaMatches(selectedMatches, myTeamSelection));
       }
     }
-  }, [localStorageChanged, sessionSelection]);
-  useEffect(
-    () => setChartDataset(createBasicChartDataset(matchData)), // create dataset
-    [matchData]
-  );
+  }, [sessionData, sessionSelection, myTeamSelection]);
 
-  const onSubmit = (data: CharnameFormData) => {
-    setLocalStorageField(MY_CHAR_NAME, data.charName);
-    setLocalStorageChanged(!localStorageChanged);
-  };
+  useEffect(
+    // Create dataset for chart component
+    () =>
+      filteredData && setChartDataset(createBasicChartDataset(filteredData)), // create dataset
+    [filteredData]
+  );
 
   return (
     <div className="dashboard">
@@ -76,16 +73,9 @@ const Dashboard: React.FC<dashboardProps> = () => {
           localStorageChangeValue={localStorageChanged}
         />
         <div className="dashboard__filters">
-          <form onSubmit={handleSubmit(onSubmit)}>
-            <input
-              className="dashboard__charname-input"
-              {...register("charName")}
-              placeholder={`${myCharName}`}
-            />
-            <button className="dashboard__submit-charname" type="submit">
-              Submit
-            </button>
-          </form>
+          {myTeams && (
+            <TeamSelect onChange={setMyTeamSelection} teams={myTeams} />
+          )}
           {sessionData && (
             <SessionSelect
               onChange={setSessionSelection}
@@ -94,7 +84,7 @@ const Dashboard: React.FC<dashboardProps> = () => {
           )}
         </div>
       </div>
-      {matchData && (
+      {filteredData && (
         <div className="dashboard__chart-container">
           <BarChart dataset={chartDataset} />
         </div>

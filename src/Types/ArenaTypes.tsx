@@ -27,6 +27,7 @@ export interface ModdedArenaMatch {
   bracket: number;
   myTeam: ModdedArenaTeam;
   myTeamComp: string[];
+  myTeamName: string;
   enemyTeam: ModdedArenaTeam;
   enemyTeamComp: string[];
   win: boolean;
@@ -95,15 +96,14 @@ export type ColorRangeInfo = {
   useEndAsStart?: boolean;
 };
 
-export type CharnameFormData = {
-  charName: string;
-};
-
-export type MatchSessions = {
-  [Key: number]: ArenaMatch[];
-};
+export type MatchSessions = Map<number, ModdedArenaMatch[]>;
 
 export type SessionSelectOption = {
   value: number;
+  label: string;
+};
+
+export type TeamSelectOption = {
+  value: string;
   label: string;
 };

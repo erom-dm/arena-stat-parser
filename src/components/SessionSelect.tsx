@@ -16,19 +16,16 @@ const SessionSelect: React.FC<sessionSelectProps> = ({
   const valueRef = useRef(selected);
   valueRef.current = selected;
 
-  const sessionKeys: string[] = Object.getOwnPropertyNames(sessionData);
+  const sessionKeys: number[] = [...sessionData.keys()];
   const selectAllOption: SessionSelectOption = {
     value: 0,
     label: "All Data",
   };
   const options: SessionSelectOption[] = [];
   sessionKeys.forEach((key, idx) => {
-    const timestamp: number = Number(key);
-    const formattedData: string = dayjs
-      .unix(timestamp)
-      .format("HH:mm - DD/MM/YY");
+    const formattedData: string = dayjs.unix(key).format("HH:mm - DD/MM/YY");
     const sessionOption = {
-      value: timestamp,
+      value: key,
       label: `Session ${idx + 1}, @ ${formattedData}`,
     };
     options.push(sessionOption);
