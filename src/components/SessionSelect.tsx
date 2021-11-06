@@ -50,8 +50,6 @@ const SessionSelect: React.FC<sessionSelectProps> = ({
   options.reverse();
 
   const isSelectAllSelected = () => {
-    // console.dir(valueRef?.current);
-    // console.dir(options);
     return valueRef?.current?.length === options.length;
   };
 

@@ -6,11 +6,17 @@ import {
   ModdedArenaMatch,
   ModdedArenaTeam,
   TeamCompDataset,
+  TeamPerformanceStats,
 } from "../Types/ArenaTypes";
 
 const DISCONNECTED = "!disconnected";
 const DC_TEAM_NAME = "~DC~";
-const ARENA_INSTANCE_IDS: number[] = [572, 562, 559]; // "Ruins of Lordaeron", "Blade's Edge Arena", "Nagrand Arena"
+export const ARENA_INSTANCE_KEYS = ["572", "562", "559"];
+export const ARENA_INSTANCE_IDS = {
+  [572 as number]: "Ruins of Lordaeron",
+  [562 as number]: "Blade's Edge Arena",
+  [559 as number]: "Nagrand Arena",
+};
 const PLAYER_KEYS: arenaPlayerKeys[] = [
   "player1",
   "player2",
@@ -22,7 +28,7 @@ const PLAYER_KEYS: arenaPlayerKeys[] = [
 export function filterJunkData(data: ArenaMatch[]): ArenaMatch[] {
   return data.filter(
     (match) =>
-      ARENA_INSTANCE_IDS.includes(match.instanceID) &&
+      Object.keys(ARENA_INSTANCE_IDS).includes(String(match.instanceID)) &&
       match.hasOwnProperty("purpleTeam") &&
       match.hasOwnProperty("goldTeam")
   );
@@ -175,10 +181,10 @@ export function createBasicChartDataset(
     const hasDCedPlayers =
       match.enemyTeamComp.includes(DISCONNECTED) ||
       match.myTeamComp.includes(DISCONNECTED);
-    const enemyTeamCompString = teamcompArrToString(match.enemyTeamComp);
     if (hasDCedPlayers) {
       fillTeamCompObject(dataset, "DC", match);
     } else {
+      const enemyTeamCompString = teamcompArrToString(match.enemyTeamComp);
       fillTeamCompObject(dataset, enemyTeamCompString, match);
     }
   });
@@ -191,14 +197,66 @@ function fillTeamCompObject(
   key: string,
   match: ModdedArenaMatch
 ): void {
-  if (obj[key]) {
-    obj[key].matchCount += 1;
-    match.win && obj[key].wins++;
+  const DC_MATCH = key === "DC";
+  const { instanceID, myTeam, win, bracket } = match;
+  // get performance stats for match
+  const TeamPerformanceStats: TeamPerformanceStats = {};
+  if (!DC_MATCH) {
+    for (let i = 0; i < bracket; i++) {
+      const player = myTeam[PLAYER_KEYS[i]];
+      if (player) {
+        TeamPerformanceStats[player.name] = {
+          healing: player.healing,
+          damage: player.damage,
+        };
+      } else {
+        TeamPerformanceStats["DC"] = { healing: 0, damage: 0 };
+      }
+    }
+  }
+
+  const entry = obj[key];
+
+  if (entry) {
+    // overall stats
+    entry.matchCount += 1;
+    if (win) {
+      entry.wins++;
+    }
+
+    // zone stats
+    if (entry.zoneStats[instanceID]) {
+      entry.zoneStats[instanceID].matches++;
+      if (win) {
+        entry.zoneStats[instanceID].wins++;
+      }
+    } else {
+      entry.zoneStats[instanceID] = { matches: 1, wins: Number(win) };
+    }
+
+    // team performance stats
+    !DC_MATCH &&
+      mergePlayerPerformanceStats(entry.performanceStats, TeamPerformanceStats);
   } else {
-    obj[key] = { matchCount: 1, wins: Number(match.win) };
+    obj[key] = {
+      matchCount: 1,
+      wins: Number(win),
+      performanceStats: TeamPerformanceStats,
+      zoneStats: { [instanceID]: { matches: 1, wins: Number(win) } },
+    };
   }
 }
 
 function teamcompArrToString(arr: string[]): string {
   return arr.reduce((a, b) => a.concat(" \\ ", b));
+}
+
+function mergePlayerPerformanceStats(
+  currentStats: TeamPerformanceStats,
+  currentMatchStats: TeamPerformanceStats
+): void {
+  Object.keys(currentStats).forEach((player) => {
+    currentStats[player].healing += currentMatchStats[player].healing;
+    currentStats[player].damage += currentMatchStats[player].damage;
+  });
 }

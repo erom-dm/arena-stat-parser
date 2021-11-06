@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Select, { SingleValue } from "react-select";
 import { TeamSelectOption } from "../Types/ArenaTypes";
 
@@ -13,6 +13,12 @@ const TeamSelect: React.FC<teamSelectProps> = ({ teams, onChange }) => {
     value: team,
     label: team,
   }));
+  useEffect(() => {
+    if (options.length && !selected) {
+      setSelected(options[0]);
+    }
+    handleChange(options[0]);
+  }, [teams]);
 
   const handleChange = (newValue: SingleValue<TeamSelectOption>) => {
     setSelected(newValue);
