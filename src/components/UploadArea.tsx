@@ -19,6 +19,7 @@ const UploadArea: React.FC<landingProps> = ({
   const onDrop = useCallback(
     (acceptedFiles) => {
       acceptedFiles.forEach((file: any) => {
+        console.dir(acceptedFiles);
         //TBD
         const reader = new FileReader();
 
