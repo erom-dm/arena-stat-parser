@@ -17,12 +17,15 @@ import { getSessions } from "../utils/sessionManagement";
 import SessionSelect from "./SessionSelect";
 import getTeams from "../utils/teamManagement";
 import TeamSelect from "./TeamSelect";
+import ButtonGroup from "./ButtonGroup";
+import ChartContainer from "./ChartContainer";
 
 export type dashboardProps = {
   className?: string;
 };
 
 const Dashboard: React.FC<dashboardProps> = () => {
+  const chartTypes = ["Team comps", "Rating change"];
   const [moddedMatchData, setModdedMatchData] = useState<ModdedArenaMatch[]>(
     []
   );
@@ -30,6 +33,7 @@ const Dashboard: React.FC<dashboardProps> = () => {
   const [myTeamSelection, setMyTeamSelection] = useState<string>("");
   const [sessionData, setSessionData] = useState<MatchSessions>(new Map());
   const [sessionSelection, setSessionSelection] = useState<number[]>([0]);
+  const [chartType, setChartType] = useState<string>("");
   const [localStorageChanged, setLocalStorageChanged] =
     useState<boolean>(false);
   const [chartDataset, setChartDataset] = useState<TeamCompDataset>({});
@@ -85,6 +89,11 @@ const Dashboard: React.FC<dashboardProps> = () => {
           localStorageChangeValue={localStorageChanged}
         />
         <div className="dashboard__filters">
+          <ButtonGroup
+            onChange={setChartType}
+            buttonLabels={chartTypes}
+            selected={chartType}
+          />
           {myTeams && (
             <TeamSelect onChange={setMyTeamSelection} teams={myTeams} />
           )}
@@ -97,9 +106,7 @@ const Dashboard: React.FC<dashboardProps> = () => {
         </div>
       </div>
       {moddedMatchData && (
-        <div className="dashboard__chart-container">
-          <BarChart dataset={chartDataset} />
-        </div>
+        <ChartContainer dataset={chartDataset} selectedChartType={chartType} />
       )}
     </div>
   );

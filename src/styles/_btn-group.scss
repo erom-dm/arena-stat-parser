@@ -1,0 +1,31 @@
+.button-group {
+
+  &__button {
+    border: none;
+    background: $gunmetal;
+    color: $spanishGray;
+    height: 36px;
+    border-radius: 0;
+    padding: 5px 15px;
+    cursor: pointer;
+    &:hover {
+      background: $gunmetalLight;
+    }
+    &:not(:last-child) {
+      border-right: 1px solid $spanishGray;
+    }
+    &:first-child {
+      border-radius: $br 0 0 $br;
+    }
+    &:last-child {
+      border-radius: 0 $br $br 0;
+    }
+    &--selected {
+      color: $orange;
+      background: $gunmetalLight;
+      &:hover {
+        background: $gunmetalLight;
+      }
+    }
+  }
+}

@@ -36,6 +36,7 @@ const BarChart: React.FC<BarChartProps> = ({ dataset }) => {
   const zoneStatsArr: ZoneStats[] = [];
   const performanceStatsArr: TeamPerformanceStats[] = [];
   let colorArray: string[] = [];
+
   const options: any = {
     indexAxis: "y",
     responsive: true,
@@ -118,8 +119,8 @@ const BarChart: React.FC<BarChartProps> = ({ dataset }) => {
     ],
   };
 
-  const datasetKeys = Object.getOwnPropertyNames(dataset);
   const sortableEntries: SortableTeamCompObj[] = [];
+  const datasetKeys = Object.keys(dataset);
   datasetKeys.forEach((key) => {
     const { matchCount, wins, zoneStats, performanceStats } = dataset[key];
     sortableEntries.push({
