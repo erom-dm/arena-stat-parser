@@ -1,6 +1,10 @@
 @import "vars";
+@import "mixins";
 @import "upload-area";
 @import "dashboard";
+@import "dropdowns";
+@import "btn-group";
+@import "chart-wrapper";
 
 html, body, #root {
   height: 100%;
@@ -21,13 +25,19 @@ h1, h2, h3, h4, h5, h6, p {
   margin: 0;
 }
 
+h1 {
+  font-size: 1.6em;
+}
+
 .main-wrap {
   display: flex;
   flex-direction: column;
   align-items: center;
   position: relative;
   width: 100%;
-  padding: 25px 25px;
+  height: auto;
+  min-height: 100vh;
+  padding: 0;
   background: $gunmetal;
   color: $saffron;
 }

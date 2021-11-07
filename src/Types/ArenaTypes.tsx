@@ -27,6 +27,7 @@ export interface ModdedArenaMatch {
   bracket: number;
   myTeam: ModdedArenaTeam;
   myTeamComp: string[];
+  myTeamName: string;
   enemyTeam: ModdedArenaTeam;
   enemyTeamComp: string[];
   win: boolean;
@@ -67,14 +68,44 @@ export interface TeamCompDataset {
   [Key: string]: TeamCompObj;
 }
 
+export type RatingChangeDataset = RatingChangeObj[];
+
+export type RatingChangeObj = {
+  timestamp: number;
+  newTeamRating: number;
+  teamMMR: number;
+  enemyTeamComp: string;
+  win: boolean;
+};
+
 export interface TeamCompObj {
   matchCount: number;
   wins: number;
+  zoneStats: ZoneStats;
+  performanceStats: TeamPerformanceStats;
 }
 
 export interface SortableTeamCompObj extends TeamCompObj {
   teamComp: string;
 }
+
+export type ZoneStats = {
+  [Key: number]: SingleZoneStats;
+};
+
+export type SingleZoneStats = {
+  matches: number;
+  wins: number;
+};
+
+export type TeamPerformanceStats = {
+  [Key: string]: PlayerPerformanceStats;
+};
+
+export type PlayerPerformanceStats = {
+  damage: number;
+  healing: number;
+};
 
 export interface ChartDataSet {
   labels: (string | string[])[];
@@ -82,6 +113,8 @@ export interface ChartDataSet {
     label: string;
     data: number[];
     wins?: number[];
+    zoneStats?: ZoneStats[];
+    performanceStats?: TeamPerformanceStats[];
     backgroundColor: string[];
     borderColor: string[];
     borderWidth: number;
@@ -93,4 +126,16 @@ export type ColorRangeInfo = {
   colorStart: number;
   colorEnd: number;
   useEndAsStart?: boolean;
+};
+
+export type MatchSessions = Map<number, ModdedArenaMatch[]>;
+
+export type SessionSelectOption = {
+  value: number;
+  label: string;
+};
+
+export type TeamSelectOption = {
+  value: string;
+  label: string;
 };

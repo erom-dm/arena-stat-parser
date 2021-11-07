@@ -6,12 +6,19 @@ import {
   ColorRangeInfo,
   SortableTeamCompObj,
   TeamCompDataset,
+  TeamPerformanceStats,
+  ZoneStats,
 } from "../Types/ArenaTypes";
 import generateChartColors from "../utils/colorGeneration";
+import { ARENA_INSTANCE_IDS } from "../utils/dataSetHelpers";
 
 type BarChartProps = {
   dataset: TeamCompDataset;
 };
+
+function calcWinrate(matchCount: number, wins: number): string {
+  return ((wins / matchCount) * 100).toFixed(1);
+}
 
 const BarChart: React.FC<BarChartProps> = ({ dataset }) => {
   const colorRangeInfo: ColorRangeInfo = {
@@ -20,28 +27,32 @@ const BarChart: React.FC<BarChartProps> = ({ dataset }) => {
     useEndAsStart: true,
   };
   let totalMatchNumber = 0;
+  let totalWins = 0;
+  let totalLosses: number;
+  let totalWinrate: string;
   const labelArr: (string | string[])[] = [];
   const dataArr: number[] = [];
   const winsArr: number[] = [];
+  const zoneStatsArr: ZoneStats[] = [];
+  const performanceStatsArr: TeamPerformanceStats[] = [];
   let colorArray: string[] = [];
+
+  const ticksConf = {
+    color: "#292F36",
+    font: { size: 15, family: "'Roboto', sans-serif" },
+    stepSize: 1,
+    beginAtZero: true,
+  };
   const options: any = {
+    maintainAspectRatio: false,
     indexAxis: "y",
     responsive: true,
-    // defaults: {
-    //   font: {
-    //     family: "'Roboto', sans-serif",
-    //     size: 16,
-    //     color: "rgb(19,18,18)",
-    //   },
-    // },
     scales: {
       y: {
-        ticks: {
-          color: "#292F36",
-          font: { size: 15, family: "'Roboto', sans-serif" },
-          stepSize: 1,
-          beginAtZero: true,
-        },
+        ticks: ticksConf,
+      },
+      x: {
+        ticks: ticksConf,
       },
     },
     plugins: {
@@ -51,21 +62,48 @@ const BarChart: React.FC<BarChartProps> = ({ dataset }) => {
             const index = tooltip.dataIndex;
             const wins = tooltip.dataset.wins[index];
             const matchCount = tooltip.dataset.data[index];
-            const winrate: string = ((wins / matchCount) * 100).toFixed(1);
-            const textToDisplay = [
+            const zoneStats = tooltip.dataset.zoneStats[index];
+            const performanceStats = tooltip.dataset.performanceStats[index];
+            const winrate: string = calcWinrate(matchCount, wins);
+
+            const zoneStatsStringArr: string[] = [];
+            Object.keys(zoneStats).forEach((key) => {
+              zoneStatsStringArr.push(
+                `${ARENA_INSTANCE_IDS[Number(key)]}: ${calcWinrate(
+                  zoneStats[key].matches,
+                  zoneStats[key].wins
+                )}%`
+              );
+            });
+
+            const performanceStatsStringArr: string[] = [];
+            Object.keys(performanceStats).forEach((key) => {
+              const avgDamage = +(
+                performanceStats[key].damage / matchCount
+              ).toFixed(0);
+              const avgHealing = +(performanceStats[key].healing / matchCount)
+                .toFixed(0)
+                .toLocaleString();
+              performanceStatsStringArr.push(
+                `${key}: damage: ${avgDamage.toLocaleString()} | healing: ${avgHealing.toLocaleString()}`
+              );
+            });
+
+            return [
               `Wins: ${wins}, Losses: ${matchCount - wins}`,
               `WR: ${winrate}%`,
+              " ",
+              "Zone win rates:",
+              ...zoneStatsStringArr,
+              " ",
+              "Average performance stats:",
+              ...performanceStatsStringArr,
             ];
-            return textToDisplay;
           },
         },
       },
       legend: {
         display: false,
-        // labels: {
-        //   color: "black",
-        //   font: { size: 15 },
-        // },
       },
     },
   };
@@ -76,6 +114,8 @@ const BarChart: React.FC<BarChartProps> = ({ dataset }) => {
         label: "",
         data: dataArr,
         wins: winsArr,
+        zoneStats: zoneStatsArr,
+        performanceStats: performanceStatsArr,
         backgroundColor: colorArray,
         borderColor: [],
         borderWidth: 1,
@@ -84,19 +124,28 @@ const BarChart: React.FC<BarChartProps> = ({ dataset }) => {
     ],
   };
 
-  const datasetKeys = Object.getOwnPropertyNames(dataset);
   const sortableEntries: SortableTeamCompObj[] = [];
+  const datasetKeys = Object.keys(dataset);
   datasetKeys.forEach((key) => {
-    const { matchCount, wins } = dataset[key];
-    sortableEntries.push({ teamComp: key, matchCount, wins });
+    const { matchCount, wins, zoneStats, performanceStats } = dataset[key];
+    sortableEntries.push({
+      teamComp: key,
+      matchCount,
+      wins,
+      zoneStats,
+      performanceStats,
+    });
   });
   sortableEntries.sort((a, b) => b.matchCount - a.matchCount);
   sortableEntries.forEach((entry) => {
-    const { matchCount, wins, teamComp } = entry;
+    const { matchCount, wins, zoneStats, performanceStats, teamComp } = entry;
     totalMatchNumber += matchCount;
+    totalWins += wins;
     labelArr.push([teamComp]);
     dataArr.push(matchCount);
     winsArr.push(wins);
+    zoneStatsArr.push(zoneStats);
+    performanceStatsArr.push(performanceStats);
   });
   generateChartColors(
     sortableEntries.length,
@@ -104,15 +153,18 @@ const BarChart: React.FC<BarChartProps> = ({ dataset }) => {
     colorRangeInfo,
     colorArray
   );
-
-  const chartTitle: string = `Matches Played: ${totalMatchNumber}`;
+  totalLosses = totalMatchNumber - totalWins;
+  totalWinrate = calcWinrate(totalMatchNumber, totalWins);
+  const chartTitle: string = `Matches Played: ${totalMatchNumber}, Wins: ${totalWins}, Losses: ${totalLosses}, WR: ${totalWinrate}%,`;
 
   return (
     <>
       <div className="header">
         <h1 className="title">{chartTitle}</h1>
       </div>
-      <Bar data={data} options={options} />
+      <div className={"chart-container"}>
+        <Bar data={data} options={options} />
+      </div>
     </>
   );
 };

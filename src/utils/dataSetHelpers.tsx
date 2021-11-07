@@ -1,16 +1,24 @@
 import {
   ArenaMatch,
-  ModdedArenaTeam,
   arenaPlayerKeys,
-  ModdedArenaMatch,
   ArenaTeam,
+  MatchSessions,
+  ModdedArenaMatch,
+  ModdedArenaTeam,
+  RatingChangeDataset,
+  RatingChangeObj,
   TeamCompDataset,
+  TeamPerformanceStats,
 } from "../Types/ArenaTypes";
 
 const DISCONNECTED = "!disconnected";
-const MY_CHARACTER_NAME: string = "Slít";
-const MY_TEAMMATE_NAME: string = "Induator";
-const ARENA_INSTANCE_IDS: number[] = [572, 562, 559]; // "Ruins of Lordaeron", "Blade's Edge Arena", "Nagrand Arena"
+const DC_TEAM_NAME = "~DC~";
+export const ARENA_INSTANCE_KEYS = ["572", "562", "559"];
+export const ARENA_INSTANCE_IDS = {
+  [572 as number]: "Ruins of Lordaeron",
+  [562 as number]: "Blade's Edge Arena",
+  [559 as number]: "Nagrand Arena",
+};
 const PLAYER_KEYS: arenaPlayerKeys[] = [
   "player1",
   "player2",
@@ -18,17 +26,20 @@ const PLAYER_KEYS: arenaPlayerKeys[] = [
   "player4",
   "player5",
 ];
+export const CHART_TYPES = ["Team comps", "Rating change"];
 
-export function filterRawData(data: ArenaMatch[]): ModdedArenaMatch[] {
-  const filteredData = data.filter(
+export function filterJunkData(data: ArenaMatch[]): ArenaMatch[] {
+  return data.filter(
     (match) =>
-      ARENA_INSTANCE_IDS.includes(match.instanceID) &&
-      match.playerName === MY_CHARACTER_NAME &&
+      Object.keys(ARENA_INSTANCE_IDS).includes(String(match.instanceID)) &&
       match.hasOwnProperty("purpleTeam") &&
       match.hasOwnProperty("goldTeam")
   );
+}
+
+export function getModdedArenaMatches(data: ArenaMatch[]): ModdedArenaMatch[] {
   const modifiedData: ModdedArenaMatch[] = [];
-  filteredData.forEach((match) => {
+  data.forEach((match) => {
     const moddedMatch: ModdedArenaMatch = {
       enteredTime: match.enteredTime,
       instanceID: match.instanceID,
@@ -36,6 +47,7 @@ export function filterRawData(data: ArenaMatch[]): ModdedArenaMatch[] {
       playerName: match.playerName,
       enemyTeamComp: [],
       myTeamComp: [],
+      myTeamName: "",
       bracket: 0,
       myTeam: {},
       enemyTeam: {},
@@ -44,29 +56,62 @@ export function filterRawData(data: ArenaMatch[]): ModdedArenaMatch[] {
 
     const moddedMatchData = getModdedArenaData(match);
     Object.assign(moddedMatch, moddedMatchData);
-    modifiedData.push(moddedMatch);
-  });
 
+    // Filter out skirmish matches
+    if (
+      !(
+        moddedMatch.myTeam.player1?.teamMMR === 0 &&
+        moddedMatch.enemyTeam.player1?.teamMMR === 0
+      )
+    ) {
+      modifiedData.push(moddedMatch);
+    }
+  });
   return modifiedData;
 }
 
+export function filterMatchData(
+  data: ModdedArenaMatch[],
+  selectedTeam: string
+): ModdedArenaMatch[] {
+  let filteredMatchData = data.filter(
+    (match) => match.myTeamName === selectedTeam
+  );
+  return filteredMatchData;
+}
+
+export function matchArrayFromSelectedSessions(
+  sessionData: MatchSessions
+): ModdedArenaMatch[] {
+  const filteredMatches: ModdedArenaMatch[] = [];
+
+  sessionData.forEach((session) => {
+    filteredMatches.push(...session);
+  });
+
+  return filteredMatches;
+}
+
 function getModdedArenaData(match: ArenaMatch): any {
-  let myTeam: ArenaTeam, enemyTeam: ArenaTeam, win: boolean;
-  if (match.goldTeam.hasOwnProperty(MY_CHARACTER_NAME)) {
+  let myTeam: ArenaTeam, enemyTeam: ArenaTeam, win: boolean, myTeamName: string;
+  const myCharName = match.playerName;
+  if (match.goldTeam.hasOwnProperty(myCharName)) {
     myTeam = match.goldTeam;
+    myTeamName = match.goldTeam[myCharName].teamName;
     enemyTeam = match.purpleTeam;
-    win = !!match.winningFaction; //WIN
+    win = !!match.winningFaction;
   } else {
     myTeam = match.purpleTeam;
+    myTeamName = match.purpleTeam[myCharName].teamName;
     enemyTeam = match.goldTeam;
-    win = !match.winningFaction; //WIN
+    win = !match.winningFaction;
   }
 
-  const myTeamNames: (string | null)[] = Object.keys(myTeam);
-  const enemyTeamNames: (string | null)[] = Object.keys(enemyTeam);
+  const myTeamNames: string[] = Object.keys(myTeam);
+  const enemyTeamNames: string[] = Object.keys(enemyTeam);
   const myTeamPlayerCount = myTeamNames.length;
   const enemyTeamPlayerCount = enemyTeamNames.length;
-  const bracket = Math.max(myTeamPlayerCount, enemyTeamPlayerCount); // BRACKET
+  const bracket = Math.max(myTeamPlayerCount, enemyTeamPlayerCount);
   fillNameArraysWithBlanks(myTeamNames, enemyTeamNames, bracket);
 
   // modded arena team
@@ -89,6 +134,7 @@ function getModdedArenaData(match: ArenaMatch): any {
   return {
     bracket,
     win,
+    myTeamName,
     myTeam: myModdedTeam,
     myTeamComp: myTeamComp.sort(),
     enemyTeam: enemyModdedTeam,
@@ -97,13 +143,13 @@ function getModdedArenaData(match: ArenaMatch): any {
 }
 
 function getModdedTeamsAndTeamComps(
-  name: string | null,
+  name: string,
   idx: number,
   teamObj: ArenaTeam,
   moddedTeamObj: ModdedArenaTeam,
   compArr: string[]
 ) {
-  const playerDCed = name === null;
+  const playerDCed = name === DC_TEAM_NAME;
   moddedTeamObj[PLAYER_KEYS[idx]] = playerDCed
     ? null
     : {
@@ -114,23 +160,23 @@ function getModdedTeamsAndTeamComps(
 }
 
 function fillNameArraysWithBlanks(
-  myTeamNames: (string | null)[],
-  enemyTeamNames: (string | null)[],
+  myTeamNames: string[],
+  enemyTeamNames: string[],
   arenaBracket: number
 ): void {
   if (myTeamNames.length < arenaBracket) {
     for (let i = 0; i < arenaBracket - myTeamNames.length; i++) {
-      myTeamNames.push(null);
+      myTeamNames.push(DC_TEAM_NAME);
     }
   }
   if (enemyTeamNames.length < arenaBracket) {
     for (let i = 0; i < arenaBracket - enemyTeamNames.length; i++) {
-      enemyTeamNames.push(null);
+      enemyTeamNames.push(DC_TEAM_NAME);
     }
   }
 }
 
-export function createBasicChartDataset(
+export function createTeamCompDataSet(
   data: ModdedArenaMatch[]
 ): TeamCompDataset {
   const dataset: TeamCompDataset = {};
@@ -138,12 +184,23 @@ export function createBasicChartDataset(
     const hasDCedPlayers =
       match.enemyTeamComp.includes(DISCONNECTED) ||
       match.myTeamComp.includes(DISCONNECTED);
-    const enemyTeamCompString = teamcompArrToString(match.enemyTeamComp);
     if (hasDCedPlayers) {
       fillTeamCompObject(dataset, "DC", match);
     } else {
+      const enemyTeamCompString = teamcompArrToString(match.enemyTeamComp);
       fillTeamCompObject(dataset, enemyTeamCompString, match);
     }
+  });
+
+  return dataset;
+}
+
+export function createRatingChangeDataSet(
+  data: ModdedArenaMatch[]
+): RatingChangeDataset {
+  const dataset: RatingChangeDataset = [];
+  data.forEach((match) => {
+    fillRatingChangeArray(dataset, match);
   });
 
   return dataset;
@@ -154,14 +211,90 @@ function fillTeamCompObject(
   key: string,
   match: ModdedArenaMatch
 ): void {
-  if (obj[key]) {
-    obj[key].matchCount += 1;
-    match.win && obj[key].wins++;
-  } else {
-    obj[key] = { matchCount: 1, wins: Number(match.win) };
+  const DC_MATCH = key === "DC";
+  const { instanceID, myTeam, win, bracket } = match;
+  // get performance stats for match
+  const TeamPerformanceStats: TeamPerformanceStats = {};
+  if (!DC_MATCH) {
+    for (let i = 0; i < bracket; i++) {
+      const player = myTeam[PLAYER_KEYS[i]];
+      if (player) {
+        TeamPerformanceStats[player.name] = {
+          healing: player.healing,
+          damage: player.damage,
+        };
+      } else {
+        TeamPerformanceStats["DC"] = { healing: 0, damage: 0 };
+      }
+    }
   }
+
+  const entry = obj[key];
+
+  if (entry) {
+    // overall stats
+    entry.matchCount += 1;
+    if (win) {
+      entry.wins++;
+    }
+
+    // zone stats
+    if (entry.zoneStats[instanceID]) {
+      entry.zoneStats[instanceID].matches++;
+      if (win) {
+        entry.zoneStats[instanceID].wins++;
+      }
+    } else {
+      entry.zoneStats[instanceID] = { matches: 1, wins: Number(win) };
+    }
+
+    // team performance stats
+    !DC_MATCH &&
+      mergePlayerPerformanceStats(entry.performanceStats, TeamPerformanceStats);
+  } else {
+    obj[key] = {
+      matchCount: 1,
+      wins: Number(win),
+      performanceStats: TeamPerformanceStats,
+      zoneStats: { [instanceID]: { matches: 1, wins: Number(win) } },
+    };
+  }
+}
+
+function fillRatingChangeArray(
+  arr: RatingChangeDataset,
+  match: ModdedArenaMatch
+): void {
+  const { enteredTime: timestamp, enemyTeamComp, myTeam, bracket, win } = match;
+  let newTeamRating = -1;
+  let teamMMR = -1;
+  for (let i = 0; i < bracket; i++) {
+    const player = myTeam[PLAYER_KEYS[i]];
+    if (player) {
+      newTeamRating = player.newTeamRating;
+      teamMMR = player.teamMMR;
+    }
+  }
+  const RatingChangeObject: RatingChangeObj = {
+    timestamp,
+    newTeamRating,
+    teamMMR,
+    win,
+    enemyTeamComp: teamcompArrToString(enemyTeamComp),
+  };
+  arr.push(RatingChangeObject);
 }
 
 function teamcompArrToString(arr: string[]): string {
   return arr.reduce((a, b) => a.concat(" \\ ", b));
+}
+
+function mergePlayerPerformanceStats(
+  currentStats: TeamPerformanceStats,
+  currentMatchStats: TeamPerformanceStats
+): void {
+  Object.keys(currentStats).forEach((player) => {
+    currentStats[player].healing += currentMatchStats[player].healing;
+    currentStats[player].damage += currentMatchStats[player].damage;
+  });
 }
