@@ -4,14 +4,11 @@ import { INSTANCE_DATA } from "../utils/stateManagement";
 import {
   MatchSessions,
   ModdedArenaMatch,
-  TeamCompDataset,
 } from "../Types/ArenaTypes";
-import BarChart from "./BarChart";
 import {
-  createBasicChartDataset,
-  matchArrayFromSelectedSessions,
   getModdedArenaMatches,
   filterMatchData,
+  CHART_TYPES,
 } from "../utils/dataSetHelpers";
 import { getSessions } from "../utils/sessionManagement";
 import SessionSelect from "./SessionSelect";
@@ -25,7 +22,6 @@ export type dashboardProps = {
 };
 
 const Dashboard: React.FC<dashboardProps> = () => {
-  const chartTypes = ["Team comps", "Rating change"];
   const [moddedMatchData, setModdedMatchData] = useState<ModdedArenaMatch[]>(
     []
   );
@@ -33,10 +29,9 @@ const Dashboard: React.FC<dashboardProps> = () => {
   const [myTeamSelection, setMyTeamSelection] = useState<string>("");
   const [sessionData, setSessionData] = useState<MatchSessions>(new Map());
   const [sessionSelection, setSessionSelection] = useState<number[]>([0]);
-  const [chartType, setChartType] = useState<string>("");
+  const [chartType, setChartType] = useState<string>("Team comps");
   const [localStorageChanged, setLocalStorageChanged] =
     useState<boolean>(false);
-  const [chartDataset, setChartDataset] = useState<TeamCompDataset>({});
 
   useEffect(() => {
     // Local storage match data => Modified arena match data in local state
@@ -56,31 +51,6 @@ const Dashboard: React.FC<dashboardProps> = () => {
     setSessionSelection([0]);
   }, [moddedMatchData, myTeamSelection]);
 
-  useEffect(() => {
-    // Filter by currently selected sessions
-    const selectedSessionData: ModdedArenaMatch[] = [];
-    if (sessionData?.size) {
-      if (sessionSelection.includes(0)) {
-        selectedSessionData.push(
-          ...matchArrayFromSelectedSessions(sessionData)
-        );
-      } else {
-        const selectedMatches: MatchSessions = new Map();
-        sessionSelection.forEach((sessionKey) => {
-          const session = sessionData.get(sessionKey);
-          session && selectedMatches.set(sessionKey, session);
-        });
-        selectedSessionData.push(
-          ...matchArrayFromSelectedSessions(selectedMatches)
-        );
-      }
-    }
-
-    // Create chart dataset
-    selectedSessionData.length &&
-      setChartDataset(createBasicChartDataset(selectedSessionData));
-  }, [sessionData, sessionSelection]);
-
   return (
     <div className="dashboard">
       <div className="dashboard__top-bar">
@@ -91,7 +61,7 @@ const Dashboard: React.FC<dashboardProps> = () => {
         <div className="dashboard__filters">
           <ButtonGroup
             onChange={setChartType}
-            buttonLabels={chartTypes}
+            buttonLabels={CHART_TYPES}
             selected={chartType}
           />
           {myTeams && (
@@ -106,7 +76,11 @@ const Dashboard: React.FC<dashboardProps> = () => {
         </div>
       </div>
       {moddedMatchData && (
-        <ChartContainer dataset={chartDataset} selectedChartType={chartType} />
+        <ChartContainer
+          sessionData={sessionData}
+          sessionSelection={sessionSelection}
+          chartType={chartType}
+        />
       )}
     </div>
   );

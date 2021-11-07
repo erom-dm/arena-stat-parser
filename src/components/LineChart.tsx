@@ -1,58 +1,91 @@
 import React from "react";
 import { Line } from "react-chartjs-2";
+import { RatingChangeDataset } from "../Types/ArenaTypes";
 
-const data = {
-  labels: ["1", "2", "3", "4", "5", "6"],
-  datasets: [
-    {
-      label: "Team Rating",
-      data: [1800, 1812, 1825, 1811, 1801, 1793],
-      fill: false,
-      backgroundColor: "rgb(255, 99, 132)",
-      borderColor: "rgba(255, 99, 132, 0.2)",
-      yAxisID: "y-axis-1",
-    },
-    {
-      label: "MMR",
-      data: [1840, 1858, 1870, 1852, 1833, 1812],
-      fill: false,
-      backgroundColor: "rgb(54, 162, 235)",
-      borderColor: "rgba(54, 162, 235, 0.2)",
-      yAxisID: "y-axis-1",
-    },
-  ],
+type LineChartProps = {
+  dataset: RatingChangeDataset;
 };
 
-// const options = {
-//   scales: {
-//     yAxes: [
-//       {
-//         type: "linear",
-//         display: true,
-//         position: "left",
-//         id: "y-axis-1",
-//       },
-//       {
-//         type: "linear",
-//         display: true,
-//         position: "right",
-//         id: "y-axis-2",
-//         gridLines: {
-//           drawOnArea: false,
-//         },
-//       },
-//     ],
-//   },
-// };
+const LineChart: React.FC<LineChartProps> = ({ dataset }) => {
+  const teamRatingArr: number[] = [];
+  const teamMMRArr: number[] = [];
+  const enemyTeamCompArr: string[] = [];
+  const labelArr: string[] = [];
+  const winArray: boolean[] = [];
+  dataset.sort((a, b) => a.timestamp - b.timestamp);
+  dataset.forEach((match, index) => {
+    const { enemyTeamComp, newTeamRating, win } = match;
+    teamRatingArr.push(newTeamRating);
+    enemyTeamCompArr.push(enemyTeamComp);
+    labelArr.push(String(index + 1));
+    winArray.push(win);
 
-const MultiAxisLine = () => (
-  <>
-    <div className="header">
-      <h1 className="title">Team Rating Change</h1>
-      <div className="links"></div>
-    </div>
-    <Line data={data} />
-  </>
-);
+    const teamMMR = dataset[index + 1]?.teamMMR;
+    teamMMR && teamMMRArr.push(teamMMR);
+  });
 
-export default MultiAxisLine;
+  const ticksConf = {
+    color: "#292F36",
+    font: { size: 15, family: "'Roboto', sans-serif" },
+    stepSize: 1,
+    beginAtZero: true,
+  };
+  const options = {
+    scales: {
+      ["y-axis-1"]: {
+        ticks: ticksConf,
+      },
+      x: {
+        ticks: ticksConf,
+      },
+    },
+    plugins: {
+      tooltip: {
+        callbacks: {
+          afterLabel: (tooltip: any) => {
+            const index = tooltip.dataIndex;
+            const enemyComp = tooltip.dataset.enemyComp[index];
+            const win = tooltip.dataset.win[index];
+            return [enemyComp, `${win ? "Win" : "Loss"}`];
+          },
+        },
+      },
+    },
+  };
+  const data = {
+    labels: labelArr,
+    datasets: [
+      {
+        label: "New Team Rating",
+        data: teamRatingArr,
+        enemyComp: enemyTeamCompArr,
+        win: winArray,
+        fill: false,
+        backgroundColor: "rgb(254,38,0)",
+        borderColor: "rgb(254,131,0)",
+        yAxisID: "y-axis-1",
+      },
+      {
+        label: "MMR",
+        data: teamMMRArr,
+        enemyComp: enemyTeamCompArr,
+        win: winArray,
+        fill: false,
+        backgroundColor: "rgb(0,196,255)",
+        borderColor: "rgb(0,255,255)",
+        yAxisID: "y-axis-1",
+      },
+    ],
+  };
+
+  return (
+    <>
+      <div className="header">
+        <h1 className="title">Team Rating Change</h1>
+      </div>
+      <Line data={data} options={options} />
+    </>
+  );
+};
+
+export default LineChart;

@@ -68,6 +68,16 @@ export interface TeamCompDataset {
   [Key: string]: TeamCompObj;
 }
 
+export type RatingChangeDataset = RatingChangeObj[];
+
+export type RatingChangeObj = {
+  timestamp: number;
+  newTeamRating: number;
+  teamMMR: number;
+  enemyTeamComp: string;
+  win: boolean;
+};
+
 export interface TeamCompObj {
   matchCount: number;
   wins: number;

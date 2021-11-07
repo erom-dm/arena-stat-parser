@@ -37,17 +37,21 @@ const BarChart: React.FC<BarChartProps> = ({ dataset }) => {
   const performanceStatsArr: TeamPerformanceStats[] = [];
   let colorArray: string[] = [];
 
+  const ticksConf = {
+    color: "#292F36",
+    font: { size: 15, family: "'Roboto', sans-serif" },
+    stepSize: 1,
+    beginAtZero: true,
+  };
   const options: any = {
     indexAxis: "y",
     responsive: true,
     scales: {
       y: {
-        ticks: {
-          color: "#292F36",
-          font: { size: 15, family: "'Roboto', sans-serif" },
-          stepSize: 1,
-          beginAtZero: true,
-        },
+        ticks: ticksConf,
+      },
+      x: {
+        ticks: ticksConf,
       },
     },
     plugins: {

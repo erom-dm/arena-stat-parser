@@ -13,17 +13,16 @@ const TeamSelect: React.FC<teamSelectProps> = ({ teams, onChange }) => {
     value: team,
     label: team,
   }));
+  const handleChange = (newValue: SingleValue<TeamSelectOption>) => {
+    setSelected(newValue);
+    onChange && newValue && onChange(newValue.value);
+  };
   useEffect(() => {
     if (options.length && !selected) {
       setSelected(options[0]);
     }
     handleChange(options[0]);
   }, [teams]);
-
-  const handleChange = (newValue: SingleValue<TeamSelectOption>) => {
-    setSelected(newValue);
-    onChange && newValue && onChange(newValue.value);
-  };
 
   return (
     <Select

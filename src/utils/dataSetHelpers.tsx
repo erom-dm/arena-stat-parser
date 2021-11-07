@@ -5,6 +5,8 @@ import {
   MatchSessions,
   ModdedArenaMatch,
   ModdedArenaTeam,
+  RatingChangeDataset,
+  RatingChangeObj,
   TeamCompDataset,
   TeamPerformanceStats,
 } from "../Types/ArenaTypes";
@@ -24,6 +26,7 @@ const PLAYER_KEYS: arenaPlayerKeys[] = [
   "player4",
   "player5",
 ];
+export const CHART_TYPES = ["Team comps", "Rating change"];
 
 export function filterJunkData(data: ArenaMatch[]): ArenaMatch[] {
   return data.filter(
@@ -173,7 +176,7 @@ function fillNameArraysWithBlanks(
   }
 }
 
-export function createBasicChartDataset(
+export function createTeamCompDataSet(
   data: ModdedArenaMatch[]
 ): TeamCompDataset {
   const dataset: TeamCompDataset = {};
@@ -187,6 +190,17 @@ export function createBasicChartDataset(
       const enemyTeamCompString = teamcompArrToString(match.enemyTeamComp);
       fillTeamCompObject(dataset, enemyTeamCompString, match);
     }
+  });
+
+  return dataset;
+}
+
+export function createRatingChangeDataSet(
+  data: ModdedArenaMatch[]
+): RatingChangeDataset {
+  const dataset: RatingChangeDataset = [];
+  data.forEach((match) => {
+    fillRatingChangeArray(dataset, match);
   });
 
   return dataset;
@@ -245,6 +259,30 @@ function fillTeamCompObject(
       zoneStats: { [instanceID]: { matches: 1, wins: Number(win) } },
     };
   }
+}
+
+function fillRatingChangeArray(
+  arr: RatingChangeDataset,
+  match: ModdedArenaMatch
+): void {
+  const { enteredTime: timestamp, enemyTeamComp, myTeam, bracket, win } = match;
+  let newTeamRating = -1;
+  let teamMMR = -1;
+  for (let i = 0; i < bracket; i++) {
+    const player = myTeam[PLAYER_KEYS[i]];
+    if (player) {
+      newTeamRating = player.newTeamRating;
+      teamMMR = player.teamMMR;
+    }
+  }
+  const RatingChangeObject: RatingChangeObj = {
+    timestamp,
+    newTeamRating,
+    teamMMR,
+    win,
+    enemyTeamComp: teamcompArrToString(enemyTeamComp),
+  };
+  arr.push(RatingChangeObject);
 }
 
 function teamcompArrToString(arr: string[]): string {
