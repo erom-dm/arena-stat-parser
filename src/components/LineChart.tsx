@@ -31,6 +31,7 @@ const LineChart: React.FC<LineChartProps> = ({ dataset }) => {
     beginAtZero: true,
   };
   const options = {
+    maintainAspectRatio: false,
     scales: {
       ["y-axis-1"]: {
         ticks: ticksConf,
@@ -83,7 +84,9 @@ const LineChart: React.FC<LineChartProps> = ({ dataset }) => {
       <div className="header">
         <h1 className="title">Team Rating Change</h1>
       </div>
-      <Line data={data} options={options} />
+      <div className={"chart-container"}>
+        <Line data={data} options={options} />
+      </div>
     </>
   );
 };

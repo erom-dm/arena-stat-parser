@@ -20,7 +20,7 @@ export type chartContainerProps = {
   chartType: string;
 };
 
-const ChartContainer: React.FC<chartContainerProps> = ({
+const ChartWrapper: React.FC<chartContainerProps> = ({
   sessionData,
   sessionSelection,
   chartType,
@@ -63,7 +63,7 @@ const ChartContainer: React.FC<chartContainerProps> = ({
   }, [chartType, sessionData, sessionSelection]);
 
   return (
-    <div className={"dashboard__chart-container"}>
+    <div className={"chart-wrapper"}>
       {localChartType === "Team comps" && (
         <BarChart dataset={chartDataset as TeamCompDataset} />
       )}
@@ -74,4 +74,4 @@ const ChartContainer: React.FC<chartContainerProps> = ({
   );
 };
 
-export default ChartContainer;
+export default ChartWrapper;

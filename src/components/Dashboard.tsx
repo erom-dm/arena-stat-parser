@@ -1,10 +1,7 @@
 import React, { useEffect, useState } from "react";
 import UploadArea from "./UploadArea";
 import { INSTANCE_DATA } from "../utils/stateManagement";
-import {
-  MatchSessions,
-  ModdedArenaMatch,
-} from "../Types/ArenaTypes";
+import { MatchSessions, ModdedArenaMatch } from "../Types/ArenaTypes";
 import {
   getModdedArenaMatches,
   filterMatchData,
@@ -15,7 +12,7 @@ import SessionSelect from "./SessionSelect";
 import getTeams from "../utils/teamManagement";
 import TeamSelect from "./TeamSelect";
 import ButtonGroup from "./ButtonGroup";
-import ChartContainer from "./ChartContainer";
+import ChartWrapper from "./ChartWrapper";
 
 export type dashboardProps = {
   className?: string;
@@ -76,7 +73,7 @@ const Dashboard: React.FC<dashboardProps> = () => {
         </div>
       </div>
       {moddedMatchData && (
-        <ChartContainer
+        <ChartWrapper
           sessionData={sessionData}
           sessionSelection={sessionSelection}
           chartType={chartType}

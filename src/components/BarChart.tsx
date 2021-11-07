@@ -44,6 +44,7 @@ const BarChart: React.FC<BarChartProps> = ({ dataset }) => {
     beginAtZero: true,
   };
   const options: any = {
+    maintainAspectRatio: false,
     indexAxis: "y",
     responsive: true,
     scales: {
@@ -161,7 +162,9 @@ const BarChart: React.FC<BarChartProps> = ({ dataset }) => {
       <div className="header">
         <h1 className="title">{chartTitle}</h1>
       </div>
-      <Bar data={data} options={options} />
+      <div className={"chart-container"}>
+        <Bar data={data} options={options} />
+      </div>
     </>
   );
 };
