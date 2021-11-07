@@ -33,7 +33,7 @@ const LineChart: React.FC<LineChartProps> = ({ dataset }) => {
   const options = {
     maintainAspectRatio: false,
     scales: {
-      ["y-axis-1"]: {
+      "y-axis-1": {
         ticks: ticksConf,
       },
       x: {
