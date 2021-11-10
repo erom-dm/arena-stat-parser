@@ -315,7 +315,7 @@ function teamcompArrToString(arr: string[]): string {
 export function createTeamsDataSet(data: ModdedArenaMatch[]): TeamsDataset {
   const dataset: TeamsDataset = {};
   data.forEach((match) => {
-    const { win, enemyTeamName } = match;
+    const { win } = match;
     const enemyTeamData: EnemyTeamData = getEnemyTeamData(dataset, match);
 
     if (dataset[enemyTeamData.teamName]) {
