@@ -30,6 +30,10 @@ export interface ModdedArenaMatch {
   myTeamName: string;
   enemyTeam: ModdedArenaTeam;
   enemyTeamComp: string[];
+  enemyTeamName: string;
+  enemyPlayerNames: string[];
+  enemyTeamMMR: number;
+  enemyTeamRating: number;
   win: boolean;
 }
 
@@ -76,6 +80,34 @@ export type RatingChangeObj = {
   teamMMR: number;
   enemyTeamComp: string;
   win: boolean;
+};
+
+export type TeamsDataset = { [Key: string]: TeamStatsObj };
+
+export type TeamStatsObj = {
+  teamName: string;
+  enemyTeamComp: string;
+  enemyPlayerNames: string[];
+  teamMMR: DetailedTeamRatingObject;
+  teamRating: DetailedTeamRatingObject;
+  matchesPlayed: number;
+  wins: number;
+};
+
+export type EnemyTeamData = {
+  teamName: string;
+  enemyTeamComp: string;
+  enemyPlayerNames: string[];
+  enemyTeamMMR: number;
+  enemyTeamRating: number;
+};
+
+export type DetailedTeamRatingObject = {
+  min: number;
+  max: number;
+  average: number;
+  total: number;
+  matchCount: number;
 };
 
 export interface TeamCompObj {
@@ -138,4 +170,9 @@ export type SessionSelectOption = {
 export type TeamSelectOption = {
   value: string;
   label: string;
+};
+
+export type SplitNames = {
+  names: string[];
+  realm: string;
 };

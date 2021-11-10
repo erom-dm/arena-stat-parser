@@ -4,15 +4,18 @@ import {
   ModdedArenaMatch,
   RatingChangeDataset,
   TeamCompDataset,
+  TeamsDataset,
 } from "../Types/ArenaTypes";
-import BarChart from "./BarChart";
+import TeamCompChart from "./TeamCompChart";
 import LineChart from "./LineChart";
 import {
   CHART_TYPES,
   createRatingChangeDataSet,
   createTeamCompDataSet,
+  createTeamsDataSet,
   matchArrayFromSelectedSessions,
 } from "../utils/dataSetHelpers";
+import TeamsChart from "./TeamsChart";
 
 export type chartContainerProps = {
   sessionData: MatchSessions;
@@ -26,7 +29,7 @@ const ChartWrapper: React.FC<chartContainerProps> = ({
   chartType,
 }) => {
   const [chartDataset, setChartDataset] = useState<
-    TeamCompDataset | RatingChangeDataset
+    TeamCompDataset | RatingChangeDataset | TeamsDataset
   >({});
   const [localChartType, setLocalChartType] = useState<string>("");
 
@@ -56,6 +59,9 @@ const ChartWrapper: React.FC<chartContainerProps> = ({
       case CHART_TYPES[1]: // "Rating change"]
         setChartDataset(createRatingChangeDataSet(selectedSessionData));
         break;
+      case CHART_TYPES[2]: // "Rating change"]
+        setChartDataset(createTeamsDataSet(selectedSessionData));
+        break;
       default:
         break;
     }
@@ -64,11 +70,14 @@ const ChartWrapper: React.FC<chartContainerProps> = ({
 
   return (
     <div className={"chart-wrapper"}>
-      {localChartType === "Team comps" && (
-        <BarChart dataset={chartDataset as TeamCompDataset} />
+      {localChartType === CHART_TYPES[0] && (
+        <TeamCompChart dataset={chartDataset as TeamCompDataset} />
       )}
-      {localChartType === "Rating change" && (
+      {localChartType === CHART_TYPES[1] && (
         <LineChart dataset={chartDataset as RatingChangeDataset} />
+      )}
+      {localChartType === CHART_TYPES[2] && (
+        <TeamsChart dataset={chartDataset as TeamsDataset} />
       )}
     </div>
   );

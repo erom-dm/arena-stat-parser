@@ -2,13 +2,18 @@ import {
   ArenaMatch,
   arenaPlayerKeys,
   ArenaTeam,
+  DetailedTeamRatingObject,
+  EnemyTeamData,
   MatchSessions,
   ModdedArenaMatch,
   ModdedArenaTeam,
   RatingChangeDataset,
   RatingChangeObj,
+  SplitNames,
   TeamCompDataset,
   TeamPerformanceStats,
+  TeamsDataset,
+  TeamStatsObj,
 } from "../Types/ArenaTypes";
 
 const DISCONNECTED = "!disconnected";
@@ -26,7 +31,7 @@ const PLAYER_KEYS: arenaPlayerKeys[] = [
   "player4",
   "player5",
 ];
-export const CHART_TYPES = ["Team comps", "Rating change"];
+export const CHART_TYPES = ["Team comps", "Rating change", "Teams"];
 
 export function filterJunkData(data: ArenaMatch[]): ArenaMatch[] {
   return data.filter(
@@ -46,6 +51,10 @@ export function getModdedArenaMatches(data: ArenaMatch[]): ModdedArenaMatch[] {
       instanceName: match.instanceName,
       playerName: match.playerName,
       enemyTeamComp: [],
+      enemyTeamName: "",
+      enemyPlayerNames: [],
+      enemyTeamRating: 0,
+      enemyTeamMMR: 0,
       myTeamComp: [],
       myTeamName: "",
       bracket: 0,
@@ -119,22 +128,36 @@ function getModdedArenaData(match: ArenaMatch): any {
   let myTeamComp: string[] = [];
   let enemyModdedTeam: ModdedArenaTeam = {};
   let enemyTeamComp: string[] = [];
+  let enemyTeamName: string = "";
+  let enemyTeamMMR: number = 0;
+  let enemyTeamRating: number = 0;
+  let enemyPlayerNames: string[] = [];
   myTeamNames.forEach((name, idx) =>
     getModdedTeamsAndTeamComps(name, idx, myTeam, myModdedTeam, myTeamComp)
   );
-  enemyTeamNames.forEach((name, idx) =>
+  enemyTeamNames.forEach((name, idx) => {
+    if (name !== DC_TEAM_NAME) {
+      enemyTeamName = enemyTeam[name].teamName;
+      enemyTeamMMR = enemyTeam[name].teamMMR;
+      enemyTeamRating = enemyTeam[name].teamRating;
+      enemyPlayerNames.push(name);
+    }
     getModdedTeamsAndTeamComps(
       name,
       idx,
       enemyTeam,
       enemyModdedTeam,
       enemyTeamComp
-    )
-  );
+    );
+  });
   return {
     bracket,
     win,
     myTeamName,
+    enemyTeamName,
+    enemyPlayerNames,
+    enemyTeamMMR,
+    enemyTeamRating,
     myTeam: myModdedTeam,
     myTeamComp: myTeamComp.sort(),
     enemyTeam: enemyModdedTeam,
@@ -289,6 +312,106 @@ function teamcompArrToString(arr: string[]): string {
   return arr.reduce((a, b) => a.concat(" \\ ", b));
 }
 
+export function createTeamsDataSet(data: ModdedArenaMatch[]): TeamsDataset {
+  const dataset: TeamsDataset = {};
+  data.forEach((match) => {
+    const { win, enemyTeamName } = match;
+    const enemyTeamData: EnemyTeamData = getEnemyTeamData(dataset, match);
+
+    if (dataset[enemyTeamData.teamName]) {
+      const teamEntry = dataset[enemyTeamData.teamName];
+      const updatedTeamStatObj: TeamStatsObj = {
+        teamName: teamEntry.teamName,
+        enemyTeamComp: teamEntry.enemyTeamComp,
+        enemyPlayerNames: Array.from(
+          new Set([
+            ...teamEntry.enemyPlayerNames,
+            ...enemyTeamData.enemyPlayerNames,
+          ])
+        ),
+        teamMMR: fillDetailedTeamRatingObject(
+          enemyTeamData.enemyTeamMMR,
+          teamEntry.teamMMR
+        ),
+        teamRating: fillDetailedTeamRatingObject(
+          enemyTeamData.enemyTeamRating,
+          teamEntry.teamRating
+        ),
+        matchesPlayed: teamEntry.matchesPlayed + 1,
+        wins: teamEntry.wins + Number(win),
+      };
+      dataset[enemyTeamData.teamName] = updatedTeamStatObj;
+    } else {
+      const teamMMR = fillDetailedTeamRatingObject(enemyTeamData.enemyTeamMMR);
+      const teamRating = fillDetailedTeamRatingObject(
+        enemyTeamData.enemyTeamRating
+      );
+      const newTeamStatObj: TeamStatsObj = {
+        teamName: enemyTeamData.teamName,
+        enemyTeamComp: enemyTeamData.enemyTeamComp,
+        enemyPlayerNames: enemyTeamData.enemyPlayerNames,
+        teamMMR: teamMMR,
+        teamRating: teamRating,
+        matchesPlayed: 1,
+        wins: Number(win),
+      };
+      dataset[enemyTeamData.teamName] = newTeamStatObj;
+    }
+  });
+  return dataset;
+}
+
+function getEnemyTeamData(
+  arr: TeamsDataset,
+  match: ModdedArenaMatch
+): EnemyTeamData {
+  const {
+    enemyTeamComp,
+    enemyPlayerNames,
+    enemyTeamMMR,
+    enemyTeamName,
+    enemyTeamRating,
+  } = match;
+  return {
+    enemyTeamComp: teamcompArrToString(enemyTeamComp),
+    teamName: enemyTeamName,
+    enemyPlayerNames,
+    enemyTeamMMR,
+    enemyTeamRating,
+  };
+}
+
+function fillDetailedTeamRatingObject(
+  rating: number,
+  prevRatingObj?: DetailedTeamRatingObject
+): DetailedTeamRatingObject {
+  const obj: DetailedTeamRatingObject = {
+    min: 0,
+    max: 0,
+    average: 0,
+    total: 0,
+    matchCount: 0,
+  };
+  if (!prevRatingObj) {
+    obj.min = rating;
+    obj.average = rating;
+    obj.max = rating;
+    obj.total = rating;
+    obj.matchCount = 1;
+  } else {
+    obj.matchCount = prevRatingObj.matchCount + 1;
+    obj.min = Math.min(prevRatingObj.min, rating);
+    obj.max = Math.max(prevRatingObj.max, rating);
+    obj.average = Number(
+      (rating / obj.matchCount + prevRatingObj.total / obj.matchCount).toFixed(
+        0
+      )
+    );
+    obj.total = prevRatingObj.total + rating;
+  }
+  return obj;
+}
+
 function mergePlayerPerformanceStats(
   currentStats: TeamPerformanceStats,
   currentMatchStats: TeamPerformanceStats
@@ -297,4 +420,18 @@ function mergePlayerPerformanceStats(
     currentStats[player].healing += currentMatchStats[player].healing;
     currentStats[player].damage += currentMatchStats[player].damage;
   });
+}
+
+export function calcWinrate(matchCount: number, wins: number): string {
+  return ((wins / matchCount) * 100).toFixed(1);
+}
+
+export function separateNamesFromRealm(inputArr: string[]): SplitNames {
+  const obj: SplitNames = { names: [], realm: "" };
+  inputArr.forEach((name) => {
+    const arr = name.split("-");
+    obj.names.push(arr[0]);
+    obj.realm = arr[1];
+  });
+  return obj;
 }

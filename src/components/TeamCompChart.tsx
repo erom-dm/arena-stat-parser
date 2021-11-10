@@ -10,17 +10,13 @@ import {
   ZoneStats,
 } from "../Types/ArenaTypes";
 import generateChartColors from "../utils/colorGeneration";
-import { ARENA_INSTANCE_IDS } from "../utils/dataSetHelpers";
+import { ARENA_INSTANCE_IDS, calcWinrate } from "../utils/dataSetHelpers";
 
 type BarChartProps = {
   dataset: TeamCompDataset;
 };
 
-function calcWinrate(matchCount: number, wins: number): string {
-  return ((wins / matchCount) * 100).toFixed(1);
-}
-
-const BarChart: React.FC<BarChartProps> = ({ dataset }) => {
+const TeamCompChart: React.FC<BarChartProps> = ({ dataset }) => {
   const colorRangeInfo: ColorRangeInfo = {
     colorStart: 0.1,
     colorEnd: 0.85,
@@ -169,4 +165,4 @@ const BarChart: React.FC<BarChartProps> = ({ dataset }) => {
   );
 };
 
-export default BarChart;
+export default TeamCompChart;

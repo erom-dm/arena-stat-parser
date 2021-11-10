@@ -26,7 +26,7 @@ const Dashboard: React.FC<dashboardProps> = () => {
   const [myTeamSelection, setMyTeamSelection] = useState<string>("");
   const [sessionData, setSessionData] = useState<MatchSessions>(new Map());
   const [sessionSelection, setSessionSelection] = useState<number[]>([0]);
-  const [chartType, setChartType] = useState<string>("Team comps");
+  const [chartType, setChartType] = useState<string>(CHART_TYPES[0]);
   const [localStorageChanged, setLocalStorageChanged] =
     useState<boolean>(false);
 
