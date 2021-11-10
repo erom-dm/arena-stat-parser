@@ -30,14 +30,17 @@ const LineChart: React.FC<LineChartProps> = ({ dataset }) => {
     stepSize: 1,
     beginAtZero: true,
   };
+
   const options = {
     maintainAspectRatio: false,
     scales: {
       "y-axis-1": {
-        ticks: ticksConf,
+        ticks: { ...ticksConf, autoSkip: true, maxTicksLimit: 15 },
+        bounds: "ticks",
+        grid: { borderDashOffset: 0.9 },
       },
       x: {
-        ticks: ticksConf,
+        ticks: { ...ticksConf, autoSkip: true, maxTicksLimit: 20 },
       },
     },
     plugins: {
