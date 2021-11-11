@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from "react";
 import UploadArea from "./UploadArea";
-import { INSTANCE_DATA } from "../utils/stateManagement";
+import {
+  INSTANCE_DATA,
+  sampleDataToLocalStorage,
+} from "../utils/stateManagement";
 import { MatchSessions, ModdedArenaMatch } from "../Types/ArenaTypes";
 import {
   getModdedArenaMatches,
@@ -19,14 +22,12 @@ export type dashboardProps = {
 };
 
 const Dashboard: React.FC<dashboardProps> = () => {
-  const [moddedMatchData, setModdedMatchData] = useState<ModdedArenaMatch[]>(
-    []
-  );
+  const [moddedMatchData, setModdedMatchData] = useState<ModdedArenaMatch[]>();
   const [myTeams, setMyTeams] = useState<string[]>([""]);
   const [myTeamSelection, setMyTeamSelection] = useState<string>("");
   const [sessionData, setSessionData] = useState<MatchSessions>(new Map());
   const [sessionSelection, setSessionSelection] = useState<number[]>([0]);
-  const [chartType, setChartType] = useState<string>("Team comps");
+  const [chartType, setChartType] = useState<string>(CHART_TYPES[0]);
   const [localStorageChanged, setLocalStorageChanged] =
     useState<boolean>(false);
 
@@ -43,9 +44,14 @@ const Dashboard: React.FC<dashboardProps> = () => {
 
   useEffect(() => {
     // Apply filters to modded match data and create session data based on result
-    const filteredMatchData = filterMatchData(moddedMatchData, myTeamSelection);
-    setSessionData(getSessions(filteredMatchData));
-    setSessionSelection([0]);
+    if (moddedMatchData) {
+      const filteredMatchData = filterMatchData(
+        moddedMatchData,
+        myTeamSelection
+      );
+      setSessionData(getSessions(filteredMatchData));
+      setSessionSelection([0]);
+    }
   }, [moddedMatchData, myTeamSelection]);
 
   return (
@@ -55,22 +61,37 @@ const Dashboard: React.FC<dashboardProps> = () => {
           localStoreChangeHandler={setLocalStorageChanged}
           localStorageChangeValue={localStorageChanged}
         />
-        <div className="dashboard__filters">
-          <ButtonGroup
-            onChange={setChartType}
-            buttonLabels={CHART_TYPES}
-            selected={chartType}
-          />
-          {myTeams && (
-            <TeamSelect onChange={setMyTeamSelection} teams={myTeams} />
-          )}
-          {sessionData && (
-            <SessionSelect
-              onChange={setSessionSelection}
-              sessionData={sessionData}
+        {!moddedMatchData && (
+          <button
+            className={"dashboard__sample-data-button"}
+            onClick={() =>
+              sampleDataToLocalStorage(
+                localStorageChanged,
+                setLocalStorageChanged
+              )
+            }
+          >
+            Or use this sample data instead!
+          </button>
+        )}
+        {moddedMatchData && (
+          <div className="dashboard__filters">
+            <ButtonGroup
+              onChange={setChartType}
+              buttonLabels={CHART_TYPES}
+              selected={chartType}
             />
-          )}
-        </div>
+            {myTeams && (
+              <TeamSelect onChange={setMyTeamSelection} teams={myTeams} />
+            )}
+            {sessionData && (
+              <SessionSelect
+                onChange={setSessionSelection}
+                sessionData={sessionData}
+              />
+            )}
+          </div>
+        )}
       </div>
       {moddedMatchData && (
         <ChartWrapper

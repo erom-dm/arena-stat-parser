@@ -1,8 +1,8 @@
 import React from "react";
 import { ArenaMatch } from "../Types/ArenaTypes";
+import { sampleData } from "../testData";
 
 export const INSTANCE_DATA = "instanceData";
-export const MY_CHAR_NAME = "myCharName";
 
 export function mergeState(filteredData: ArenaMatch[]): void {
   const filterKey = "enteredTime";
@@ -32,4 +32,12 @@ export function localStorageToState(
 
 export function setLocalStorageField(key: string, data: any): void {
   localStorage.setItem(key, JSON.stringify(data));
+}
+
+export function sampleDataToLocalStorage(
+  lsChanged: boolean,
+  setLsChanged: React.Dispatch<React.SetStateAction<boolean>>
+): void {
+  setLocalStorageField(INSTANCE_DATA, sampleData);
+  setLsChanged(!lsChanged);
 }

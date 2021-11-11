@@ -43,4 +43,11 @@
     background: $gunmetal;
     border-radius: $br;
   }
+
+  &__sample-data-button {
+    @include button-default;
+    color: $saffron;
+    border-color: $saffron;
+    padding: 20px;
+  }
 }
