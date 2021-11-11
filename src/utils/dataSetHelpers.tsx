@@ -13,12 +13,11 @@ import {
   TeamCompDataset,
   TeamPerformanceStats,
   TeamsDataset,
-  TeamStatsObj,
 } from "../Types/ArenaTypes";
 
 const DISCONNECTED = "!disconnected";
 const DC_TEAM_NAME = "~DC~";
-export const ARENA_INSTANCE_KEYS = ["572", "562", "559"];
+// export const ARENA_INSTANCE_KEYS = ["572", "562", "559"];
 export const ARENA_INSTANCE_IDS = {
   [572 as number]: "Ruins of Lordaeron",
   [562 as number]: "Blade's Edge Arena",
@@ -83,10 +82,7 @@ export function filterMatchData(
   data: ModdedArenaMatch[],
   selectedTeam: string
 ): ModdedArenaMatch[] {
-  let filteredMatchData = data.filter(
-    (match) => match.myTeamName === selectedTeam
-  );
-  return filteredMatchData;
+  return data.filter((match) => match.myTeamName === selectedTeam);
 }
 
 export function matchArrayFromSelectedSessions(
@@ -320,7 +316,7 @@ export function createTeamsDataSet(data: ModdedArenaMatch[]): TeamsDataset {
 
     if (dataset[enemyTeamData.teamName]) {
       const teamEntry = dataset[enemyTeamData.teamName];
-      const updatedTeamStatObj: TeamStatsObj = {
+      dataset[enemyTeamData.teamName] = {
         teamName: teamEntry.teamName,
         enemyTeamComp: teamEntry.enemyTeamComp,
         enemyPlayerNames: Array.from(
@@ -340,13 +336,12 @@ export function createTeamsDataSet(data: ModdedArenaMatch[]): TeamsDataset {
         matchesPlayed: teamEntry.matchesPlayed + 1,
         wins: teamEntry.wins + Number(win),
       };
-      dataset[enemyTeamData.teamName] = updatedTeamStatObj;
     } else {
       const teamMMR = fillDetailedTeamRatingObject(enemyTeamData.enemyTeamMMR);
       const teamRating = fillDetailedTeamRatingObject(
         enemyTeamData.enemyTeamRating
       );
-      const newTeamStatObj: TeamStatsObj = {
+      dataset[enemyTeamData.teamName] = {
         teamName: enemyTeamData.teamName,
         enemyTeamComp: enemyTeamData.enemyTeamComp,
         enemyPlayerNames: enemyTeamData.enemyPlayerNames,
@@ -355,7 +350,6 @@ export function createTeamsDataSet(data: ModdedArenaMatch[]): TeamsDataset {
         matchesPlayed: 1,
         wins: Number(win),
       };
-      dataset[enemyTeamData.teamName] = newTeamStatObj;
     }
   });
   return dataset;
