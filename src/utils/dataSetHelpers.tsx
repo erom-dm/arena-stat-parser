@@ -31,7 +31,7 @@ const PLAYER_KEYS: arenaPlayerKeys[] = [
   "player4",
   "player5",
 ];
-export const CHART_TYPES = ["Team comps", "Rating change", "Teams", "Matches"];
+export const CHART_TYPES = ["Matches", "Team comps", "Rating change", "Teams"];
 
 export function filterJunkData(data: ArenaMatch[]): ArenaMatch[] {
   return data.filter(
