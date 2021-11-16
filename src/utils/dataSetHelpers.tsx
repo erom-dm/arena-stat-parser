@@ -12,6 +12,7 @@ import {
   SplitNames,
   TeamCompDataset,
   TeamPerformanceStats,
+  TeamRatingObject,
   TeamsDataset,
 } from "../Types/ArenaTypes";
 
@@ -30,7 +31,7 @@ const PLAYER_KEYS: arenaPlayerKeys[] = [
   "player4",
   "player5",
 ];
-export const CHART_TYPES = ["Team comps", "Rating change", "Teams"];
+export const CHART_TYPES = ["Team comps", "Rating change", "Teams", "Matches"];
 
 export function filterJunkData(data: ArenaMatch[]): ArenaMatch[] {
   return data.filter(
@@ -312,7 +313,7 @@ export function createTeamsDataSet(data: ModdedArenaMatch[]): TeamsDataset {
   const dataset: TeamsDataset = {};
   data.forEach((match) => {
     const { win } = match;
-    const enemyTeamData: EnemyTeamData = getEnemyTeamData(dataset, match);
+    const enemyTeamData: EnemyTeamData = getEnemyTeamData(match);
 
     if (dataset[enemyTeamData.teamName]) {
       const teamEntry = dataset[enemyTeamData.teamName];
@@ -355,10 +356,7 @@ export function createTeamsDataSet(data: ModdedArenaMatch[]): TeamsDataset {
   return dataset;
 }
 
-function getEnemyTeamData(
-  arr: TeamsDataset,
-  match: ModdedArenaMatch
-): EnemyTeamData {
+function getEnemyTeamData(match: ModdedArenaMatch): EnemyTeamData {
   const {
     enemyTeamComp,
     enemyPlayerNames,
@@ -428,4 +426,26 @@ export function separateNamesFromRealm(inputArr: string[]): SplitNames {
     obj.realm = arr[1];
   });
   return obj;
+}
+
+export function getTeamRatingValues(team: ModdedArenaTeam): TeamRatingObject {
+  const returnObject: TeamRatingObject = {
+    MMR: 0,
+    rating: 0,
+    newRating: 0,
+    ratingChange: 0,
+  };
+  const players = Object.values(team);
+  for (let i = 0; i < players.length; i++) {
+    const player = players[i];
+    if (player && player.class) {
+      returnObject.MMR = player.teamMMR;
+      returnObject.rating = player.teamRating;
+      returnObject.newRating = player.newTeamRating;
+      returnObject.ratingChange = player.newTeamRating - player.teamRating;
+      break;
+    }
+  }
+
+  return returnObject;
 }

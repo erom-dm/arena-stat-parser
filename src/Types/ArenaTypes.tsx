@@ -176,3 +176,10 @@ export type SplitNames = {
   names: string[];
   realm: string;
 };
+
+export type TeamRatingObject = {
+  MMR: number;
+  rating: number;
+  newRating: number;
+  ratingChange: number;
+};

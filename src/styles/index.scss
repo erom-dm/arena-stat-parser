@@ -5,6 +5,7 @@
 @import "dropdowns";
 @import "btn-group";
 @import "chart-wrapper";
+@import "match-list";
 
 html, body, #root {
   height: 100%;
@@ -40,4 +41,32 @@ h1 {
   padding: 0;
   background: $gunmetal;
   color: $saffron;
+}
+
+.mage {
+  color: $mage;
+}
+.priest {
+  color: $priest;
+}
+.hunter {
+  color: $hunter;
+}
+.druid {
+  color: $druid;
+}
+.warlock {
+  color: $warlock
+}
+.warrior {
+  color: $warrior;
+}
+.shaman {
+  color: $shaman;
+}
+.paladin {
+  color: $paladin;
+}
+.rogue {
+  color: $rogue;
 }

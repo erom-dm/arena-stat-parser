@@ -16,6 +16,7 @@ import {
   matchArrayFromSelectedSessions,
 } from "../utils/dataSetHelpers";
 import TeamsChart from "./TeamsChart";
+import MatchList from "./MatchList";
 
 export type chartContainerProps = {
   sessionData: MatchSessions;
@@ -29,7 +30,7 @@ const ChartWrapper: React.FC<chartContainerProps> = ({
   chartType,
 }) => {
   const [chartDataset, setChartDataset] = useState<
-    TeamCompDataset | RatingChangeDataset | TeamsDataset
+    TeamCompDataset | RatingChangeDataset | TeamsDataset | ModdedArenaMatch[]
   >({});
   const [localChartType, setLocalChartType] = useState<string>("");
 
@@ -62,6 +63,9 @@ const ChartWrapper: React.FC<chartContainerProps> = ({
       case CHART_TYPES[2]: // "Rating change"]
         setChartDataset(createTeamsDataSet(selectedSessionData));
         break;
+      case CHART_TYPES[3]: // "Rating change"]
+        setChartDataset(selectedSessionData);
+        break;
       default:
         break;
     }
@@ -78,6 +82,9 @@ const ChartWrapper: React.FC<chartContainerProps> = ({
       )}
       {localChartType === CHART_TYPES[2] && (
         <TeamsChart dataset={chartDataset as TeamsDataset} />
+      )}
+      {localChartType === CHART_TYPES[3] && (
+        <MatchList matches={chartDataset as ModdedArenaMatch[]} />
       )}
     </div>
   );
