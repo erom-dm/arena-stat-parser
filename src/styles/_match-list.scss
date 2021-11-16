@@ -15,7 +15,7 @@
   background: #282c34;
   height: fit-content;
   width: 100%;
-  max-width: 1000px;
+  max-width: 800px;
   border-radius: $br;
 
   &.instance-572 {
@@ -54,24 +54,24 @@
     justify-content: space-between;
   }
   &__team {
-    width: 40%;
+    width: 50%;
     //height: 100%;
     text-align: left;
     &.team-left {
       border-radius: 10px 0 0 10px;
       padding: 53px 60px 15px 15px; // depends on match header height + match-item padding
       &.win {
-        background: linear-gradient(to right, $winGreen 30%, $winGreen85 80%, $winGreenFade);
+        background: linear-gradient(to right, $winGreen 30%, $winGreen85 50%, $winGreenFade);
       }
       &.loss {
-        background: linear-gradient(to right, $lossRed 30%, $lossRed85 80%, $lossRedFade);
+        background: linear-gradient(to right, $lossRed 30%, $lossRed85 50%, $lossRedFade);
       }
     }
     &.team-right {
       text-align: right;
       border-radius: 0 10px 10px 0;
       padding: 53px 15px 15px 60px; // depends on match header height + match-item padding
-      background: linear-gradient(to left, rgba(49, 49, 49, 0.85) 80%, rgba(49, 49, 49, 0));
+      background: linear-gradient(to left, rgba(49, 49, 49, 0.85) 50%, rgba(49, 49, 49, 0));
     }
   }
   &__team-header {
