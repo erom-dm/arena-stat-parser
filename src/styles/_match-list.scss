@@ -1,6 +1,13 @@
 .match-list {
-  margin: 25px auto;
-  width: 100%;
+  @include styled-scrollbar;
+  &::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  margin: 25px -20px 0;
+  height: calc(100vh - 105px);
+  overflow-y: scroll;
+  overflow-x: hidden;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
@@ -31,19 +38,20 @@
     background: url("../assets/backgrounds/nagrand.jpg") no-repeat 50% 100%;
   }
 
-  &__header {
-    //position: relative;
+  &__footer {
     position: absolute;
-    top: 15px;
-    left: 15px;
+    bottom: 0;
+    left: 0;
     width: 100%;
-    margin: 0 0 20px;
+    text-align: left;
   }
   &__date {
-    position: absolute;
+    position: relative;
+    margin: 0 0 10px 15px;
     top: 0;
     left: 0;
     font-size: 14px;
+    line-height: 14px;
     color: $white50;
   }
   &__instance-name {
@@ -59,7 +67,7 @@
     text-align: left;
     &.team-left {
       border-radius: 10px 0 0 10px;
-      padding: 53px 60px 15px 15px; // depends on match header height + match-item padding
+      padding: 20px 60px 40px 15px; // depends on match header height + match-item padding
       &.win {
         background: linear-gradient(to right, $winGreen 30%, $winGreen85 50%, $winGreenFade);
       }
@@ -70,7 +78,7 @@
     &.team-right {
       text-align: right;
       border-radius: 0 10px 10px 0;
-      padding: 53px 15px 15px 60px; // depends on match header height + match-item padding
+      padding: 20px 15px 40px 60px; // depends on match header height + match-item padding
       background: linear-gradient(to left, rgba(49, 49, 49, 0.85) 50%, rgba(49, 49, 49, 0));
     }
   }
@@ -81,9 +89,13 @@
     margin: 0 0 3px;
     font-size: 22px;
     font-weight: bold;
+    color: $darkerSaffron;
   }
   &__team-rating {
     font-size: 16px;
+  }
+  &__mmr-span {
+    margin: 0 0 0 10px;
   }
   &__rating-change {
     &.win {
@@ -102,7 +114,6 @@
   column-gap: 10px;
   font-size: 16px;
   position: relative;
-  margin: 0 0 3px;
   text-align: left;
 
   &__player-name {

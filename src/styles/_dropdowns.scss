@@ -1,7 +1,7 @@
 .session-select, .team-select {
   margin: 0 0 0 15px;
   width: 350px;
-  max-height: 62px;
+  height: fit-content;
   border-radius: 4px 2px 2px 4px !important;
 
   &__indicators {
@@ -15,16 +15,18 @@
   &__dropdown-indicator, &__indicator-separator {
     display: none !important;
   }
-  &__menu {
+  &__menu, &__menu-list {
     @include styled-scrollbar;
   }
+
   &__control {
     @include styled-scrollbar;
     border-radius: 4px 2px 2px 4px !important;
-    max-height: 62px;
+    max-height: 38px;
     overflow-y: scroll;
     border-width: 0 !important;
     &--is-focused {
+      max-height: 82px;
       border-color: $gunmetal !important;
       box-shadow: 0 0 0 1px $gunmetal !important;
     }

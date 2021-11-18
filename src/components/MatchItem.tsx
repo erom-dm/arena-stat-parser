@@ -44,10 +44,6 @@ const MatchItem: React.FC<matchItemProps> = ({ match }) => {
 
   return (
     <div className={`match-item instance-${instanceID}`} key={enteredTime}>
-      <div className="match-item__header">
-        <div className="match-item__date">{date}</div>
-        {/*<div className="match-item__instance-name">{instanceName}</div>*/}
-      </div>
       <div className="match-item__team-wrapper">
         <div className={`match-item__team team-left ${win ? "win" : "loss"}`}>
           <div className="match-item__team-header">
@@ -59,7 +55,7 @@ const MatchItem: React.FC<matchItemProps> = ({ match }) => {
               >
                 {myRatingChangeString}
               </span>
-              <span>{` MMR: ${myMMR}`}</span>
+              <span className="match-item__mmr-span">{`MMR: ${myMMR}`}</span>
             </div>
           </div>
           <TeamList team={myTeam} className={"team-list team-list--my-team"} />
@@ -74,7 +70,7 @@ const MatchItem: React.FC<matchItemProps> = ({ match }) => {
               >
                 {enemyRatingChangeString}
               </span>
-              <span>{` MMR: ${enemyMMR}`}</span>
+              <span className="match-item__mmr-span">{` MMR: ${enemyMMR}`}</span>
             </div>
           </div>
           <TeamList
@@ -82,6 +78,10 @@ const MatchItem: React.FC<matchItemProps> = ({ match }) => {
             className={"team-list team-list--enemy-team"}
           />
         </div>
+      </div>
+      <div className="match-item__footer">
+        <div className="match-item__date">{date}</div>
+        {/*<div className="match-item__instance-name">{instanceName}</div>*/}
       </div>
     </div>
   );

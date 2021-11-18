@@ -34,7 +34,7 @@ const TeamList: React.FC<teamListProps> = ({ className, team }) => {
         const name = nameAndRealm.split("-")[0];
 
         return (
-          <>
+          <React.Fragment key={name + damage}>
             <div
               className={`team-list__player-name ${playerClass.toLowerCase()}`}
             >{`${name}: `}</div>
@@ -50,9 +50,10 @@ const TeamList: React.FC<teamListProps> = ({ className, team }) => {
               />
               <span>{healing.toLocaleString()}</span>
             </div>
-          </>
+          </React.Fragment>
         );
       }
+      return null;
     });
 
   return <div className={className}>{playerArr}</div>;
