@@ -1,11 +1,11 @@
 import React from "react";
-import { ArenaMatch } from "../Types/ArenaTypes";
+import { ModdedArenaMatch } from "../Types/ArenaTypes";
 import { sampleData } from "../testData";
 
 export const INSTANCE_DATA = "instanceData";
 
-export function mergeState(filteredData: ArenaMatch[]): void {
-  const filterKey = "enteredTime";
+export function consolidateState(filteredData: ModdedArenaMatch[]): void {
+  const filterKey = "matchID";
   const state = window.localStorage.getItem(INSTANCE_DATA);
 
   if (!state) {

@@ -6,7 +6,6 @@ import {
 } from "../utils/stateManagement";
 import { MatchSessions, ModdedArenaMatch } from "../Types/ArenaTypes";
 import {
-  getModdedArenaMatches,
   filterMatchData,
   CHART_TYPES,
 } from "../utils/dataSetHelpers";
@@ -35,8 +34,7 @@ const Dashboard: React.FC<dashboardProps> = () => {
     // Local storage match data => Modified arena match data in local state
     const localStorageMatchState = window.localStorage.getItem(INSTANCE_DATA);
     if (localStorageMatchState) {
-      const parsedMatchData = JSON.parse(localStorageMatchState); // Get raw match data from storage
-      const moddedMatchData = getModdedArenaMatches(parsedMatchData); // Get modified match data
+      const moddedMatchData = JSON.parse(localStorageMatchState); // Get raw match data from storage
       setModdedMatchData(moddedMatchData); // Put all modified match data in local state
       setMyTeams(getTeams(moddedMatchData)); // Get team data
     }

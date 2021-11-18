@@ -15,6 +15,7 @@ import {
   TeamRatingObject,
   TeamsDataset,
 } from "../Types/ArenaTypes";
+import { hashFromStrings } from "./hashGeneration";
 
 const DISCONNECTED = "!disconnected";
 const DC_TEAM_NAME = "~DC~";
@@ -33,19 +34,49 @@ const PLAYER_KEYS: arenaPlayerKeys[] = [
 ];
 export const CHART_TYPES = ["Matches", "Team comps", "Rating change", "Teams"];
 
-export function filterJunkData(data: ArenaMatch[]): ArenaMatch[] {
-  return data.filter(
+export function modifyDataAndAddIds(data: ArenaMatch[]): ModdedArenaMatch[] {
+  const filteredData = data.filter(
     (match) =>
       Object.keys(ARENA_INSTANCE_IDS).includes(String(match.instanceID)) &&
       match.hasOwnProperty("purpleTeam") &&
       match.hasOwnProperty("goldTeam")
   );
+  const moddedArenaMatches = getModdedArenaMatches(filteredData);
+
+  // Calculate hash values for each match, add as unique ID
+  return moddedArenaMatches.map((match) => {
+    const { instanceID, myTeamName, enemyTeamName, myTeam, enemyTeam } = match;
+    const {
+      MMR: myTeamMMR,
+      rating: myTeamRating,
+      newRating: myTeamNewRating,
+    } = getTeamRatingValues(myTeam);
+    const {
+      MMR: enemyTeamMMR,
+      rating: enemyTeamRating,
+      newRating: enemyTeamNewRating,
+    } = getTeamRatingValues(enemyTeam);
+
+    match.matchID = hashFromStrings([
+      myTeamName,
+      enemyTeamName,
+      String(instanceID),
+      String(myTeamMMR),
+      String(myTeamRating),
+      String(myTeamNewRating),
+      String(enemyTeamMMR),
+      String(enemyTeamRating),
+      String(enemyTeamNewRating),
+    ]);
+    return match;
+  });
 }
 
 export function getModdedArenaMatches(data: ArenaMatch[]): ModdedArenaMatch[] {
   const modifiedData: ModdedArenaMatch[] = [];
   data.forEach((match) => {
     const moddedMatch: ModdedArenaMatch = {
+      matchID: 0,
       enteredTime: match.enteredTime,
       instanceID: match.instanceID,
       instanceName: match.instanceName,
@@ -99,19 +130,11 @@ export function matchArrayFromSelectedSessions(
 }
 
 function getModdedArenaData(match: ArenaMatch): any {
-  let myTeam: ArenaTeam, enemyTeam: ArenaTeam, win: boolean, myTeamName: string;
   const myCharName = match.playerName;
-  if (match.goldTeam.hasOwnProperty(myCharName)) {
-    myTeam = match.goldTeam;
-    myTeamName = match.goldTeam[myCharName].teamName;
-    enemyTeam = match.purpleTeam;
-    win = !!match.winningFaction;
-  } else {
-    myTeam = match.purpleTeam;
-    myTeamName = match.purpleTeam[myCharName].teamName;
-    enemyTeam = match.goldTeam;
-    win = !match.winningFaction;
-  }
+  let { myTeam, enemyTeam, win, myTeamName } = getSpecificTeamData(
+    match,
+    myCharName
+  );
 
   const myTeamNames: string[] = Object.keys(myTeam);
   const enemyTeamNames: string[] = Object.keys(enemyTeam);
@@ -160,6 +183,30 @@ function getModdedArenaData(match: ArenaMatch): any {
     enemyTeam: enemyModdedTeam,
     enemyTeamComp: enemyTeamComp.sort(),
   };
+}
+
+function getSpecificTeamData(
+  match: ArenaMatch,
+  myCharName: string
+): {
+  myTeam: ArenaTeam;
+  myTeamName: string;
+  enemyTeam: ArenaTeam;
+  win: boolean;
+} {
+  let myTeam, myTeamName, enemyTeam, win;
+  if (match.goldTeam.hasOwnProperty(myCharName)) {
+    myTeam = match.goldTeam;
+    myTeamName = match.goldTeam[myCharName].teamName;
+    enemyTeam = match.purpleTeam;
+    win = !!match.winningFaction;
+  } else {
+    myTeam = match.purpleTeam;
+    myTeamName = match.purpleTeam[myCharName].teamName;
+    enemyTeam = match.goldTeam;
+    win = !match.winningFaction;
+  }
+  return { myTeam, myTeamName, enemyTeam, win };
 }
 
 function getModdedTeamsAndTeamComps(
@@ -428,7 +475,9 @@ export function separateNamesFromRealm(inputArr: string[]): SplitNames {
   return obj;
 }
 
-export function getTeamRatingValues(team: ModdedArenaTeam): TeamRatingObject {
+export function getTeamRatingValues(
+  team: ModdedArenaTeam | ArenaTeam
+): TeamRatingObject {
   const returnObject: TeamRatingObject = {
     MMR: 0,
     rating: 0,

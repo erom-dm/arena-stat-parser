@@ -20,6 +20,7 @@ export interface ArenaMatch {
 }
 
 export interface ModdedArenaMatch {
+  matchID: number;
   enteredTime: number;
   instanceID: number;
   instanceName: string;

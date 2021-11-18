@@ -2,8 +2,8 @@ import React, { useCallback, useState } from "react";
 import { parseData } from "../utils/parseData";
 import { arrayBufferToString } from "../utils/ArrayBuffer-StringHelper";
 import { useDropzone } from "react-dropzone";
-import { mergeState } from "../utils/stateManagement";
-import { filterJunkData } from "../utils/dataSetHelpers";
+import { consolidateState } from "../utils/stateManagement";
+import { modifyDataAndAddIds } from "../utils/dataSetHelpers";
 
 export type landingProps = {
   localStoreChangeHandler: React.Dispatch<React.SetStateAction<boolean>>;
@@ -19,7 +19,6 @@ const UploadArea: React.FC<landingProps> = ({
   const onDrop = useCallback(
     (acceptedFiles) => {
       acceptedFiles.forEach((file: any) => {
-        console.dir(acceptedFiles);
         //TBD
         const reader = new FileReader();
 
@@ -27,7 +26,9 @@ const UploadArea: React.FC<landingProps> = ({
         reader.onerror = () => setText("File reading failed");
         reader.onload = () => {
           const binaryStr = reader.result;
-          mergeState(filterJunkData(parseData(arrayBufferToString(binaryStr))));
+          consolidateState(
+            modifyDataAndAddIds(parseData(arrayBufferToString(binaryStr)))
+          );
           localStoreChangeHandler(!localStorageChangeValue);
           setText("File successfully parsed");
         };
