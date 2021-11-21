@@ -14,7 +14,7 @@ const UploadArea: React.FC<landingProps> = ({
   localStoreChangeHandler,
   localStorageChangeValue,
 }) => {
-  const [text, setText] = useState("Upload file here");
+  const [text, setText] = useState("Upload file");
 
   const onDrop = useCallback(
     (acceptedFiles) => {

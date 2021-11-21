@@ -11,15 +11,12 @@ export type matchItemProps = {
 const MatchItem: React.FC<matchItemProps> = ({ match }) => {
   const {
     enteredTime,
-    // instanceName,
     instanceID,
-    // playerName,
     enemyTeamName,
     myTeamName,
     win,
     myTeam,
     enemyTeam,
-    // bracket,
   } = match;
   const {
     MMR: myMMR,
@@ -31,6 +28,7 @@ const MatchItem: React.FC<matchItemProps> = ({ match }) => {
     rating: enemyRating,
     ratingChange: enemyRatingChange,
   } = getTeamRatingValues(enemyTeam);
+  const enemyTeamRealm = Object.values(enemyTeam)[0]?.name.split("-")[1];
 
   const date = dayjs.unix(enteredTime).format("DD/MM/YY HH:mm");
   const myRatingChangeString =
@@ -81,7 +79,7 @@ const MatchItem: React.FC<matchItemProps> = ({ match }) => {
       </div>
       <div className="match-item__footer">
         <div className="match-item__date">{date}</div>
-        {/*<div className="match-item__instance-name">{instanceName}</div>*/}
+        <div className="match-item__enemy-team-realm">{enemyTeamRealm}</div>
       </div>
     </div>
   );

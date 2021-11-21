@@ -4,8 +4,9 @@
     width: 6px;
   }
 
-  margin: 25px -20px 0;
-  height: calc(100vh - 105px);
+  padding: 25px 10px 0;
+  margin: 0 -20px;
+  height: calc(100vh - 68px); // header height
   overflow-y: scroll;
   overflow-x: hidden;
   display: flex;
@@ -17,7 +18,6 @@
 .match-item {
   position: relative;
   margin: 0 0 15px;
-  //padding: 15px;
   color: $white90;
   background: #282c34;
   height: fit-content;
@@ -40,16 +40,16 @@
 
   &__footer {
     position: absolute;
+    display: flex;
+    justify-content: space-between;
     bottom: 0;
     left: 0;
     width: 100%;
     text-align: left;
   }
-  &__date {
+  &__date, &__enemy-team-realm {
     position: relative;
-    margin: 0 0 10px 15px;
-    top: 0;
-    left: 0;
+    margin: 0 15px 10px 15px;
     font-size: 14px;
     line-height: 14px;
     color: $white50;
