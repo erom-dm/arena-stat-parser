@@ -2,11 +2,16 @@
   text-align: center;
   margin: 0 0 0 15px;
   padding: 8px 12px;
-  border: 2px solid $orange;
+  border: 1px solid $orange;
   color: $orange;
   background: $gunmetal;
   border-radius: $br;
   box-sizing: content-box;
+
+  &:hover {
+    background: $gunmetalLight;
+    transition: all 150ms;
+  }
 }
 
 @mixin styled-scrollbar {

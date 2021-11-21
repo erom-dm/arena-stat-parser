@@ -7,13 +7,9 @@ import { modifyDataAndAddIds } from "../utils/dataSetHelpers";
 
 export type landingProps = {
   localStoreChangeHandler: React.Dispatch<React.SetStateAction<boolean>>;
-  localStorageChangeValue: boolean;
 };
 
-const UploadArea: React.FC<landingProps> = ({
-  localStoreChangeHandler,
-  localStorageChangeValue,
-}) => {
+const UploadArea: React.FC<landingProps> = ({ localStoreChangeHandler }) => {
   const [text, setText] = useState("Upload file");
 
   const onDrop = useCallback(
@@ -29,13 +25,13 @@ const UploadArea: React.FC<landingProps> = ({
           consolidateState(
             modifyDataAndAddIds(parseData(arrayBufferToString(binaryStr)))
           );
-          localStoreChangeHandler(!localStorageChangeValue);
+          localStoreChangeHandler((prevState) => !prevState);
           setText("File successfully parsed");
         };
         reader.readAsArrayBuffer(file);
       });
     },
-    [localStoreChangeHandler, localStorageChangeValue]
+    [localStoreChangeHandler]
   );
   const { getRootProps, getInputProps } = useDropzone({ onDrop });
   return (

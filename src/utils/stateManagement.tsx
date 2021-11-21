@@ -30,14 +30,17 @@ export function localStorageToState(
   currentState && setReactState(JSON.parse(currentState));
 }
 
+export function clearLocalStorage(): void {
+  window.localStorage.clear();
+}
+
 export function setLocalStorageField(key: string, data: any): void {
   localStorage.setItem(key, JSON.stringify(data));
 }
 
 export function sampleDataToLocalStorage(
-  lsChanged: boolean,
   setLsChanged: React.Dispatch<React.SetStateAction<boolean>>
 ): void {
   setLocalStorageField(INSTANCE_DATA, sampleData);
-  setLsChanged(!lsChanged);
+  setLsChanged((prevState) => !prevState);
 }

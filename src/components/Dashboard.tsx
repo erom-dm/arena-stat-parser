@@ -5,16 +5,14 @@ import {
   sampleDataToLocalStorage,
 } from "../utils/stateManagement";
 import { MatchSessions, ModdedArenaMatch } from "../Types/ArenaTypes";
-import {
-  filterMatchData,
-  CHART_TYPES,
-} from "../utils/dataSetHelpers";
+import { filterMatchData, CHART_TYPES } from "../utils/dataSetHelpers";
 import { getSessions } from "../utils/sessionManagement";
 import SessionSelect from "./SessionSelect";
 import getTeams from "../utils/teamManagement";
 import TeamSelect from "./TeamSelect";
 import ButtonGroup from "./ButtonGroup";
 import ChartWrapper from "./ChartWrapper";
+import SettingsModal from "./SettingsModal";
 
 export type dashboardProps = {
   className?: string;
@@ -55,19 +53,11 @@ const Dashboard: React.FC<dashboardProps> = () => {
   return (
     <div className="dashboard">
       <div className="dashboard__top-bar">
-        <UploadArea
-          localStoreChangeHandler={setLocalStorageChanged}
-          localStorageChangeValue={localStorageChanged}
-        />
+        <UploadArea localStoreChangeHandler={setLocalStorageChanged} />
         {!moddedMatchData && (
           <button
             className={"dashboard__sample-data-button"}
-            onClick={() =>
-              sampleDataToLocalStorage(
-                localStorageChanged,
-                setLocalStorageChanged
-              )
-            }
+            onClick={() => sampleDataToLocalStorage(setLocalStorageChanged)}
           >
             Or use this sample data instead!
           </button>
@@ -89,6 +79,9 @@ const Dashboard: React.FC<dashboardProps> = () => {
               />
             )}
           </div>
+        )}
+        {moddedMatchData && (
+          <SettingsModal localStoreChangeHandler={setLocalStorageChanged} />
         )}
       </div>
       {moddedMatchData && (
