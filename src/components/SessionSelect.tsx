@@ -97,6 +97,7 @@ const SessionSelect: React.FC<sessionSelectProps> = ({
 
   return (
     <Select
+      placeholder={"Select session..."}
       className={"session-select"}
       classNamePrefix={"session-select"}
       defaultValue={selectAllOption}

@@ -1,0 +1,135 @@
+.match-list {
+  @include styled-scrollbar;
+  &::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  padding: 25px 10px 0;
+  margin: 0 -20px;
+  height: calc(100vh - 68px); // header height
+  overflow-y: scroll;
+  overflow-x: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.match-item {
+  position: relative;
+  margin: 0 0 15px;
+  color: $white90;
+  background: #282c34;
+  height: fit-content;
+  width: 100%;
+  max-width: 800px;
+  border-radius: $br;
+  box-shadow: 1px 1px 6px $black;
+
+  &.instance-572 {
+    //  ruins
+    background: url("../assets/backgrounds/ruins.jpg") no-repeat 50% 70%;
+  }
+  &.instance-562 {
+    //  blade edge
+    background: url("../assets/backgrounds/edge.jpg") no-repeat 50% 63%;
+  }
+  &.instance-559 {
+    //  nagrand
+    background: url("../assets/backgrounds/nagrand.jpg") no-repeat 50% 100%;
+  }
+
+  &__footer {
+    position: absolute;
+    display: flex;
+    justify-content: space-between;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    text-align: left;
+  }
+  &__date, &__enemy-team-realm {
+    position: relative;
+    margin: 0 15px 10px 15px;
+    font-size: 14px;
+    line-height: 14px;
+    color: $white50;
+  }
+  &__instance-name {
+
+  }
+  &__team-wrapper {
+    display: flex;
+    justify-content: space-between;
+  }
+  &__team {
+    width: 50%;
+    //height: 100%;
+    text-align: left;
+    &.team-left {
+      border-radius: 10px 0 0 10px;
+      padding: 20px 60px 40px 15px; // depends on match header height + match-item padding
+      &.win {
+        background: linear-gradient(to right, $winGreen 30%, $winGreen85 50%, $winGreenFade);
+      }
+      &.loss {
+        background: linear-gradient(to right, $lossRed 30%, $lossRed85 50%, $lossRedFade);
+      }
+    }
+    &.team-right {
+      text-align: right;
+      border-radius: 0 10px 10px 0;
+      padding: 20px 15px 40px 60px; // depends on match header height + match-item padding
+      background: linear-gradient(to left, rgba(49, 49, 49, 0.85) 50%, rgba(49, 49, 49, 0));
+    }
+  }
+  &__team-header {
+    margin: 0 0 10px;
+  }
+  &__team-name {
+    margin: 0 0 3px;
+    font-size: 22px;
+    font-weight: bold;
+    color: $darkerSaffron;
+  }
+  &__team-rating {
+    font-size: 16px;
+  }
+  &__mmr-span {
+    margin: 0 0 0 10px;
+  }
+  &__rating-change {
+    &.win {
+
+    }
+    &.loss {
+
+    }
+  }
+}
+
+.team-list {
+  display: grid;
+  grid-template-rows: auto;
+  grid-template-columns: fit-content(30%) fit-content(30%) fit-content(30%);
+  column-gap: 10px;
+  font-size: 16px;
+  position: relative;
+  text-align: left;
+
+  &__player-name {
+    font-size: 18px;
+    //text-shadow: 0.5px 0.5px 0px #000000;
+  }
+  &--my-team {
+
+  }
+  &--enemy-team {
+    justify-content: end;
+  }
+  &__heal-icon, &__dps-icon {
+    padding-right: 3px;
+    position: relative;
+    top: 2px;
+  }
+}

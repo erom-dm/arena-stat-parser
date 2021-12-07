@@ -2,11 +2,16 @@
   position: relative;
   flex-shrink: 0;
   bottom: 0;
-  padding: 20px;
+  padding:  8px 19px;
+  border: 1px solid transparent;
   border-radius: $br;
-  border: 2px solid $orange;
+  line-height: 16px;
   color: $orange;
-  background: $gunmetal;
+  background: rgba(0,0,0, 0.7);
   text-align: center;
   cursor: pointer;
+  &:hover {
+    border-color: $orange;
+    transition: 150ms;
+  }
 }

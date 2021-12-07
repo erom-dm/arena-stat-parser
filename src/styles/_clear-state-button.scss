@@ -1,0 +1,27 @@
+.clear-state-button {
+  @include button-default();
+  margin: 0 10px 0 0;
+  border: 1px solid $warningRed;
+  color: $warningRed;
+
+  &--disabled {
+    animation-name: buttonFade;
+    animation-duration: 6s;
+    animation-iteration-count: 1;
+    animation-timing-function: linear;
+  }
+  &__wrap {
+    display: flex;
+    align-items: center;
+  }
+  &__text {
+    font-size: 20px;
+    color: $black;
+  }
+}
+
+@keyframes buttonFade {
+  0% {color: $spanishGray; border-color: $spanishGray; background: $headerBGColor;}
+  60%  {color: $spanishGray; border-color: $spanishGray; background: $headerBGColor;}
+  100% {color: $warningRed; border-color: $warningRed; background: $gunmetal}
+}

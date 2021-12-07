@@ -20,6 +20,7 @@ export interface ArenaMatch {
 }
 
 export interface ModdedArenaMatch {
+  matchID: number;
   enteredTime: number;
   instanceID: number;
   instanceName: string;
@@ -175,4 +176,11 @@ export type TeamSelectOption = {
 export type SplitNames = {
   names: string[];
   realm: string;
+};
+
+export type TeamRatingObject = {
+  MMR: number;
+  rating: number;
+  newRating: number;
+  ratingChange: number;
 };

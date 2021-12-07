@@ -1,11 +1,11 @@
 import React from "react";
-import { ArenaMatch } from "../Types/ArenaTypes";
+import { ModdedArenaMatch } from "../Types/ArenaTypes";
 import { sampleData } from "../testData";
 
 export const INSTANCE_DATA = "instanceData";
 
-export function mergeState(filteredData: ArenaMatch[]): void {
-  const filterKey = "enteredTime";
+export function consolidateState(filteredData: ModdedArenaMatch[]): void {
+  const filterKey = "matchID";
   const state = window.localStorage.getItem(INSTANCE_DATA);
 
   if (!state) {
@@ -30,14 +30,17 @@ export function localStorageToState(
   currentState && setReactState(JSON.parse(currentState));
 }
 
+export function clearLocalStorage(): void {
+  window.localStorage.clear();
+}
+
 export function setLocalStorageField(key: string, data: any): void {
   localStorage.setItem(key, JSON.stringify(data));
 }
 
 export function sampleDataToLocalStorage(
-  lsChanged: boolean,
   setLsChanged: React.Dispatch<React.SetStateAction<boolean>>
 ): void {
   setLocalStorageField(INSTANCE_DATA, sampleData);
-  setLsChanged(!lsChanged);
+  setLsChanged((prevState) => !prevState);
 }

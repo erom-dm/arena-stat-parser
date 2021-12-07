@@ -1,12 +1,37 @@
 // Colors
 
-$gunmetal: #292F36;
+$black: #000;
+$mainBGColor: #313131;
+$headerBGColor: #6a6c6a;
+$gunmetal: #292f36;
 $gunmetalLight: rgba(41, 47, 54, 0.85);
-$saffron: #F8C630;
-$spanishGray: #8D918B;
+$saffron: #f8c630;
+$darkerSaffron: #f8b11f;
+$spanishGray: #8d918b;
+$spanishGrayLight: #d0d4cf;
 $auburn: #A22C29;
 $auburnLight: rgb(191, 44, 39);
 $orange: #fe4e00;
+$white90: rgba(255, 255, 255, 0.9);
+$white50: rgba(255, 255, 255, 0.5);
+$warningRed: #ea0028;
+
+$winGreen: rgb(4, 94, 7);
+$winGreen85: rgba(4, 90, 7, 0.85);
+$winGreenFade: rgba(102, 255, 0, 0);
+$lossRed: rgb(99, 1, 16);
+$lossRed85: rgba(106, 1, 17, 0.85);
+$lossRedFade: rgba(255, 0, 0, 0);
+
+$druid: #FF7C0A;
+$rogue: #FFF468;
+$hunter: #AAD372;
+$mage: #3FC7EB;
+$paladin: #F48CBA;
+$priest: #FFFFFF;
+$shaman: #0070DD;
+$warlock: #8788EE;
+$warrior: #C69B6D;
 
 // Vars
 $br: 12px;

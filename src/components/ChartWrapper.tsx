@@ -16,6 +16,7 @@ import {
   matchArrayFromSelectedSessions,
 } from "../utils/dataSetHelpers";
 import TeamsChart from "./TeamsChart";
+import MatchList from "./MatchList";
 
 export type chartContainerProps = {
   sessionData: MatchSessions;
@@ -29,7 +30,7 @@ const ChartWrapper: React.FC<chartContainerProps> = ({
   chartType,
 }) => {
   const [chartDataset, setChartDataset] = useState<
-    TeamCompDataset | RatingChangeDataset | TeamsDataset
+    TeamCompDataset | RatingChangeDataset | TeamsDataset | ModdedArenaMatch[]
   >({});
   const [localChartType, setLocalChartType] = useState<string>("");
 
@@ -53,13 +54,16 @@ const ChartWrapper: React.FC<chartContainerProps> = ({
     }
 
     switch (chartType) {
-      case CHART_TYPES[0]: // "Team comps"
+      case CHART_TYPES[0]:
+        setChartDataset(selectedSessionData);
+        break;
+      case CHART_TYPES[1]:
         setChartDataset(createTeamCompDataSet(selectedSessionData));
         break;
-      case CHART_TYPES[1]: // "Rating change"]
+      case CHART_TYPES[2]:
         setChartDataset(createRatingChangeDataSet(selectedSessionData));
         break;
-      case CHART_TYPES[2]: // "Rating change"]
+      case CHART_TYPES[3]:
         setChartDataset(createTeamsDataSet(selectedSessionData));
         break;
       default:
@@ -71,12 +75,15 @@ const ChartWrapper: React.FC<chartContainerProps> = ({
   return (
     <div className={"chart-wrapper"}>
       {localChartType === CHART_TYPES[0] && (
-        <TeamCompChart dataset={chartDataset as TeamCompDataset} />
+        <MatchList matches={chartDataset as ModdedArenaMatch[]} />
       )}
       {localChartType === CHART_TYPES[1] && (
-        <LineChart dataset={chartDataset as RatingChangeDataset} />
+        <TeamCompChart dataset={chartDataset as TeamCompDataset} />
       )}
       {localChartType === CHART_TYPES[2] && (
+        <LineChart dataset={chartDataset as RatingChangeDataset} />
+      )}
+      {localChartType === CHART_TYPES[3] && (
         <TeamsChart dataset={chartDataset as TeamsDataset} />
       )}
     </div>
