@@ -23,7 +23,7 @@
     &:last-child {
       border-radius: 0 $br $br 0;
     }
-    &--selected {
+    &.active {
       color: $orange;
       background: $gunmetalLight;
       &:hover {

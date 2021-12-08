@@ -1,0 +1,12 @@
+.empty-route {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  height: calc(100vh - 68px);
+  font-size: 3rem;
+
+  &>:first-child {
+    margin: 0 0 10px 0;
+  }
+}

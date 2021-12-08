@@ -3,7 +3,20 @@
   width: 350px;
   height: fit-content;
   border-radius: 4px 2px 2px 4px !important;
+  font-size: 1.6rem;
 
+  &__control {
+    @include styled-scrollbar;
+    border-radius: 4px 2px 2px 4px !important;
+    max-height: 38px;
+    overflow-y: scroll;
+    border-width: 0 !important;
+    &--is-focused {
+      max-height: 82px;
+      border-color: $gunmetal !important;
+      box-shadow: 0 0 0 1px $gunmetal !important;
+    }
+  }
   &__indicators {
     position: sticky;
     top: 0;
@@ -17,19 +30,6 @@
   }
   &__menu, &__menu-list {
     @include styled-scrollbar;
-  }
-
-  &__control {
-    @include styled-scrollbar;
-    border-radius: 4px 2px 2px 4px !important;
-    max-height: 38px;
-    overflow-y: scroll;
-    border-width: 0 !important;
-    &--is-focused {
-      max-height: 82px;
-      border-color: $gunmetal !important;
-      box-shadow: 0 0 0 1px $gunmetal !important;
-    }
   }
 }
 

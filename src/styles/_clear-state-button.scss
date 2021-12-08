@@ -3,6 +3,7 @@
   margin: 0 10px 0 0;
   border: 1px solid $warningRed;
   color: $warningRed;
+  font-size: 1.8rem;
 
   &--disabled {
     animation-name: buttonFade;
@@ -15,7 +16,7 @@
     align-items: center;
   }
   &__text {
-    font-size: 20px;
+    font-size: 2rem;
     color: $black;
   }
 }

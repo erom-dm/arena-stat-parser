@@ -2,10 +2,11 @@ import React, { useEffect, useState } from "react";
 import { MatchSessions, ModdedArenaMatch } from "../Types/ArenaTypes";
 import TeamCompChart from "./TeamCompChart";
 import LineChart from "./LineChart";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 import { matchArrayFromSelectedSessions } from "../utils/dataSetHelpers";
 import TeamsChart from "./TeamsChart";
 import MatchList from "./MatchList";
+import EmptyRoute from "./EmptyRoute";
 
 export type chartContainerProps = {
   sessionData: MatchSessions;
@@ -42,7 +43,12 @@ const ChartWrapper: React.FC<chartContainerProps> = ({
   return (
     <div className={"chart-wrapper"}>
       <Routes>
-        <Route path={"/"} element={<div>Index</div>} />
+        <Route
+          path={"/"}
+          element={
+            sessionData?.size ? <Navigate to="/matches" replace={true} /> : null
+          }
+        />
         <Route
           path={"/matches"}
           element={<MatchList selectedArenaMatches={selectedArenaMatches} />}
@@ -61,6 +67,7 @@ const ChartWrapper: React.FC<chartContainerProps> = ({
           path={"/teams"}
           element={<TeamsChart selectedArenaMatches={selectedArenaMatches} />}
         />
+        <Route path={"*"} element={<EmptyRoute />} />
       </Routes>
     </div>
   );
