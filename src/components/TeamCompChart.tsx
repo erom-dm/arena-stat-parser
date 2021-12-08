@@ -4,19 +4,24 @@ import { interpolateTurbo } from "d3-scale-chromatic";
 import {
   ChartDataSet,
   ColorRangeInfo,
+  ModdedArenaMatch,
   SortableTeamCompObj,
-  TeamCompDataset,
   TeamPerformanceStats,
   ZoneStats,
 } from "../Types/ArenaTypes";
 import generateChartColors from "../utils/colorGeneration";
-import { ARENA_INSTANCE_IDS, calcWinrate } from "../utils/dataSetHelpers";
+import {
+  ARENA_INSTANCE_IDS,
+  calcWinrate,
+  createTeamCompDataSet,
+} from "../utils/dataSetHelpers";
 
 type BarChartProps = {
-  dataset: TeamCompDataset;
+  selectedArenaMatches: ModdedArenaMatch[];
 };
 
-const TeamCompChart: React.FC<BarChartProps> = ({ dataset }) => {
+const TeamCompChart: React.FC<BarChartProps> = ({ selectedArenaMatches }) => {
+  const dataset = createTeamCompDataSet(selectedArenaMatches);
   const colorRangeInfo: ColorRangeInfo = {
     colorStart: 0.1,
     colorEnd: 0.85,

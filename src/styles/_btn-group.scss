@@ -1,6 +1,8 @@
 .button-group {
 
   &__button {
+    display: inline-block;
+    line-height: 26px;
     border: none;
     background: $gunmetal;
     color: $spanishGray;
@@ -8,6 +10,7 @@
     border-radius: 0;
     padding: 5px 15px;
     cursor: pointer;
+    text-decoration: none;
     &:hover {
       background: $gunmetalLight;
     }

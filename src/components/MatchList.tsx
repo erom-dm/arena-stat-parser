@@ -4,20 +4,20 @@ import MatchItem from "./MatchItem";
 import useInfiniteScroll from "react-infinite-scroll-hook";
 
 export type matchListProps = {
-  matches: ModdedArenaMatch[];
+  selectedArenaMatches: ModdedArenaMatch[];
 };
 
 const LIST_ITEMS_PER_STEP = 10;
 
-const MatchList: React.FC<matchListProps> = ({ matches }) => {
+const MatchList: React.FC<matchListProps> = ({ selectedArenaMatches }) => {
   const [step, setStep] = useState(1);
 
   const [loading, setLoading] = useState<boolean>(false);
   const matchItems = useMemo(() => {
-    return matches
+    return selectedArenaMatches
       .sort((a, b) => b.enteredTime - a.enteredTime)
       .map((match) => <MatchItem match={match} key={match.enteredTime} />);
-  }, [matches]);
+  }, [selectedArenaMatches]);
   const slicedItems = useMemo(
     () => matchItems?.slice(0, LIST_ITEMS_PER_STEP * step),
     [matchItems, step]

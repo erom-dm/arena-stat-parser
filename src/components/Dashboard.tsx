@@ -24,7 +24,6 @@ const Dashboard: React.FC<dashboardProps> = () => {
   const [myTeamSelection, setMyTeamSelection] = useState<string>("");
   const [sessionData, setSessionData] = useState<MatchSessions>(new Map());
   const [sessionSelection, setSessionSelection] = useState<number[]>([0]);
-  const [chartType, setChartType] = useState<string>(CHART_TYPES[0]);
   const [localStorageChanged, setLocalStorageChanged] =
     useState<boolean>(false);
 
@@ -64,11 +63,7 @@ const Dashboard: React.FC<dashboardProps> = () => {
         )}
         {moddedMatchData && (
           <div className="dashboard__filters">
-            <ButtonGroup
-              onChange={setChartType}
-              buttonLabels={CHART_TYPES}
-              selected={chartType}
-            />
+            <ButtonGroup buttonLabels={CHART_TYPES} />
             {myTeams && (
               <TeamSelect onChange={setMyTeamSelection} teams={myTeams} />
             )}
@@ -88,7 +83,6 @@ const Dashboard: React.FC<dashboardProps> = () => {
         <ChartWrapper
           sessionData={sessionData}
           sessionSelection={sessionSelection}
-          chartType={chartType}
         />
       )}
     </div>

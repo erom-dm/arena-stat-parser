@@ -25,6 +25,7 @@
     "react-hook-form": "^7.17.5",
     "react-infinite-scroll-hook": "^4.0.1",
     "react-modal": "^3.14.4",
+    "react-router-dom": "6",
     "react-scripts": "4.0.3",
     "react-select": "^5.1.0",
     "react-window": "^1.8.6",
