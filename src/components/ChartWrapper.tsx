@@ -7,6 +7,7 @@ import { matchArrayFromSelectedSessions } from "../utils/dataSetHelpers";
 import TeamsChart from "./TeamsChart";
 import MatchList from "./MatchList";
 import EmptyRoute from "./EmptyRoute";
+import ClearRoute from "./ClearRoute";
 
 export type chartContainerProps = {
   sessionData: MatchSessions;
@@ -46,26 +47,46 @@ const ChartWrapper: React.FC<chartContainerProps> = ({
         <Route
           path={"/"}
           element={
-            sessionData?.size ? <Navigate to="/matches" replace={true} /> : null
+            sessionData?.size ? (
+              <Navigate to="/arena-stat-parser/matches" replace={true} />
+            ) : null
           }
         />
         <Route
-          path={"/matches"}
+          path={"/arena-stat-parser"}
+          element={
+            sessionData?.size ? (
+              <Navigate to="/arena-stat-parser/matches" replace={true} />
+            ) : null
+          }
+        />
+        <Route
+          path={"/arena-stat-parser/matches"}
           element={<MatchList selectedArenaMatches={selectedArenaMatches} />}
         />
         <Route
-          path={"/team-comps"}
+          path={"/arena-stat-parser/team-comps"}
           element={
             <TeamCompChart selectedArenaMatches={selectedArenaMatches} />
           }
         />
         <Route
-          path={"/rating-change"}
+          path={"/arena-stat-parser/rating-change"}
           element={<LineChart selectedArenaMatches={selectedArenaMatches} />}
         />
         <Route
-          path={"/teams"}
+          path={"/arena-stat-parser/teams"}
           element={<TeamsChart selectedArenaMatches={selectedArenaMatches} />}
+        />
+        <Route
+          path={"/arena-stat-parser/clear-storage"}
+          element={
+            sessionData?.size ? (
+              <ClearRoute />
+            ) : (
+              <Navigate to="/arena-stat-parser/matches" replace={true} />
+            )
+          }
         />
         <Route path={"*"} element={<EmptyRoute />} />
       </Routes>

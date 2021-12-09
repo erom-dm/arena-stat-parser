@@ -33,10 +33,10 @@ const PLAYER_KEYS: arenaPlayerKeys[] = [
   "player5",
 ];
 export const CHART_TYPES = [
-  ["Matches", "/matches"],
-  ["Team comps", "/team-comps"],
-  ["Rating change", "/rating-change"],
-  ["Teams", "/teams"],
+  ["Matches", "/arena-stat-parser/matches"],
+  ["Team comps", "/arena-stat-parser/team-comps"],
+  ["Rating change", "/arena-stat-parser/rating-change"],
+  ["Teams", "/arena-stat-parser/teams"],
 ];
 
 export function modifyDataAndAddIds(data: ArenaMatch[]): ModdedArenaMatch[] {

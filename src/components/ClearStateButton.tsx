@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { clearLocalStorage } from "../utils/stateManagement";
+import { useNavigate } from "react-router-dom";
 
 export type clearStateBtnProps = {
   localStoreChangeHandler: React.Dispatch<React.SetStateAction<boolean>>;
@@ -10,6 +11,7 @@ const ClearStateButton: React.FC<clearStateBtnProps> = ({
   localStoreChangeHandler,
   toggleModal,
 }) => {
+  const navigate = useNavigate();
   const [pressed, setPressed] = useState<boolean>(false);
   const [disabled, setDisabled] = useState<boolean>(false);
 
@@ -25,6 +27,7 @@ const ClearStateButton: React.FC<clearStateBtnProps> = ({
       toggleModal();
       clearLocalStorage(); // wipe local storage
       localStoreChangeHandler((prevState) => !prevState); // update dashboard state
+      navigate("/arena-stat-parser/clear-storage", { replace: false });
     }
   };
 
