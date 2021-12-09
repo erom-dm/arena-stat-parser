@@ -47,44 +47,40 @@ const ChartWrapper: React.FC<chartContainerProps> = ({
         <Route
           path={"/"}
           element={
-            sessionData?.size ? (
-              <Navigate to="/arena-stat-parser/matches" replace={true} />
-            ) : null
+            sessionData?.size ? <Navigate to="/matches" replace={true} /> : null
           }
         />
         <Route
           path={"/arena-stat-parser"}
           element={
-            sessionData?.size ? (
-              <Navigate to="/arena-stat-parser/matches" replace={true} />
-            ) : null
+            sessionData?.size ? <Navigate to="/matches" replace={true} /> : null
           }
         />
         <Route
-          path={"/arena-stat-parser/matches"}
+          path={"/matches"}
           element={<MatchList selectedArenaMatches={selectedArenaMatches} />}
         />
         <Route
-          path={"/arena-stat-parser/team-comps"}
+          path={"/team-comps"}
           element={
             <TeamCompChart selectedArenaMatches={selectedArenaMatches} />
           }
         />
         <Route
-          path={"/arena-stat-parser/rating-change"}
+          path={"/rating-change"}
           element={<LineChart selectedArenaMatches={selectedArenaMatches} />}
         />
         <Route
-          path={"/arena-stat-parser/teams"}
+          path={"/teams"}
           element={<TeamsChart selectedArenaMatches={selectedArenaMatches} />}
         />
         <Route
-          path={"/arena-stat-parser/clear-storage"}
+          path={"/clear-storage"}
           element={
             sessionData?.size ? (
               <ClearRoute />
             ) : (
-              <Navigate to="/arena-stat-parser/matches" replace={true} />
+              <Navigate to="/matches" replace={true} />
             )
           }
         />
