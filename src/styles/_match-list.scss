@@ -29,14 +29,17 @@
   &.instance-572 {
     //  ruins
     background: url("../assets/backgrounds/ruins.jpg") no-repeat 50% 70%;
+    background-size: 100%;
   }
   &.instance-562 {
     //  blade edge
-    background: url("../assets/backgrounds/edge.jpg") no-repeat 50% 63%;
+    background: url("../assets/backgrounds/edge.jpg") no-repeat 50% 65%;
+    background-size: 100%;
   }
   &.instance-559 {
     //  nagrand
     background: url("../assets/backgrounds/nagrand.jpg") no-repeat 50% 100%;
+    background-size: 100%;
   }
 
   &__footer {
@@ -51,7 +54,7 @@
   &__date, &__enemy-team-realm {
     position: relative;
     margin: 0 15px 10px 15px;
-    font-size: 14px;
+    font-size: 1.4rem;
     line-height: 14px;
     color: $white50;
   }
@@ -88,12 +91,12 @@
   }
   &__team-name {
     margin: 0 0 3px;
-    font-size: 22px;
+    font-size: 2.2rem;
     font-weight: bold;
     color: $darkerSaffron;
   }
   &__team-rating {
-    font-size: 16px;
+    font-size: 1.6rem;
   }
   &__mmr-span {
     margin: 0 0 0 10px;
@@ -113,12 +116,12 @@
   grid-template-rows: auto;
   grid-template-columns: fit-content(30%) fit-content(30%) fit-content(30%);
   column-gap: 10px;
-  font-size: 16px;
+  font-size: 1.6rem;
   position: relative;
   text-align: left;
 
   &__player-name {
-    font-size: 18px;
+    font-size: 1.8rem;
     //text-shadow: 0.5px 0.5px 0px #000000;
   }
   &--my-team {

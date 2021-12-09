@@ -1,12 +1,14 @@
 import React from "react";
 import { Line } from "react-chartjs-2";
-import { RatingChangeDataset } from "../Types/ArenaTypes";
+import { ModdedArenaMatch } from "../Types/ArenaTypes";
+import { createRatingChangeDataSet } from "../utils/dataSetHelpers";
 
 type LineChartProps = {
-  dataset: RatingChangeDataset;
+  selectedArenaMatches: ModdedArenaMatch[];
 };
 
-const LineChart: React.FC<LineChartProps> = ({ dataset }) => {
+const LineChart: React.FC<LineChartProps> = ({ selectedArenaMatches }) => {
+  const dataset = createRatingChangeDataSet(selectedArenaMatches);
   const teamRatingArr: number[] = [];
   const teamMMRArr: number[] = [];
   const enemyTeamCompArr: string[] = [];

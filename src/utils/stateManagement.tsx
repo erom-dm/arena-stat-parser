@@ -1,6 +1,6 @@
 import React from "react";
 import { ModdedArenaMatch } from "../Types/ArenaTypes";
-import { sampleData } from "../testData";
+import { sampleData } from "../sampleData";
 
 export const INSTANCE_DATA = "instanceData";
 

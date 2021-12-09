@@ -35,7 +35,10 @@ const SettingsModal: React.FC<settingsModalProps> = ({
           className="settings-modal__close-modal-btn"
           onClick={toggleModal}
         />
-        <ClearStateButton localStoreChangeHandler={localStoreChangeHandler} />
+        <ClearStateButton
+          localStoreChangeHandler={localStoreChangeHandler}
+          toggleModal={toggleModal}
+        />
       </Modal>
     </div>
   );

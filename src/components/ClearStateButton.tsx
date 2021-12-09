@@ -1,13 +1,17 @@
 import React, { useState } from "react";
 import { clearLocalStorage } from "../utils/stateManagement";
+import { useNavigate } from "react-router-dom";
 
 export type clearStateBtnProps = {
   localStoreChangeHandler: React.Dispatch<React.SetStateAction<boolean>>;
+  toggleModal: () => void;
 };
 
 const ClearStateButton: React.FC<clearStateBtnProps> = ({
   localStoreChangeHandler,
+  toggleModal,
 }) => {
+  const navigate = useNavigate();
   const [pressed, setPressed] = useState<boolean>(false);
   const [disabled, setDisabled] = useState<boolean>(false);
 
@@ -20,8 +24,10 @@ const ClearStateButton: React.FC<clearStateBtnProps> = ({
     if (pressed) {
       setPressed((prevState) => !prevState);
       setDisabled(false);
+      toggleModal();
       clearLocalStorage(); // wipe local storage
       localStoreChangeHandler((prevState) => !prevState); // update dashboard state
+      navigate("/clear-storage", { replace: false });
     }
   };
 

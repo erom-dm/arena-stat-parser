@@ -1,3 +1,5 @@
+export type ChartNamesAndRoutes = string[];
+
 export interface ArenaMatch {
   class: string;
   classEnglish: string;

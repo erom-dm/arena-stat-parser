@@ -2,18 +2,23 @@ import React from "react";
 import {
   ColorRangeInfo,
   DetailedTeamRatingObject,
-  TeamsDataset,
+  ModdedArenaMatch,
 } from "../Types/ArenaTypes";
 import generateChartColors from "../utils/colorGeneration";
 import { interpolateTurbo } from "d3-scale-chromatic";
 import { Bar } from "react-chartjs-2/dist";
-import { calcWinrate, separateNamesFromRealm } from "../utils/dataSetHelpers";
+import {
+  calcWinrate,
+  createTeamsDataSet,
+  separateNamesFromRealm,
+} from "../utils/dataSetHelpers";
 
 export type teamsChartProps = {
-  dataset: TeamsDataset;
+  selectedArenaMatches: ModdedArenaMatch[];
 };
 
-const TeamsChart: React.FC<teamsChartProps> = ({ dataset }) => {
+const TeamsChart: React.FC<teamsChartProps> = ({ selectedArenaMatches }) => {
+  const dataset = createTeamsDataSet(selectedArenaMatches);
   let colorArray: string[] = [];
   const labelArr: (string | string[])[] = [];
   const dataArr: number[] = [];

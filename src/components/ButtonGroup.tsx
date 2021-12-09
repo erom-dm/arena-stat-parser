@@ -1,36 +1,17 @@
-import React, { Dispatch, SetStateAction } from "react";
+import React from "react";
+import { NavLink } from "react-router-dom";
+import { ChartNamesAndRoutes } from "../Types/ArenaTypes";
 
 export type buttonGroupProps = {
-  buttonLabels: string[];
-  selected: string;
-  onChange: Dispatch<SetStateAction<string>>;
+  buttonLabels: ChartNamesAndRoutes[];
 };
 
-const ButtonGroup: React.FC<buttonGroupProps> = ({
-  buttonLabels,
-  selected,
-  onChange,
-}) => {
-  const handleClick = (
-    event: React.MouseEvent<HTMLButtonElement, MouseEvent>,
-    label: string
-  ) => {
-    onChange && onChange(label);
-  };
-
-  const buttons = buttonLabels.map((label, idx) => {
-    const isClicked = label === selected;
+const ButtonGroup: React.FC<buttonGroupProps> = ({ buttonLabels }) => {
+  const buttons = buttonLabels.map(([label, route], idx) => {
     return (
-      <button
-        key={idx}
-        name={label}
-        className={`button-group__button${
-          isClicked ? " button-group__button--selected" : ""
-        }`}
-        onClick={(e) => handleClick(e, label)}
-      >
+      <NavLink key={idx} className={`button-group__button`} to={route}>
         {label}
-      </button>
+      </NavLink>
     );
   });
 

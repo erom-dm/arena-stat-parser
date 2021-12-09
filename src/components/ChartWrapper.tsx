@@ -1,91 +1,91 @@
 import React, { useEffect, useState } from "react";
-import {
-  MatchSessions,
-  ModdedArenaMatch,
-  RatingChangeDataset,
-  TeamCompDataset,
-  TeamsDataset,
-} from "../Types/ArenaTypes";
+import { MatchSessions, ModdedArenaMatch } from "../Types/ArenaTypes";
 import TeamCompChart from "./TeamCompChart";
 import LineChart from "./LineChart";
-import {
-  CHART_TYPES,
-  createRatingChangeDataSet,
-  createTeamCompDataSet,
-  createTeamsDataSet,
-  matchArrayFromSelectedSessions,
-} from "../utils/dataSetHelpers";
+import { Routes, Route, Navigate } from "react-router-dom";
+import { matchArrayFromSelectedSessions } from "../utils/dataSetHelpers";
 import TeamsChart from "./TeamsChart";
 import MatchList from "./MatchList";
+import EmptyRoute from "./EmptyRoute";
+import ClearRoute from "./ClearRoute";
 
 export type chartContainerProps = {
   sessionData: MatchSessions;
   sessionSelection: number[];
-  chartType: string;
 };
 
 const ChartWrapper: React.FC<chartContainerProps> = ({
   sessionData,
   sessionSelection,
-  chartType,
 }) => {
-  const [chartDataset, setChartDataset] = useState<
-    TeamCompDataset | RatingChangeDataset | TeamsDataset | ModdedArenaMatch[]
-  >({});
-  const [localChartType, setLocalChartType] = useState<string>("");
+  const [selectedArenaMatches, setSelectedArenaMatches] = useState<
+    ModdedArenaMatch[]
+  >([]);
 
   useEffect(() => {
-    const selectedSessionData: ModdedArenaMatch[] = [];
     if (sessionData?.size) {
       if (sessionSelection.includes(0)) {
-        selectedSessionData.push(
-          ...matchArrayFromSelectedSessions(sessionData)
-        );
+        setSelectedArenaMatches([
+          ...matchArrayFromSelectedSessions(sessionData),
+        ]);
       } else {
         const selectedMatches: MatchSessions = new Map();
         sessionSelection.forEach((sessionKey) => {
           const session = sessionData.get(sessionKey);
           session && selectedMatches.set(sessionKey, session);
         });
-        selectedSessionData.push(
-          ...matchArrayFromSelectedSessions(selectedMatches)
-        );
+        setSelectedArenaMatches([
+          ...matchArrayFromSelectedSessions(selectedMatches),
+        ]);
       }
     }
-
-    switch (chartType) {
-      case CHART_TYPES[0]:
-        setChartDataset(selectedSessionData);
-        break;
-      case CHART_TYPES[1]:
-        setChartDataset(createTeamCompDataSet(selectedSessionData));
-        break;
-      case CHART_TYPES[2]:
-        setChartDataset(createRatingChangeDataSet(selectedSessionData));
-        break;
-      case CHART_TYPES[3]:
-        setChartDataset(createTeamsDataSet(selectedSessionData));
-        break;
-      default:
-        break;
-    }
-    setLocalChartType(chartType);
-  }, [chartType, sessionData, sessionSelection]);
+  }, [sessionData, sessionSelection]);
 
   return (
     <div className={"chart-wrapper"}>
-      {localChartType === CHART_TYPES[0] && (
-        <MatchList matches={chartDataset as ModdedArenaMatch[]} />
-      )}
-      {localChartType === CHART_TYPES[1] && (
-        <TeamCompChart dataset={chartDataset as TeamCompDataset} />
-      )}
-      {localChartType === CHART_TYPES[2] && (
-        <LineChart dataset={chartDataset as RatingChangeDataset} />
-      )}
-      {localChartType === CHART_TYPES[3] && (
-        <TeamsChart dataset={chartDataset as TeamsDataset} />
-      )}
+      <Routes>
+        <Route
+          path={"/"}
+          element={
+            sessionData?.size ? <Navigate to="/matches" replace={true} /> : null
+          }
+        />
+        <Route
+          path={"/arena-stat-parser"}
+          element={
+            sessionData?.size ? <Navigate to="/matches" replace={true} /> : null
+          }
+        />
+        <Route
+          path={"/matches"}
+          element={<MatchList selectedArenaMatches={selectedArenaMatches} />}
+        />
+        <Route
+          path={"/team-comps"}
+          element={
+            <TeamCompChart selectedArenaMatches={selectedArenaMatches} />
+          }
+        />
+        <Route
+          path={"/rating-change"}
+          element={<LineChart selectedArenaMatches={selectedArenaMatches} />}
+        />
+        <Route
+          path={"/teams"}
+          element={<TeamsChart selectedArenaMatches={selectedArenaMatches} />}
+        />
+        <Route
+          path={"/clear-storage"}
+          element={
+            sessionData?.size ? (
+              <ClearRoute />
+            ) : (
+              <Navigate to="/matches" replace={true} />
+            )
+          }
+        />
+        <Route path={"*"} element={<EmptyRoute />} />
+      </Routes>
     </div>
   );
 };
