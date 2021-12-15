@@ -1,11 +1,11 @@
 import React from "react";
 import "./App.css";
-import Dashboard from "./components/Dashboard";
+import DashboardWrap from "./components/DashboardWrap";
 
 function App() {
   return (
     <div className="main-wrap">
-      <Dashboard />
+      <DashboardWrap />
     </div>
   );
 }
