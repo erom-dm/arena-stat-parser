@@ -7,7 +7,6 @@ import { matchArrayFromSelectedSessions } from "../utils/dataSetHelpers";
 import TeamsChart from "./TeamsChart";
 import MatchList from "./MatchList";
 import EmptyRoute from "./EmptyRoute";
-import ClearRoute from "./ClearRoute";
 
 export type chartContainerProps = {
   sessionData: MatchSessions;
@@ -51,12 +50,6 @@ const ChartWrapper: React.FC<chartContainerProps> = ({
           }
         />
         <Route
-          path={"/arena-stat-parser"}
-          element={
-            sessionData?.size ? <Navigate to="/matches" replace={true} /> : null
-          }
-        />
-        <Route
           path={"/matches"}
           element={<MatchList selectedArenaMatches={selectedArenaMatches} />}
         />
@@ -73,16 +66,6 @@ const ChartWrapper: React.FC<chartContainerProps> = ({
         <Route
           path={"/teams"}
           element={<TeamsChart selectedArenaMatches={selectedArenaMatches} />}
-        />
-        <Route
-          path={"/clear-storage"}
-          element={
-            sessionData?.size ? (
-              <ClearRoute />
-            ) : (
-              <Navigate to="/matches" replace={true} />
-            )
-          }
         />
         <Route path={"*"} element={<EmptyRoute />} />
       </Routes>

@@ -27,7 +27,7 @@ const ClearStateButton: React.FC<clearStateBtnProps> = ({
       toggleModal();
       clearLocalStorage(); // wipe local storage
       localStoreChangeHandler((prevState) => !prevState); // update dashboard state
-      navigate("/clear-storage", { replace: false });
+      navigate("/", { replace: false });
     }
   };
 

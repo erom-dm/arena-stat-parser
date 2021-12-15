@@ -58,6 +58,7 @@
   },
   "devDependencies": {
     "@types/d3-scale-chromatic": "^3.0.0",
+    "@welldone-software/why-did-you-render": "^6.2.3",
     "gh-pages": "^3.2.3",
     "prettier": "2.4.1"
   },

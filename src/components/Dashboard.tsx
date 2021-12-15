@@ -1,59 +1,43 @@
-import React, { useEffect, useState } from "react";
+import React, { useMemo, useState } from "react";
 import UploadArea from "./UploadArea";
-import {
-  INSTANCE_DATA,
-  sampleDataToLocalStorage,
-} from "../utils/stateManagement";
-import { MatchSessions, ModdedArenaMatch } from "../Types/ArenaTypes";
-import { filterMatchData, CHART_TYPES } from "../utils/dataSetHelpers";
-import { getSessions } from "../utils/sessionManagement";
+import { sampleDataToLocalStorage } from "../utils/stateManagement";
+import { ModdedArenaMatch } from "../Types/ArenaTypes";
+import { CHART_TYPES, filterMatchData } from "../utils/dataSetHelpers";
 import SessionSelect from "./SessionSelect";
-import getTeams from "../utils/teamManagement";
 import TeamSelect from "./TeamSelect";
 import ButtonGroup from "./ButtonGroup";
 import ChartWrapper from "./ChartWrapper";
 import SettingsModal from "./SettingsModal";
+import { getSessions } from "../utils/sessionManagement";
 
 export type dashboardProps = {
-  className?: string;
+  moddedMatchData: ModdedArenaMatch[];
+  myTeams: string[];
+  setLocalStorageChanged: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
-const Dashboard: React.FC<dashboardProps> = () => {
-  const [moddedMatchData, setModdedMatchData] = useState<ModdedArenaMatch[]>();
-  const [myTeams, setMyTeams] = useState<string[]>([""]);
-  const [myTeamSelection, setMyTeamSelection] = useState<string>("");
-  const [sessionData, setSessionData] = useState<MatchSessions>(new Map());
+const Dashboard: React.FC<dashboardProps> = ({
+  moddedMatchData,
+  myTeams,
+  setLocalStorageChanged,
+}) => {
+  const matchDataIsEmpty = !moddedMatchData.length;
+  const [myTeamSelection, setMyTeamSelection] = useState<string>(
+    myTeams?.length ? myTeams[0] : ""
+  );
   const [sessionSelection, setSessionSelection] = useState<number[]>([0]);
-  const [localStorageChanged, setLocalStorageChanged] =
-    useState<boolean>(false);
-
-  useEffect(() => {
-    // Local storage match data => Modified arena match data in local state
-    const localStorageMatchState = window.localStorage.getItem(INSTANCE_DATA);
-    if (localStorageMatchState) {
-      const moddedMatchData = JSON.parse(localStorageMatchState); // Get raw match data from storage
-      setModdedMatchData(moddedMatchData); // Put all modified match data in local state
-      setMyTeams(getTeams(moddedMatchData)); // Get team data
-    }
-  }, [localStorageChanged]);
-
-  useEffect(() => {
-    // Apply filters to modded match data and create session data based on result
-    if (moddedMatchData) {
-      const filteredMatchData = filterMatchData(
-        moddedMatchData,
-        myTeamSelection
-      );
-      setSessionData(getSessions(filteredMatchData));
-      setSessionSelection([0]);
-    }
-  }, [moddedMatchData, myTeamSelection]);
+  const sessionData = useMemo(
+    () =>
+      moddedMatchData &&
+      getSessions(filterMatchData(moddedMatchData, myTeamSelection)),
+    [myTeamSelection, moddedMatchData]
+  );
 
   return (
     <div className="dashboard">
       <div className="dashboard__top-bar">
         <UploadArea localStoreChangeHandler={setLocalStorageChanged} />
-        {!moddedMatchData && (
+        {matchDataIsEmpty && (
           <button
             className={"dashboard__sample-data-button"}
             onClick={() => sampleDataToLocalStorage(setLocalStorageChanged)}
@@ -61,7 +45,7 @@ const Dashboard: React.FC<dashboardProps> = () => {
             Or use this sample data instead!
           </button>
         )}
-        {moddedMatchData && (
+        {!matchDataIsEmpty && (
           <div className="dashboard__filters">
             <ButtonGroup buttonLabels={CHART_TYPES} />
             {myTeams && (
@@ -75,16 +59,15 @@ const Dashboard: React.FC<dashboardProps> = () => {
             )}
           </div>
         )}
-        {moddedMatchData && (
+        {!matchDataIsEmpty && (
           <SettingsModal localStoreChangeHandler={setLocalStorageChanged} />
         )}
       </div>
-      {moddedMatchData && (
-        <ChartWrapper
-          sessionData={sessionData}
-          sessionSelection={sessionSelection}
-        />
-      )}
+
+      <ChartWrapper
+        sessionData={sessionData}
+        sessionSelection={sessionSelection}
+      />
     </div>
   );
 };
