@@ -1,8 +1,8 @@
 {
   "files": {
     "main.css": "/arena-stat-parser/static/css/main.702a6478.chunk.css",
-    "main.js": "/arena-stat-parser/static/js/main.d87ef669.chunk.js",
-    "main.js.map": "/arena-stat-parser/static/js/main.d87ef669.chunk.js.map",
+    "main.js": "/arena-stat-parser/static/js/main.260f0994.chunk.js",
+    "main.js.map": "/arena-stat-parser/static/js/main.260f0994.chunk.js.map",
     "runtime-main.js": "/arena-stat-parser/static/js/runtime-main.a40ccd95.js",
     "runtime-main.js.map": "/arena-stat-parser/static/js/runtime-main.a40ccd95.js.map",
     "static/css/2.679831fc.chunk.css": "/arena-stat-parser/static/css/2.679831fc.chunk.css",
@@ -22,6 +22,6 @@
     "static/css/2.679831fc.chunk.css",
     "static/js/2.d62b0fae.chunk.js",
     "static/css/main.702a6478.chunk.css",
-    "static/js/main.d87ef669.chunk.js"
+    "static/js/main.260f0994.chunk.js"
   ]
 }
