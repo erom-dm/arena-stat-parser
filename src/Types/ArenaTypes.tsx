@@ -100,6 +100,7 @@ export interface MathupDataset {
 export interface ClassDistributionChartInputData {
   labels: (string | string[])[];
   data: number[];
+  colorArray: string[];
 }
 
 export interface TeamCompsChartInputData {

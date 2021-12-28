@@ -362,14 +362,25 @@ function fillTeamCompDatasetObject(
 export function getClassDistributionChartInputData(
   dataset: ClassDistributionDataset
 ): ClassDistributionChartInputData {
+  const colorRangeInfo: ColorRangeInfo = {
+    colorStart: 0.1,
+    colorEnd: 0.85,
+    useEndAsStart: true,
+  };
   const sortedEntries = Object.entries(dataset).sort((a, b) => b[1] - a[1]);
   return sortedEntries.reduce(
     (obj, entry) => {
       obj.labels.push([entry[0]]); // Push classname into label array
       obj.data.push(entry[1]); // Push classname corresponding match count to data array
+      generateChartColors(
+        sortedEntries.length,
+        interpolateTurbo,
+        colorRangeInfo,
+        obj.colorArray
+      );
       return obj;
     },
-    { labels: [], data: [] } as ClassDistributionChartInputData
+    { labels: [], data: [], colorArray: [] } as ClassDistributionChartInputData
   );
 }
 
