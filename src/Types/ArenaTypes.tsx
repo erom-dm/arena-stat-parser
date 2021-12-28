@@ -10,7 +10,7 @@ export enum CharClasses {
   shaman = "SHAMAN",
   warlock = "WARLOCK",
   warrior = "WARRIOR",
-  disconnected = "DISCONNECTED",
+  disconnected = "!disconnected",
 }
 
 export interface ArenaMatch {

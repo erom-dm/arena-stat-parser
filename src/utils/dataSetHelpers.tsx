@@ -26,6 +26,7 @@ import generateChartColors from "./colorGeneration";
 import { interpolateTurbo } from "d3-scale-chromatic";
 
 const DC_TEAM_NAME = "~DC~";
+const DISCONNECT = "DISCONNECT";
 // export const ARENA_INSTANCE_KEYS = ["572", "562", "559"];
 export const ARENA_INSTANCE_IDS = {
   [572 as number]: "Ruins of Lordaeron",
@@ -262,10 +263,10 @@ export function createMatchupDataSet(data: ModdedArenaMatch[]): MathupDataset {
         match.enemyTeamComp.includes(CharClasses.disconnected) ||
         match.myTeamComp.includes(CharClasses.disconnected);
       if (hasDCedPlayers) {
-        fillMatchupDatasetObject(dataset, "DC", match);
+        fillTeamCompDatasetObject(dataset, DISCONNECT, match);
       } else {
         const enemyTeamCompString = teamcompArrToString(match.enemyTeamComp);
-        fillMatchupDatasetObject(dataset, enemyTeamCompString, match);
+        fillTeamCompDatasetObject(dataset, enemyTeamCompString, match);
       }
 
       fillClassDistributionData(dataset, match);
@@ -301,13 +302,13 @@ function fillClassDistributionData(
   });
 }
 
-function fillMatchupDatasetObject(
+function fillTeamCompDatasetObject(
   matchupDataset: MathupDataset,
   key: string,
   match: ModdedArenaMatch
 ): void {
   const { teamCompsDataset } = matchupDataset;
-  const DC_MATCH = key === "DC";
+  const DC_MATCH = key === DISCONNECT;
   const { instanceID, myTeam, win, bracket } = match;
 
   // get performance stats for match
@@ -591,8 +592,8 @@ function mergePlayerPerformanceStats(
   currentMatchStats: TeamPerformanceStats
 ): void {
   Object.keys(currentStats).forEach((player) => {
-    currentStats[player].healing += currentMatchStats[player].healing;
-    currentStats[player].damage += currentMatchStats[player].damage;
+    currentStats[player].healing += currentMatchStats[player]?.healing;
+    currentStats[player].damage += currentMatchStats[player]?.damage;
   });
 }
 
