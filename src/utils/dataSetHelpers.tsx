@@ -475,6 +475,15 @@ export function formatTeamCompsChartTooltip(tooltip: any): string[] {
   ];
 }
 
+export function formatClassDistributionChartTooltip(tooltip: any): string[] {
+  const index = tooltip.dataIndex;
+  const classCount = tooltip.dataset.data[index];
+  const { totalClassCount } = tooltip.dataset;
+  const percentOfTotal = ((classCount / totalClassCount) * 100).toFixed(1);
+
+  return [`${percentOfTotal}% of total`];
+}
+
 function fillRatingChangeArray(
   arr: RatingChangeDataset,
   match: ModdedArenaMatch

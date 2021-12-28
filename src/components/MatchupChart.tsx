@@ -8,6 +8,7 @@ import {
 } from "../Types/ArenaTypes";
 import {
   createMatchupDataSet,
+  formatClassDistributionChartTooltip,
   formatTeamCompsChartTooltip,
   getClassDistributionChartInputData,
   getTeamCompsChartInputData,
@@ -122,6 +123,11 @@ const MatchupChart: React.FC<BarChartProps> = ({ selectedArenaMatches }) => {
         },
       },
       plugins: {
+        tooltip: {
+          callbacks: {
+            afterLabel: formatClassDistributionChartTooltip,
+          },
+        },
         legend: {
           display: false,
         },
@@ -136,6 +142,7 @@ const MatchupChart: React.FC<BarChartProps> = ({ selectedArenaMatches }) => {
         {
           label: "",
           data: classData,
+          totalClassCount: classData.reduce((prev, next) => prev + next, 0),
           backgroundColor: classColorArray,
           borderColor: [],
           borderWidth: 1,
