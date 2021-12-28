@@ -14,10 +14,17 @@ import {
   TeamPerformanceStats,
   TeamRatingObject,
   TeamsDataset,
+  CharClasses,
+  MathupDataset,
+  ClassDistributionDataset,
+  ClassDistributionChartInputData,
+  TeamCompsChartInputData,
+  ColorRangeInfo,
 } from "../Types/ArenaTypes";
 import { hashFromStrings } from "./hashGeneration";
+import generateChartColors from "./colorGeneration";
+import { interpolateTurbo } from "d3-scale-chromatic";
 
-const DISCONNECTED = "!disconnected";
 const DC_TEAM_NAME = "~DC~";
 // export const ARENA_INSTANCE_KEYS = ["572", "562", "559"];
 export const ARENA_INSTANCE_IDS = {
@@ -32,7 +39,7 @@ const PLAYER_KEYS: arenaPlayerKeys[] = [
   "player4",
   "player5",
 ];
-export const CHART_TYPES = [
+export const CHART_ROUTES = [
   ["Matches", "/matches"],
   ["Team comps", "/team-comps"],
   ["Rating change", "/rating-change"],
@@ -228,7 +235,7 @@ function getModdedTeamsAndTeamComps(
         name: name,
         ...teamObj[name],
       };
-  compArr.push(playerDCed ? DISCONNECTED : teamObj[name].class);
+  compArr.push(playerDCed ? CharClasses.disconnected : teamObj[name].class);
 }
 
 function fillNameArraysWithBlanks(
@@ -248,23 +255,24 @@ function fillNameArraysWithBlanks(
   }
 }
 
-export function createTeamCompDataSet(
-  data: ModdedArenaMatch[]
-): TeamCompDataset {
-  const dataset: TeamCompDataset = {};
-  data.forEach((match) => {
-    const hasDCedPlayers =
-      match.enemyTeamComp.includes(DISCONNECTED) ||
-      match.myTeamComp.includes(DISCONNECTED);
-    if (hasDCedPlayers) {
-      fillTeamCompObject(dataset, "DC", match);
-    } else {
-      const enemyTeamCompString = teamcompArrToString(match.enemyTeamComp);
-      fillTeamCompObject(dataset, enemyTeamCompString, match);
-    }
-  });
+export function createMatchupDataSet(data: ModdedArenaMatch[]): MathupDataset {
+  return data.reduce(
+    (dataset, match) => {
+      const hasDCedPlayers =
+        match.enemyTeamComp.includes(CharClasses.disconnected) ||
+        match.myTeamComp.includes(CharClasses.disconnected);
+      if (hasDCedPlayers) {
+        fillMatchupDatasetObject(dataset, "DC", match);
+      } else {
+        const enemyTeamCompString = teamcompArrToString(match.enemyTeamComp);
+        fillMatchupDatasetObject(dataset, enemyTeamCompString, match);
+      }
 
-  return dataset;
+      fillClassDistributionData(dataset, match);
+      return dataset;
+    },
+    { teamCompsDataset: {}, classDistributionDataset: {} } as MathupDataset
+  );
 }
 
 export function createRatingChangeDataSet(
@@ -278,13 +286,30 @@ export function createRatingChangeDataSet(
   return dataset;
 }
 
-function fillTeamCompObject(
-  obj: TeamCompDataset,
+function fillClassDistributionData(
+  obj: MathupDataset,
+  match: ModdedArenaMatch
+) {
+  const { enemyTeamComp } = match;
+  const { classDistributionDataset: dataset } = obj;
+  enemyTeamComp.forEach((el) => {
+    if (dataset[el]) {
+      dataset[el]++;
+    } else {
+      dataset[el] = 1;
+    }
+  });
+}
+
+function fillMatchupDatasetObject(
+  matchupDataset: MathupDataset,
   key: string,
   match: ModdedArenaMatch
 ): void {
+  const { teamCompsDataset } = matchupDataset;
   const DC_MATCH = key === "DC";
   const { instanceID, myTeam, win, bracket } = match;
+
   // get performance stats for match
   const TeamPerformanceStats: TeamPerformanceStats = {};
   if (!DC_MATCH) {
@@ -301,7 +326,7 @@ function fillTeamCompObject(
     }
   }
 
-  const entry = obj[key];
+  const entry = teamCompsDataset[key];
 
   if (entry) {
     // overall stats
@@ -324,13 +349,118 @@ function fillTeamCompObject(
     !DC_MATCH &&
       mergePlayerPerformanceStats(entry.performanceStats, TeamPerformanceStats);
   } else {
-    obj[key] = {
+    teamCompsDataset[key] = {
       matchCount: 1,
       wins: Number(win),
       performanceStats: TeamPerformanceStats,
       zoneStats: { [instanceID]: { matches: 1, wins: Number(win) } },
     };
   }
+}
+
+export function getClassDistributionChartInputData(
+  dataset: ClassDistributionDataset
+): ClassDistributionChartInputData {
+  const sortedEntries = Object.entries(dataset).sort((a, b) => b[1] - a[1]);
+  return sortedEntries.reduce(
+    (obj, entry) => {
+      obj.labels.push([entry[0]]); // Push classname into label array
+      obj.data.push(entry[1]); // Push classname corresponding match count to data array
+      return obj;
+    },
+    { labels: [], data: [] } as ClassDistributionChartInputData
+  );
+}
+
+export function getTeamCompsChartInputData(
+  dataset: TeamCompDataset
+): TeamCompsChartInputData {
+  const colorRangeInfo: ColorRangeInfo = {
+    colorStart: 0.1,
+    colorEnd: 0.85,
+    useEndAsStart: true,
+  };
+  const sortedEntries = Object.entries(dataset).sort(
+    (a, b) => b[1].matchCount - a[1].matchCount
+  );
+  const reducedEntries = sortedEntries.reduce(
+    (data, entry) => {
+      const [teamComp, { matchCount, wins, zoneStats, performanceStats }] =
+        entry;
+      data.totalMatchNumber += matchCount;
+      data.totalWins += wins;
+      data.labelArr.push([teamComp]);
+      data.dataArr.push(matchCount);
+      data.winsArr.push(wins);
+      data.zoneStatsArr.push(zoneStats);
+      data.performanceStatsArr.push(performanceStats);
+      generateChartColors(
+        sortedEntries.length,
+        interpolateTurbo,
+        colorRangeInfo,
+        data.colorArray
+      );
+      return data;
+    },
+    {
+      totalMatchNumber: 0,
+      totalWins: 0,
+      labelArr: [],
+      dataArr: [],
+      winsArr: [],
+      zoneStatsArr: [],
+      performanceStatsArr: [],
+      colorArray: [],
+    } as TeamCompsChartInputData
+  );
+  reducedEntries.totalLosses =
+    reducedEntries.totalMatchNumber - reducedEntries.totalWins;
+  reducedEntries.totalWinrate = calcWinrate(
+    reducedEntries.totalMatchNumber,
+    reducedEntries.totalWins
+  );
+  return reducedEntries;
+}
+
+export function formatTeamCompsChartTooltip(tooltip: any): string[] {
+  const index = tooltip.dataIndex;
+  const wins = tooltip.dataset.wins[index];
+  const matchCount = tooltip.dataset.data[index];
+  const zoneStats = tooltip.dataset.zoneStats[index];
+  const performanceStats = tooltip.dataset.performanceStats[index];
+  const winrate: string = calcWinrate(matchCount, wins);
+
+  const zoneStatsStringArr: string[] = [];
+  Object.keys(zoneStats).forEach((key) => {
+    zoneStatsStringArr.push(
+      `${ARENA_INSTANCE_IDS[Number(key)]}: ${calcWinrate(
+        zoneStats[key].matches,
+        zoneStats[key].wins
+      )}%`
+    );
+  });
+
+  const performanceStatsStringArr: string[] = [];
+  Object.keys(performanceStats).forEach((key) => {
+    const avgDamage = +(performanceStats[key].damage / matchCount).toFixed(0);
+    const avgHealing = +(performanceStats[key].healing / matchCount)
+      .toFixed(0)
+      .toLocaleString();
+    performanceStatsStringArr.push(
+      `${key}: damage: ${avgDamage.toLocaleString()} | healing: ${avgHealing.toLocaleString()}`
+    );
+  });
+
+  return [
+    `Wins: ${wins}, Losses: ${matchCount - wins}`,
+    `Winrate: ${winrate}%`,
+    " ",
+    "Zone win rates:",
+    ...zoneStatsStringArr,
+    " ",
+    "Average performance stats:",
+    ...performanceStatsStringArr,
+  ];
 }
 
 function fillRatingChangeArray(

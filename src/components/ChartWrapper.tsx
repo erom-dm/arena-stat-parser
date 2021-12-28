@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { MatchSessions, ModdedArenaMatch } from "../Types/ArenaTypes";
-import TeamCompChart from "./TeamCompChart";
+import MatchupChart from "./MatchupChart";
 import LineChart from "./LineChart";
 import { Routes, Route, Navigate } from "react-router-dom";
 import { matchArrayFromSelectedSessions } from "../utils/dataSetHelpers";
@@ -55,9 +55,7 @@ const ChartWrapper: React.FC<chartContainerProps> = ({
         />
         <Route
           path={"/team-comps"}
-          element={
-            <TeamCompChart selectedArenaMatches={selectedArenaMatches} />
-          }
+          element={<MatchupChart selectedArenaMatches={selectedArenaMatches} />}
         />
         <Route
           path={"/rating-change"}

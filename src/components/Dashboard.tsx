@@ -2,7 +2,7 @@ import React, { useMemo, useState } from "react";
 import UploadArea from "./UploadArea";
 import { sampleDataToLocalStorage } from "../utils/stateManagement";
 import { ModdedArenaMatch } from "../Types/ArenaTypes";
-import { CHART_TYPES, filterMatchData } from "../utils/dataSetHelpers";
+import { CHART_ROUTES, filterMatchData } from "../utils/dataSetHelpers";
 import SessionSelect from "./SessionSelect";
 import TeamSelect from "./TeamSelect";
 import ButtonGroup from "./ButtonGroup";
@@ -47,7 +47,7 @@ const Dashboard: React.FC<dashboardProps> = ({
         )}
         {!matchDataIsEmpty && (
           <div className="dashboard__filters">
-            <ButtonGroup buttonLabels={CHART_TYPES} />
+            <ButtonGroup buttonLabels={CHART_ROUTES} />
             {myTeams && (
               <TeamSelect onChange={setMyTeamSelection} teams={myTeams} />
             )}

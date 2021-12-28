@@ -1,5 +1,18 @@
 export type ChartNamesAndRoutes = string[];
 
+export enum CharClasses {
+  druid = "DRUID",
+  rogue = "ROGUE",
+  hunter = "HUNTER",
+  mage = "MAGE",
+  paladin = "PALADIN",
+  priest = "PRIEST",
+  shaman = "SHAMAN",
+  warlock = "WARLOCK",
+  warrior = "WARRIOR",
+  disconnected = "DISCONNECTED",
+}
+
 export interface ArenaMatch {
   class: string;
   classEnglish: string;
@@ -32,7 +45,7 @@ export interface ModdedArenaMatch {
   myTeamComp: string[];
   myTeamName: string;
   enemyTeam: ModdedArenaTeam;
-  enemyTeamComp: string[];
+  enemyTeamComp: CharClasses[];
   enemyTeamName: string;
   enemyPlayerNames: string[];
   enemyTeamMMR: number;
@@ -72,7 +85,34 @@ export interface ModdedArenaPlayer extends ArenaPlayer {
 }
 
 export interface TeamCompDataset {
-  [Key: string]: TeamCompObj;
+  [Key: string]: TeamcompDatasetObj;
+}
+
+export type ClassDistributionDataset = {
+  [Key in CharClasses]: number;
+};
+
+export interface MathupDataset {
+  teamCompsDataset: TeamCompDataset;
+  classDistributionDataset: ClassDistributionDataset;
+}
+
+export interface ClassDistributionChartInputData {
+  labels: (string | string[])[];
+  data: number[];
+}
+
+export interface TeamCompsChartInputData {
+  totalMatchNumber: number;
+  totalWins: number;
+  totalLosses?: number;
+  totalWinrate?: string;
+  labelArr: (string | string[])[];
+  dataArr: number[];
+  winsArr: number[];
+  zoneStatsArr: ZoneStats[];
+  performanceStatsArr: TeamPerformanceStats[];
+  colorArray: string[];
 }
 
 export type RatingChangeDataset = RatingChangeObj[];
@@ -113,14 +153,14 @@ export type DetailedTeamRatingObject = {
   matchCount: number;
 };
 
-export interface TeamCompObj {
+export interface TeamcompDatasetObj {
   matchCount: number;
   wins: number;
   zoneStats: ZoneStats;
   performanceStats: TeamPerformanceStats;
 }
 
-export interface SortableTeamCompObj extends TeamCompObj {
+export interface SortableTeamCompObj extends TeamcompDatasetObj {
   teamComp: string;
 }
 
@@ -142,7 +182,7 @@ export type PlayerPerformanceStats = {
   healing: number;
 };
 
-export interface ChartDataSet {
+export interface TeamCompData {
   labels: (string | string[])[];
   datasets: {
     label: string;
@@ -150,6 +190,18 @@ export interface ChartDataSet {
     wins?: number[];
     zoneStats?: ZoneStats[];
     performanceStats?: TeamPerformanceStats[];
+    backgroundColor: string[];
+    borderColor: string[];
+    borderWidth: number;
+    hoverOffset: number;
+  }[];
+}
+
+export interface ClassDistributionData {
+  labels: (string | string[])[];
+  datasets: {
+    label: string;
+    data: number[];
     backgroundColor: string[];
     borderColor: string[];
     borderWidth: number;
@@ -186,3 +238,8 @@ export type TeamRatingObject = {
   newRating: number;
   ratingChange: number;
 };
+
+export enum MatchupChartTypes {
+  teamComps = "Team comps",
+  classes = "Classes",
+}
