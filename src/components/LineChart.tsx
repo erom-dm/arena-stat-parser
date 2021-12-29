@@ -85,14 +85,14 @@ const LineChart: React.FC<LineChartProps> = ({ selectedArenaMatches }) => {
   };
 
   return (
-    <>
+    <div className={"line-chart-wrap"}>
       <div className="header">
         <h1 className="title">Team Rating Change</h1>
       </div>
       <div className={"chart-container"}>
         <Line data={data} options={options} />
       </div>
-    </>
+    </div>
   );
 };
 

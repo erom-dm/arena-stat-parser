@@ -1,6 +1,5 @@
 .session-select, .team-select {
   margin: 0 0 0 15px;
-  width: 350px;
   height: fit-content;
   border-radius: 4px 2px 2px 4px !important;
   font-size: 1.6rem;
@@ -34,5 +33,9 @@
 }
 
 .team-select {
+  width: 200px;
+}
+
+.session-select {
   width: 200px;
 }

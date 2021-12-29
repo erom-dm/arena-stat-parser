@@ -176,7 +176,7 @@ const MatchupChart: React.FC<BarChartProps> = ({ selectedArenaMatches }) => {
       : classDistributionOptions;
 
   return (
-    <>
+    <div className={"matchup-chart-wrap"}>
       <div className="header">
         <button onClick={toggleChartType}>{chartType}</button>
         <h1 className="title">{chartTitle}</h1>
@@ -184,7 +184,7 @@ const MatchupChart: React.FC<BarChartProps> = ({ selectedArenaMatches }) => {
       <div className={"chart-container"}>
         <Bar data={chartData} options={chartOptions} />
       </div>
-    </>
+    </div>
   );
 };
 

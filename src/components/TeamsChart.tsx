@@ -133,14 +133,14 @@ const TeamsChart: React.FC<teamsChartProps> = ({ selectedArenaMatches }) => {
   );
 
   return (
-    <>
+    <div className={"team-chart-wrap"}>
       <div className="header">
         <h1 className="title">{"Enemy Team Stats"}</h1>
       </div>
       <div className={"chart-container"}>
         <Bar data={data} options={options} />
       </div>
-    </>
+    </div>
   );
 };
 

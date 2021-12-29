@@ -499,8 +499,8 @@ export function formatClassDistributionChartTooltip(tooltip: any): string[] {
   ).toFixed(1);
 
   return [
-    `${percentOfTotal}% of total`,
-    `${percentOfMatches}% of matches has at least one`,
+    `${percentOfTotal}% of total players`,
+    `${percentOfMatches}% of matches had at least one`,
   ];
 }
 

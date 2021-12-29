@@ -36,32 +36,34 @@ const Dashboard: React.FC<dashboardProps> = ({
   return (
     <div className="dashboard">
       <div className="dashboard__top-bar">
-        <UploadArea localStoreChangeHandler={setLocalStorageChanged} />
-        {matchDataIsEmpty && (
-          <button
-            className={"dashboard__sample-data-button"}
-            onClick={() => sampleDataToLocalStorage(setLocalStorageChanged)}
-          >
-            Or use this sample data instead!
-          </button>
-        )}
-        {!matchDataIsEmpty && (
-          <div className="dashboard__filters">
-            <ButtonGroup buttonLabels={CHART_ROUTES} />
-            {myTeams && (
-              <TeamSelect onChange={setMyTeamSelection} teams={myTeams} />
-            )}
-            {sessionData && (
-              <SessionSelect
-                onChange={setSessionSelection}
-                sessionData={sessionData}
-              />
-            )}
-          </div>
-        )}
-        {!matchDataIsEmpty && (
-          <SettingsModal localStoreChangeHandler={setLocalStorageChanged} />
-        )}
+        <div className="dashboard__top-bar-wrap">
+          <UploadArea localStoreChangeHandler={setLocalStorageChanged} />
+          {matchDataIsEmpty && (
+            <button
+              className={"dashboard__sample-data-button"}
+              onClick={() => sampleDataToLocalStorage(setLocalStorageChanged)}
+            >
+              Or use this sample data instead!
+            </button>
+          )}
+          {!matchDataIsEmpty && (
+            <div className="dashboard__filters">
+              <ButtonGroup buttonLabels={CHART_ROUTES} />
+              {myTeams && (
+                <TeamSelect onChange={setMyTeamSelection} teams={myTeams} />
+              )}
+              {sessionData && (
+                <SessionSelect
+                  onChange={setSessionSelection}
+                  sessionData={sessionData}
+                />
+              )}
+            </div>
+          )}
+          {!matchDataIsEmpty && (
+            <SettingsModal localStoreChangeHandler={setLocalStorageChanged} />
+          )}
+        </div>
       </div>
 
       <ChartWrapper
