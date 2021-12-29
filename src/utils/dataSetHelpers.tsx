@@ -295,10 +295,14 @@ function fillClassDistributionData(
   const { classDistributionDataset: dataset } = obj;
   enemyTeamComp.forEach((el) => {
     if (dataset[el]) {
-      dataset[el]++;
+      dataset[el].total++;
     } else {
-      dataset[el] = 1;
+      dataset[el] = { total: 1, inMatches: 0 };
     }
+  });
+  const teamCompSet = new Set(enemyTeamComp);
+  teamCompSet.forEach((el) => {
+    dataset[el].inMatches++;
   });
 }
 
@@ -367,11 +371,14 @@ export function getClassDistributionChartInputData(
     colorEnd: 0.85,
     useEndAsStart: true,
   };
-  const sortedEntries = Object.entries(dataset).sort((a, b) => b[1] - a[1]);
+  const sortedEntries = Object.entries(dataset).sort(
+    (a, b) => b[1].total - a[1].total
+  );
   return sortedEntries.reduce(
     (obj, entry) => {
       obj.labels.push([entry[0]]); // Push classname into label array
-      obj.data.push(entry[1]); // Push classname corresponding match count to data array
+      obj.totalData.push(entry[1].total); // Push corresponding total class count
+      obj.inMatchesData.push(entry[1].inMatches); // Push corresponding match count
       generateChartColors(
         sortedEntries.length,
         interpolateTurbo,
@@ -380,7 +387,12 @@ export function getClassDistributionChartInputData(
       );
       return obj;
     },
-    { labels: [], data: [], colorArray: [] } as ClassDistributionChartInputData
+    {
+      labels: [],
+      totalData: [],
+      inMatchesData: [],
+      colorArray: [],
+    } as ClassDistributionChartInputData
   );
 }
 
@@ -478,10 +490,18 @@ export function formatTeamCompsChartTooltip(tooltip: any): string[] {
 export function formatClassDistributionChartTooltip(tooltip: any): string[] {
   const index = tooltip.dataIndex;
   const classCount = tooltip.dataset.data[index];
-  const { totalClassCount } = tooltip.dataset;
+  const inMatchesClassCount = tooltip.dataset.inMatchesData[index];
+  const { totalClassCount, totalMatchNumber } = tooltip.dataset;
   const percentOfTotal = ((classCount / totalClassCount) * 100).toFixed(1);
+  const percentOfMatches = (
+    (inMatchesClassCount / totalMatchNumber) *
+    100
+  ).toFixed(1);
 
-  return [`${percentOfTotal}% of total`];
+  return [
+    `${percentOfTotal}% of total`,
+    `${percentOfMatches}% of matches has at least one`,
+  ];
 }
 
 function fillRatingChangeArray(

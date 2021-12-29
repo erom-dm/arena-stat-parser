@@ -89,7 +89,7 @@ export interface TeamCompDataset {
 }
 
 export type ClassDistributionDataset = {
-  [Key in CharClasses]: number;
+  [Key in CharClasses]: { total: number; inMatches: number };
 };
 
 export interface MathupDataset {
@@ -99,7 +99,8 @@ export interface MathupDataset {
 
 export interface ClassDistributionChartInputData {
   labels: (string | string[])[];
-  data: number[];
+  totalData: number[];
+  inMatchesData: number[];
   colorArray: string[];
 }
 
