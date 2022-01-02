@@ -20,6 +20,7 @@ import {
   ClassDistributionChartInputData,
   TeamCompsChartInputData,
   ColorRangeInfo,
+  LineChartInputData,
 } from "../Types/ArenaTypes";
 import { hashFromStrings } from "./hashGeneration";
 import generateChartColors from "./colorGeneration";
@@ -276,7 +277,7 @@ export function createMatchupDataSet(data: ModdedArenaMatch[]): MathupDataset {
   );
 }
 
-export function createRatingChangeDataSet(
+export function createMatchRatingChangeDataSet(
   data: ModdedArenaMatch[]
 ): RatingChangeDataset {
   const dataset: RatingChangeDataset = [];
@@ -284,6 +285,23 @@ export function createRatingChangeDataSet(
     fillRatingChangeArray(dataset, match);
   });
 
+  return dataset;
+}
+
+export function createSessionRatingChangeDataSet(
+  data: MatchSessions
+): RatingChangeDataset {
+  const relevantMatches: ModdedArenaMatch[] = [];
+  data.forEach((session) => {
+    // start/end session variant
+    // relevantMatches.push(session[0]);
+    // session.length > 1 && relevantMatches.push(session[session.length - 1]);
+    relevantMatches.push(session[session.length - 1]);
+  });
+  const dataset: RatingChangeDataset = [];
+  relevantMatches.forEach((match) => {
+    fillRatingChangeArray(dataset, match);
+  });
   return dataset;
 }
 
@@ -394,6 +412,34 @@ export function getClassDistributionChartInputData(
       colorArray: [],
     } as ClassDistributionChartInputData
   );
+}
+
+export function getLineChartInputData(
+  dataset: RatingChangeDataset
+): LineChartInputData {
+  return dataset
+    .sort((a, b) => a.timestamp - b.timestamp)
+    .reduce(
+      (data, current, index) => {
+        const { enemyTeamComp, newTeamRating, win } = current;
+
+        data.teamRatingArr.push(newTeamRating);
+        data.enemyTeamCompArr.push(enemyTeamComp);
+        data.labelArr.push(String(index + 1));
+        data.winArray.push(win);
+
+        const teamMMR = dataset[index + 1]?.teamMMR;
+        teamMMR && data.teamMMRArr.push(teamMMR);
+        return data;
+      },
+      {
+        teamRatingArr: [],
+        teamMMRArr: [],
+        enemyTeamCompArr: [],
+        labelArr: [],
+        winArray: [],
+      } as LineChartInputData
+    );
 }
 
 export function getTeamCompsChartInputData(

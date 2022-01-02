@@ -72,6 +72,10 @@ const TeamsChart: React.FC<teamsChartProps> = ({ selectedArenaMatches }) => {
               `Names: ${playerNames.names}`,
             ];
           },
+          label: (tooltip: any) => {
+            const value = tooltip.formattedValue;
+            return `Total: ${value}`;
+          },
         },
       },
       legend: {

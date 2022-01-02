@@ -82,6 +82,10 @@ const MatchupChart: React.FC<BarChartProps> = ({ selectedArenaMatches }) => {
         tooltip: {
           callbacks: {
             afterLabel: formatTeamCompsChartTooltip,
+            label: (tooltip: any) => {
+              const value = tooltip.formattedValue;
+              return `Total: ${value}`;
+            },
           },
         },
         legend: {
@@ -127,6 +131,10 @@ const MatchupChart: React.FC<BarChartProps> = ({ selectedArenaMatches }) => {
         tooltip: {
           callbacks: {
             afterLabel: formatClassDistributionChartTooltip,
+            label: (tooltip: any) => {
+              const value = tooltip.formattedValue;
+              return `Total: ${value}`;
+            },
           },
         },
         legend: {

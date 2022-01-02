@@ -1,30 +1,58 @@
-import React from "react";
+import React, { useMemo, useState } from "react";
 import { Line } from "react-chartjs-2";
-import { ModdedArenaMatch } from "../Types/ArenaTypes";
-import { createRatingChangeDataSet } from "../utils/dataSetHelpers";
+import {
+  LineChartTypes,
+  MatchSessions,
+  ModdedArenaMatch,
+} from "../Types/ArenaTypes";
+import {
+  createMatchRatingChangeDataSet,
+  createSessionRatingChangeDataSet,
+  getLineChartInputData,
+} from "../utils/dataSetHelpers";
+import dayjs from "dayjs";
 
 type LineChartProps = {
   selectedArenaMatches: ModdedArenaMatch[];
+  selectedSessions: MatchSessions;
 };
 
-const LineChart: React.FC<LineChartProps> = ({ selectedArenaMatches }) => {
-  const dataset = createRatingChangeDataSet(selectedArenaMatches);
-  const teamRatingArr: number[] = [];
-  const teamMMRArr: number[] = [];
-  const enemyTeamCompArr: string[] = [];
-  const labelArr: string[] = [];
-  const winArray: boolean[] = [];
-  dataset.sort((a, b) => a.timestamp - b.timestamp);
-  dataset.forEach((match, index) => {
-    const { enemyTeamComp, newTeamRating, win } = match;
-    teamRatingArr.push(newTeamRating);
-    enemyTeamCompArr.push(enemyTeamComp);
-    labelArr.push(String(index + 1));
-    winArray.push(win);
+const LineChart: React.FC<LineChartProps> = ({
+  selectedArenaMatches,
+  selectedSessions,
+}) => {
+  const [chartType, setChartType] = useState<LineChartTypes>(
+    LineChartTypes.perMatch
+  );
+  const toggleChartType = () => {
+    setChartType((prevState) =>
+      prevState === LineChartTypes.perMatch
+        ? LineChartTypes.perSession
+        : LineChartTypes.perMatch
+    );
+  };
 
-    const teamMMR = dataset[index + 1]?.teamMMR;
-    teamMMR && teamMMRArr.push(teamMMR);
-  });
+  const matchDataset = useMemo(
+    () => createMatchRatingChangeDataSet(selectedArenaMatches),
+    [selectedArenaMatches]
+  );
+  const sessionDataset = useMemo(
+    () => createSessionRatingChangeDataSet(selectedSessions),
+    [selectedSessions]
+  );
+  const { teamRatingArr, teamMMRArr, enemyTeamCompArr, labelArr, winArray } =
+    useMemo(() => getLineChartInputData(matchDataset), [matchDataset]);
+  const {
+    teamRatingArr: teamRatingArrPerSession,
+    labelArr: labelArrPerSession,
+  } = useMemo(() => getLineChartInputData(sessionDataset), [sessionDataset]);
+  const sessionDates = useMemo(
+    () =>
+      Array.from(selectedSessions.keys()).map((timestamp) =>
+        dayjs.unix(timestamp).format("DD/MM/YY")
+      ),
+    [selectedSessions]
+  );
 
   const ticksConf = {
     color: "#292F36",
@@ -33,7 +61,7 @@ const LineChart: React.FC<LineChartProps> = ({ selectedArenaMatches }) => {
     beginAtZero: true,
   };
 
-  const options = {
+  const perMatchOptions = {
     maintainAspectRatio: false,
     scales: {
       "y-axis-1": {
@@ -58,7 +86,7 @@ const LineChart: React.FC<LineChartProps> = ({ selectedArenaMatches }) => {
       },
     },
   };
-  const data = {
+  const perMatchData = {
     labels: labelArr,
     datasets: [
       {
@@ -83,14 +111,61 @@ const LineChart: React.FC<LineChartProps> = ({ selectedArenaMatches }) => {
       },
     ],
   };
+  const perSessionOptions = {
+    ...perMatchOptions,
+    plugins: {
+      tooltip: {
+        callbacks: {
+          afterLabel: (tooltip: any) => {
+            console.dir(tooltip);
+            const index = tooltip.dataIndex;
+            const rating = tooltip.dataset.data[index];
+            const dateString = tooltip.dataset.sessionDates[index];
+            return [
+              `Session #${index + 1} - ${dateString}`,
+              `End session rating: ${rating}`,
+            ];
+          },
+          title: () => "",
+          label: () => "",
+        },
+      },
+    },
+  };
+  const perSessionData = {
+    labels: labelArrPerSession,
+    datasets: [
+      {
+        label: "Session end team rating",
+        data: teamRatingArrPerSession,
+        sessionDates: sessionDates,
+        fill: false,
+        backgroundColor: "rgb(254,38,0)",
+        borderColor: "rgb(254,131,0)",
+        yAxisID: "y-axis-1",
+      },
+    ],
+  };
+
+  const propObject =
+    chartType === LineChartTypes.perMatch
+      ? {
+          data: perMatchData,
+          options: perMatchOptions,
+        }
+      : {
+          data: perSessionData,
+          options: perSessionOptions,
+        };
 
   return (
     <div className={"line-chart-wrap"}>
       <div className="header">
+        <button onClick={toggleChartType}>{chartType}</button>
         <h1 className="title">Team Rating Change</h1>
       </div>
       <div className={"chart-container"}>
-        <Line data={data} options={options} />
+        <Line data={propObject.data} options={propObject.options} />
       </div>
     </div>
   );

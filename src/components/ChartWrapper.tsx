@@ -20,6 +20,9 @@ const ChartWrapper: React.FC<chartContainerProps> = ({
   const [selectedArenaMatches, setSelectedArenaMatches] = useState<
     ModdedArenaMatch[]
   >([]);
+  const [selectedSessions, setSelectedSessions] = useState<MatchSessions>(
+    new Map()
+  );
 
   useEffect(() => {
     if (sessionData?.size) {
@@ -27,6 +30,7 @@ const ChartWrapper: React.FC<chartContainerProps> = ({
         setSelectedArenaMatches([
           ...matchArrayFromSelectedSessions(sessionData),
         ]);
+        setSelectedSessions(sessionData);
       } else {
         const selectedMatches: MatchSessions = new Map();
         sessionSelection.forEach((sessionKey) => {
@@ -36,6 +40,7 @@ const ChartWrapper: React.FC<chartContainerProps> = ({
         setSelectedArenaMatches([
           ...matchArrayFromSelectedSessions(selectedMatches),
         ]);
+        setSelectedSessions(selectedMatches);
       }
     }
   }, [sessionData, sessionSelection]);
@@ -59,7 +64,12 @@ const ChartWrapper: React.FC<chartContainerProps> = ({
         />
         <Route
           path={"/rating-change"}
-          element={<LineChart selectedArenaMatches={selectedArenaMatches} />}
+          element={
+            <LineChart
+              selectedArenaMatches={selectedArenaMatches}
+              selectedSessions={selectedSessions}
+            />
+          }
         />
         <Route
           path={"/teams"}

@@ -127,6 +127,14 @@ export type RatingChangeObj = {
   win: boolean;
 };
 
+export type LineChartInputData = {
+  teamRatingArr: number[];
+  teamMMRArr: number[];
+  enemyTeamCompArr: string[];
+  labelArr: string[];
+  winArray: boolean[];
+};
+
 export type TeamsDataset = { [Key: string]: TeamStatsObj };
 
 export type TeamStatsObj = {
@@ -244,4 +252,9 @@ export type TeamRatingObject = {
 export enum MatchupChartTypes {
   teamComps = "Team comps",
   classes = "Classes",
+}
+
+export enum LineChartTypes {
+  perMatch = "Match view",
+  perSession = "Session view",
 }

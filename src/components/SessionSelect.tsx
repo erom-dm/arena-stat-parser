@@ -39,7 +39,7 @@ const SessionSelect: React.FC<sessionSelectProps> = ({
         const formattedData: string = dayjs.unix(current).format("DD/MM/YY"); //"HH:mm - DD/MM/YY"
         array.push({
           value: current,
-          label: `Session ${index + 1}, ${formattedData}`,
+          label: `Session ${index + 1} - ${formattedData}`,
         });
         return array;
       }, [] as SessionSelectOption[])
