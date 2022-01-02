@@ -37,5 +37,9 @@
 }
 
 .session-select {
-  width: 200px;
+  width: 300px;
+  &__clear-indicator {
+    margin: 8px;
+    padding: 0 !important;
+  }
 }

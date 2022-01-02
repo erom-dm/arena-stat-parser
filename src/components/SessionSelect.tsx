@@ -1,4 +1,10 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import { MatchSessions, SessionSelectOption } from "../Types/ArenaTypes";
 import Select, { ActionMeta, MultiValue } from "react-select";
 import dayjs from "dayjs";
@@ -12,21 +18,85 @@ const SessionSelect: React.FC<sessionSelectProps> = ({
   sessionData,
   onChange,
 }) => {
-  const selectAllOption: SessionSelectOption = {
-    value: 0,
-    label: "All Data",
-  };
+  const selectAllOption: SessionSelectOption = useMemo(
+    () => ({
+      value: 0,
+      label: "All Sessions",
+    }),
+    []
+  );
   const [selected, setSelected] = useState<MultiValue<SessionSelectOption>>([]);
   const valueRef = useRef(selected);
   valueRef.current = selected;
 
+  const sessionKeys: number[] = useMemo(
+    () => [...sessionData.keys()],
+    [sessionData]
+  );
+  const options: SessionSelectOption[] = useMemo(() => {
+    return sessionKeys
+      .reduce((array, current, index) => {
+        const formattedData: string = dayjs.unix(current).format("DD/MM/YY"); //"HH:mm - DD/MM/YY"
+        array.push({
+          value: current,
+          label: `Session ${index + 1}, ${formattedData}`,
+        });
+        return array;
+      }, [] as SessionSelectOption[])
+      .reverse();
+  }, [sessionKeys]);
+
+  const isSelectAllSelected = useCallback(() => {
+    return valueRef?.current?.length === options.length;
+  }, [options.length]);
+
+  const handleChange = useCallback(
+    (
+      newValue: MultiValue<SessionSelectOption>,
+      actionMeta: ActionMeta<SessionSelectOption>
+    ) => {
+      const selectedTimestampArray: number[] = [];
+      const { action, option, removedValue } = actionMeta;
+      if (
+        action === "select-option" &&
+        option?.value === selectAllOption.value
+      ) {
+        setSelected(options);
+        selectedTimestampArray.push(...options.map((option) => option.value));
+      } else if (
+        (action === "deselect-option" &&
+          option?.value === selectAllOption.value) ||
+        (action === "remove-value" &&
+          removedValue?.value === selectAllOption.value)
+      ) {
+        setSelected([]);
+      } else if (
+        actionMeta.action === "deselect-option" &&
+        isSelectAllSelected()
+      ) {
+        const filteredOptions = options.filter(
+          ({ value }) => value !== option?.value
+        );
+        setSelected(filteredOptions);
+        selectedTimestampArray.push(
+          ...filteredOptions.map((option) => option.value)
+        );
+      } else {
+        setSelected(newValue || []);
+        selectedTimestampArray.push(...newValue.map((option) => option.value));
+      }
+      onChange && onChange(selectedTimestampArray);
+    },
+    [isSelectAllSelected, onChange, options, selectAllOption.value]
+  );
+
   useEffect(() => {
+    // Resets selected to empty arr, if selected value wasn't within session keys
     if (selected.length) {
       let overlap = true;
-      const sessionDataKeys = [...sessionData.keys()];
       const selectedValues = selected.map((el) => el.value);
       selectedValues.forEach((val) => {
-        if (!sessionDataKeys.includes(val)) {
+        if (!sessionKeys.includes(val)) {
           overlap = false;
         }
       });
@@ -34,75 +104,36 @@ const SessionSelect: React.FC<sessionSelectProps> = ({
         setSelected([]);
       }
     }
-  }, [selected, sessionData]);
+  }, [selected, sessionKeys]);
 
-  const sessionKeys: number[] = [...sessionData.keys()];
-
-  const options: SessionSelectOption[] = [];
-  sessionKeys.forEach((key, idx) => {
-    const formattedData: string = dayjs.unix(key).format("HH:mm - DD/MM/YY");
-    const sessionOption = {
-      value: key,
-      label: `Session ${idx + 1}, @ ${formattedData}`,
-    };
-    options.push(sessionOption);
-  });
-  options.reverse();
-
-  const isSelectAllSelected = () => {
-    return valueRef?.current?.length === options.length;
-  };
-
-  const getOptions = () => [selectAllOption, ...options];
-
-  const isOptionSelected = (option: SessionSelectOption): boolean =>
-    valueRef?.current?.some(({ value }) => value === option.value) ||
-    isSelectAllSelected();
-
-  const getValue = () => (isSelectAllSelected() ? [selectAllOption] : selected);
-
-  const handleChange = (
-    newValue: MultiValue<SessionSelectOption>,
-    actionMeta: ActionMeta<SessionSelectOption>
-  ) => {
-    const selectedTimestampArray: number[] = [];
-    const { action, option, removedValue } = actionMeta;
-    if (action === "select-option" && option?.value === selectAllOption.value) {
-      setSelected(options);
-      selectedTimestampArray.push(...options.map((option) => option.value));
-    } else if (
-      (action === "deselect-option" &&
-        option?.value === selectAllOption.value) ||
-      (action === "remove-value" &&
-        removedValue?.value === selectAllOption.value)
-    ) {
-      setSelected([]);
-    } else if (
-      actionMeta.action === "deselect-option" &&
-      isSelectAllSelected()
-    ) {
-      const filteredOptions = options.filter(
-        ({ value }) => value !== option?.value
-      );
-      setSelected(filteredOptions);
-      selectedTimestampArray.push(
-        ...filteredOptions.map((option) => option.value)
-      );
-    } else {
-      setSelected(newValue || []);
-      selectedTimestampArray.push(...newValue.map((option) => option.value));
+  useEffect(() => {
+    if (options.length) {
+      setSelected((prevSelected) => (!prevSelected ? [options[0]] : []));
     }
-    onChange && onChange(selectedTimestampArray);
+    handleChange([options[0]], {
+      action: "select-option",
+      option: options[0],
+    });
+  }, [options, handleChange]);
+
+  const isOptionSelected = (option: SessionSelectOption): boolean => {
+    return (
+      isSelectAllSelected() ||
+      valueRef?.current?.some(({ value }) => value === option.value)
+    );
   };
+
+  const getValue = useCallback(() => {
+    return isSelectAllSelected() ? [selectAllOption] : selected;
+  }, [isSelectAllSelected, selectAllOption, selected]);
 
   return (
     <Select
       placeholder={"Select session..."}
       className={"session-select"}
       classNamePrefix={"session-select"}
-      defaultValue={selectAllOption}
       isOptionSelected={isOptionSelected}
-      options={getOptions()}
+      options={[selectAllOption, ...options]}
       value={getValue()}
       onChange={handleChange}
       hideSelectedOptions={false}
