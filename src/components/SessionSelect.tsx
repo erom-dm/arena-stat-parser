@@ -62,7 +62,7 @@ const SessionSelect: React.FC<sessionSelectProps> = ({
         option?.value === selectAllOption.value
       ) {
         setSelected(options);
-        selectedTimestampArray.push(...options.map((option) => option.value));
+        selectedTimestampArray.push(...options.map((option) => option?.value));
       } else if (
         (action === "deselect-option" &&
           option?.value === selectAllOption.value) ||
@@ -79,11 +79,11 @@ const SessionSelect: React.FC<sessionSelectProps> = ({
         );
         setSelected(filteredOptions);
         selectedTimestampArray.push(
-          ...filteredOptions.map((option) => option.value)
+          ...filteredOptions.map((option) => option?.value)
         );
       } else {
         setSelected(newValue || []);
-        selectedTimestampArray.push(...newValue.map((option) => option.value));
+        selectedTimestampArray.push(...newValue.map((option) => option?.value));
       }
       onChange && onChange(selectedTimestampArray);
     },

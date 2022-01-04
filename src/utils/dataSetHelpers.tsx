@@ -385,8 +385,8 @@ export function getClassDistributionChartInputData(
   dataset: ClassDistributionDataset
 ): ClassDistributionChartInputData {
   const colorRangeInfo: ColorRangeInfo = {
-    colorStart: 0.1,
-    colorEnd: 0.85,
+    colorStart: 0.05,
+    colorEnd: 0.87,
     useEndAsStart: true,
   };
   const sortedEntries = Object.entries(dataset).sort(
@@ -446,8 +446,8 @@ export function getTeamCompsChartInputData(
   dataset: TeamCompDataset
 ): TeamCompsChartInputData {
   const colorRangeInfo: ColorRangeInfo = {
-    colorStart: 0.1,
-    colorEnd: 0.85,
+    colorStart: 0.05,
+    colorEnd: 0.87,
     useEndAsStart: true,
   };
   const sortedEntries = Object.entries(dataset).sort(

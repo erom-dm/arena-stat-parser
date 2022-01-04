@@ -5,10 +5,10 @@ import { ModdedArenaMatch } from "../Types/ArenaTypes";
 import { CHART_ROUTES, filterMatchData } from "../utils/dataSetHelpers";
 import { getSessions } from "../utils/sessionManagement";
 import SuspenseFallback from "./SuspenseFallback";
+import ChartWrapper from "./ChartWrapper";
 const SessionSelect = React.lazy(() => import("./SessionSelect"));
 const TeamSelect = React.lazy(() => import("./TeamSelect"));
 const ButtonGroup = React.lazy(() => import("./ButtonGroup"));
-const ChartWrapper = React.lazy(() => import("./ChartWrapper"));
 const SettingsModal = React.lazy(() => import("./SettingsModal"));
 
 export type dashboardProps = {

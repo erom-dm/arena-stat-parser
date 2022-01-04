@@ -125,8 +125,8 @@ const TeamsChart: React.FC<teamsChartProps> = ({ selectedArenaMatches }) => {
   });
 
   const colorRangeInfo: ColorRangeInfo = {
-    colorStart: 0.1,
-    colorEnd: 0.85,
+    colorStart: 0.05,
+    colorEnd: 0.87,
     useEndAsStart: true,
   };
   generateChartColors(
