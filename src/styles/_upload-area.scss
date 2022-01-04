@@ -1,21 +1,21 @@
 .upload-area {
   position: fixed;
-  bottom: 50px;
-  left: -105px;
+  bottom: 90px;
+  left: -100px;
   border-right: 40px solid transparent;
   border-top: 20px solid transparent;
-  border-bottom: 20px solid transparent;
+  border-bottom: 5px solid transparent;
   z-index: 1;
   transition: 150ms all;
   &__content-wrap {
     position: relative;
-    padding:  10px 25px;
+    padding:  10px 25px 10px 23px;
     border-radius: 0 14px 14px 0;
     line-height: 16px;
     color: $orange;
     font-weight: bold;
     text-transform: capitalize;
-    background: rgba(0,0,0, 0.7);
+    background: $black85;
     text-align: center;
     cursor: pointer;
     overflow: visible;

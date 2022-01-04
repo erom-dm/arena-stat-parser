@@ -32,3 +32,11 @@
     border-radius: $br;
   }
 }
+
+@mixin minWidth($val) {
+  @media screen and (min-width: $val) { @content; }
+}
+
+@mixin maxWidth($val) {
+  @media (max-width: $val) { @content; }
+}

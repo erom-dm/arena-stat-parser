@@ -1,14 +1,14 @@
 .button-group {
-
+  flex-shrink: 0;
   &__button {
     display: inline-block;
     line-height: 26px;
     border: none;
     background: $gunmetal;
     color: $spanishGray;
-    height: 36px;
+    height: 38px;
     border-radius: 0;
-    padding: 5px 15px;
+    padding: 6px 15px;
     cursor: pointer;
     text-decoration: none;
     &:hover {

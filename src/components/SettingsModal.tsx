@@ -20,7 +20,6 @@ const SettingsModal: React.FC<settingsModalProps> = ({
   return (
     <div className={"settings-modal__container"}>
       <button className={"settings-modal__settings-btn"} onClick={toggleModal}>
-        <span>Settings</span>
         <GearIcon />
       </button>
       <Modal

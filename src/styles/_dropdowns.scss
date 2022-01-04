@@ -1,19 +1,41 @@
 .session-select, .team-select {
   margin: 0 0 0 15px;
   height: fit-content;
-  border-radius: 4px 2px 2px 4px !important;
+  border-radius: 4px !important;
   font-size: 1.6rem;
 
   &__control {
     @include styled-scrollbar;
-    border-radius: 4px 2px 2px 4px !important;
+    border-radius: 4px !important;
     max-height: 38px;
     overflow-y: scroll;
     border-width: 0 !important;
+    cursor: pointer !important;
+    background: $gunmetal !important;
+
     &--is-focused {
       max-height: 82px;
+      background: $gunmetalLight !important;
       border-color: $gunmetal !important;
       box-shadow: 0 0 0 1px $gunmetal !important;
+    }
+  }
+  &__value-container {
+
+  }
+  &__single-value {
+    color: $orange !important;
+  }
+  &__multi-value {
+    background: $orange !important;
+    &__label {
+      color: $gunmetal !important;
+    }
+    &__remove {
+      color: $gunmetal !important;
+      &:hover {
+        background-color: #da4a01 !important;
+      }
     }
   }
   &__indicators {
@@ -27,17 +49,36 @@
   &__dropdown-indicator, &__indicator-separator {
     display: none !important;
   }
+  &__menu {
+    box-shadow: 0 2px 3px 2px $mainBGColor !important;
+  }
   &__menu, &__menu-list {
     @include styled-scrollbar;
+    background: $gunmetal !important;
+    border-radius: 4px !important;
+    padding: 0 !important;
+    max-height: 400px !important;
+  }
+  &__option {
+    cursor: pointer !important;
+    color: $orange !important;
+    &--is-focused {
+      background-color: $darkOrangeHighlight !important;
+    }
+    &--is-selected {
+      color: black !important;
+      background: $orange !important;
+    }
   }
 }
 
 .team-select {
-  width: 200px;
+  width: 233px;
+  min-width: 150px;
 }
 
 .session-select {
-  width: 300px;
+  min-width: 233px;
   &__clear-indicator {
     margin: 8px;
     padding: 0 !important;

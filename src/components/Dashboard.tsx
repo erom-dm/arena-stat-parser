@@ -38,6 +38,9 @@ const Dashboard: React.FC<dashboardProps> = ({
     <div className="dashboard">
       <Suspense fallback={<SuspenseFallback />}>
         <UploadArea localStoreChangeHandler={setLocalStorageChanged} />
+        {!matchDataIsEmpty && (
+          <SettingsModal localStoreChangeHandler={setLocalStorageChanged} />
+        )}
         <div className="dashboard__top-bar">
           <div className="dashboard__top-bar-wrap">
             {matchDataIsEmpty && (
@@ -61,9 +64,6 @@ const Dashboard: React.FC<dashboardProps> = ({
                   />
                 )}
               </div>
-            )}
-            {!matchDataIsEmpty && (
-              <SettingsModal localStoreChangeHandler={setLocalStorageChanged} />
             )}
           </div>
         </div>
