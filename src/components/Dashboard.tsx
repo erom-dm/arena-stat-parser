@@ -36,7 +36,7 @@ const Dashboard: React.FC<dashboardProps> = ({
 
   return (
     <div className="dashboard">
-      <Suspense fallback={SuspenseFallback}>
+      <Suspense fallback={<SuspenseFallback />}>
         <UploadArea localStoreChangeHandler={setLocalStorageChanged} />
         <div className="dashboard__top-bar">
           <div className="dashboard__top-bar-wrap">

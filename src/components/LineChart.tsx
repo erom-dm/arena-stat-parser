@@ -123,7 +123,7 @@ const LineChart: React.FC<LineChartProps> = ({
             const dateString = tooltip.dataset.sessionDates[index];
             return [
               `Session #${index + 1} - ${dateString}`,
-              `End session rating: ${rating}`,
+              `Final session rating: ${rating}`,
             ];
           },
           title: () => "",
