@@ -4,18 +4,18 @@
     "static/js/0.447b618d.chunk.js.map": "/arena-stat-parser/static/js/0.447b618d.chunk.js.map",
     "static/js/1.86e6effd.chunk.js": "/arena-stat-parser/static/js/1.86e6effd.chunk.js",
     "static/js/1.86e6effd.chunk.js.map": "/arena-stat-parser/static/js/1.86e6effd.chunk.js.map",
-    "main.css": "/arena-stat-parser/static/css/main.b02725c0.chunk.css",
-    "main.js": "/arena-stat-parser/static/js/main.4a46b4b2.chunk.js",
-    "main.js.map": "/arena-stat-parser/static/js/main.4a46b4b2.chunk.js.map",
-    "runtime-main.js": "/arena-stat-parser/static/js/runtime-main.dc67037b.js",
-    "runtime-main.js.map": "/arena-stat-parser/static/js/runtime-main.dc67037b.js.map",
+    "main.css": "/arena-stat-parser/static/css/main.7d642237.chunk.css",
+    "main.js": "/arena-stat-parser/static/js/main.64b947b0.chunk.js",
+    "main.js.map": "/arena-stat-parser/static/js/main.64b947b0.chunk.js.map",
+    "runtime-main.js": "/arena-stat-parser/static/js/runtime-main.cdee106e.js",
+    "runtime-main.js.map": "/arena-stat-parser/static/js/runtime-main.cdee106e.js.map",
     "static/css/4.679831fc.chunk.css": "/arena-stat-parser/static/css/4.679831fc.chunk.css",
     "static/js/4.aa6f4eb8.chunk.js": "/arena-stat-parser/static/js/4.aa6f4eb8.chunk.js",
     "static/js/4.aa6f4eb8.chunk.js.map": "/arena-stat-parser/static/js/4.aa6f4eb8.chunk.js.map",
     "static/js/5.422b1211.chunk.js": "/arena-stat-parser/static/js/5.422b1211.chunk.js",
     "static/js/5.422b1211.chunk.js.map": "/arena-stat-parser/static/js/5.422b1211.chunk.js.map",
-    "static/js/6.b5ddd923.chunk.js": "/arena-stat-parser/static/js/6.b5ddd923.chunk.js",
-    "static/js/6.b5ddd923.chunk.js.map": "/arena-stat-parser/static/js/6.b5ddd923.chunk.js.map",
+    "static/js/6.212de3f4.chunk.js": "/arena-stat-parser/static/js/6.212de3f4.chunk.js",
+    "static/js/6.212de3f4.chunk.js.map": "/arena-stat-parser/static/js/6.212de3f4.chunk.js.map",
     "static/js/7.60c563bc.chunk.js": "/arena-stat-parser/static/js/7.60c563bc.chunk.js",
     "static/js/7.60c563bc.chunk.js.map": "/arena-stat-parser/static/js/7.60c563bc.chunk.js.map",
     "static/js/8.55146216.chunk.js": "/arena-stat-parser/static/js/8.55146216.chunk.js",
@@ -38,7 +38,7 @@
     "static/js/16.bab125a8.chunk.js.map": "/arena-stat-parser/static/js/16.bab125a8.chunk.js.map",
     "index.html": "/arena-stat-parser/index.html",
     "static/css/4.679831fc.chunk.css.map": "/arena-stat-parser/static/css/4.679831fc.chunk.css.map",
-    "static/css/main.b02725c0.chunk.css.map": "/arena-stat-parser/static/css/main.b02725c0.chunk.css.map",
+    "static/css/main.7d642237.chunk.css.map": "/arena-stat-parser/static/css/main.7d642237.chunk.css.map",
     "static/js/0.447b618d.chunk.js.LICENSE.txt": "/arena-stat-parser/static/js/0.447b618d.chunk.js.LICENSE.txt",
     "static/js/1.86e6effd.chunk.js.LICENSE.txt": "/arena-stat-parser/static/js/1.86e6effd.chunk.js.LICENSE.txt",
     "static/js/4.aa6f4eb8.chunk.js.LICENSE.txt": "/arena-stat-parser/static/js/4.aa6f4eb8.chunk.js.LICENSE.txt",
@@ -48,10 +48,10 @@
     "static/media/upload-icon.7786d66a.svg": "/arena-stat-parser/static/media/upload-icon.7786d66a.svg"
   },
   "entrypoints": [
-    "static/js/runtime-main.dc67037b.js",
+    "static/js/runtime-main.cdee106e.js",
     "static/css/4.679831fc.chunk.css",
     "static/js/4.aa6f4eb8.chunk.js",
-    "static/css/main.b02725c0.chunk.css",
-    "static/js/main.4a46b4b2.chunk.js"
+    "static/css/main.7d642237.chunk.css",
+    "static/js/main.64b947b0.chunk.js"
   ]
 }
