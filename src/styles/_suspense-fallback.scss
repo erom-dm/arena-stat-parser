@@ -1,0 +1,15 @@
+.suspense-fallback {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+
+  &__text {
+    text-align: left;
+    font-size: 3.5rem;
+    color: $gunmetal;
+    min-width: 160px;
+  }
+}

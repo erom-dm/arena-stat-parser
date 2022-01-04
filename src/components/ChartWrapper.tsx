@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { MatchSessions, ModdedArenaMatch } from "../Types/ArenaTypes";
-import MatchupChart from "./MatchupChart";
-import LineChart from "./LineChart";
 import { Routes, Route, Navigate } from "react-router-dom";
 import { matchArrayFromSelectedSessions } from "../utils/dataSetHelpers";
-import TeamsChart from "./TeamsChart";
-import MatchList from "./MatchList";
-import EmptyRoute from "./EmptyRoute";
+const MatchupChart = React.lazy(() => import("./MatchupChart"));
+const LineChart = React.lazy(() => import("./LineChart"));
+const TeamsChart = React.lazy(() => import("./TeamsChart"));
+const MatchList = React.lazy(() => import("./MatchList"));
+const EmptyRoute = React.lazy(() => import("./EmptyRoute"));
 
 export type chartContainerProps = {
   sessionData: MatchSessions;
