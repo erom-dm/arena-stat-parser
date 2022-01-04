@@ -1,17 +1,67 @@
 .upload-area {
-  position: relative;
-  flex-shrink: 0;
-  bottom: 0;
-  padding:  8px 19px;
-  border: 1px solid transparent;
-  border-radius: $br;
-  line-height: 16px;
-  color: $orange;
-  background: rgba(0,0,0, 0.7);
-  text-align: center;
-  cursor: pointer;
-  &:hover {
-    border-color: $orange;
-    transition: 150ms;
+  position: fixed;
+  bottom: 50px;
+  left: -105px;
+  border-right: 40px solid transparent;
+  border-top: 20px solid transparent;
+  border-bottom: 20px solid transparent;
+  z-index: 1;
+  transition: 150ms all;
+  &__content-wrap {
+    position: relative;
+    padding:  10px 25px;
+    border-radius: 0 14px 14px 0;
+    line-height: 16px;
+    color: $orange;
+    font-weight: bold;
+    text-transform: capitalize;
+    background: rgba(0,0,0, 0.7);
+    text-align: center;
+    cursor: pointer;
+    overflow: visible;
+    img {
+      margin: 10px 0 0;
+      max-height: 40px;
+    }
+    &:before {
+      box-sizing: border-box;
+      content: "";
+      position: absolute;
+      right: 0;
+      top: calc(50% - 7px);
+      border: 7px solid transparent;
+      border-right-color: $orange;
+      opacity: 1;
+      transition: 300ms opacity;
+      z-index: 2;
+    }
+  }
+  &:hover, &.drag-hover {
+    left: 0;
+    transition: 250ms all;
+
+    .upload-area__content-wrap:before {
+      opacity: 0;
+      transition: 300ms opacity;
+    }
+  }
+  &.drag-hover {
+    .upload-area__content-wrap {
+      animation: boxShadowPulse;
+      animation-duration: 2.5s;
+      animation-iteration-count: infinite;
+    }
+  }
+}
+
+@keyframes boxShadowPulse {
+  0% {
+    box-shadow: 0 0 5px 2px $orange;
+  }
+  50% {
+    box-shadow: 0 0 10px 5px $orange;
+  }
+  100% {
+    box-shadow: 0 0 5px 2px $orange;
   }
 }

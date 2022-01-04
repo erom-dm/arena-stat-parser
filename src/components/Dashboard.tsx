@@ -35,9 +35,9 @@ const Dashboard: React.FC<dashboardProps> = ({
 
   return (
     <div className="dashboard">
+      <UploadArea localStoreChangeHandler={setLocalStorageChanged} />
       <div className="dashboard__top-bar">
         <div className="dashboard__top-bar-wrap">
-          <UploadArea localStoreChangeHandler={setLocalStorageChanged} />
           {matchDataIsEmpty && (
             <button
               className={"dashboard__sample-data-button"}
