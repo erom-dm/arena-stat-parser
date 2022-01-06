@@ -32,8 +32,8 @@ const ClearStateButton: React.FC<clearStateBtnProps> = ({
   };
 
   const buttonClass = disabled
-    ? "clear-state-button clear-state-button--disabled"
-    : "clear-state-button";
+    ? "clear-state-button clear-state-button--disabled settings-button"
+    : "clear-state-button settings-button";
 
   return (
     <div className="clear-state-button__wrap">

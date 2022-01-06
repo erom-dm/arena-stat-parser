@@ -1,5 +1,5 @@
 import React, { useCallback, useState } from "react";
-import { parseData } from "../utils/parseData";
+import { parseArenaStatParserLogData, parseData } from "../utils/parseData";
 import { arrayBufferToString } from "../utils/ArrayBuffer-StringHelper";
 import { useDropzone } from "react-dropzone";
 import { consolidateState } from "../utils/stateManagement";
@@ -25,16 +25,20 @@ const UploadArea: React.FC<landingProps> = ({ localStoreChangeHandler }) => {
   const onDrop = useCallback(
     (acceptedFiles) => {
       acceptedFiles.forEach((file: any) => {
-        //TBD
         const reader = new FileReader();
 
         reader.onabort = () => setText("File reading was aborted");
         reader.onerror = () => setText("File reading failed");
         reader.onload = () => {
           const binaryStr = reader.result;
-          consolidateState(
-            modifyDataAndAddIds(parseData(arrayBufferToString(binaryStr)))
-          );
+          const dataString = arrayBufferToString(binaryStr);
+          const isNovaInstanceTrackerLogFile =
+            dataString.startsWith("\r\nNITdatabase");
+          if (isNovaInstanceTrackerLogFile) {
+            consolidateState(modifyDataAndAddIds(parseData(dataString)));
+          } else {
+            consolidateState(parseArenaStatParserLogData(dataString));
+          }
           localStoreChangeHandler((prevState) => !prevState);
           setText("Log parsed!");
           setTimeout(() => {

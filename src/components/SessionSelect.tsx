@@ -94,7 +94,7 @@ const SessionSelect: React.FC<sessionSelectProps> = ({
     // Resets selected to empty arr, if selected value wasn't within session keys
     if (selected.length) {
       let overlap = true;
-      const selectedValues = selected.map((el) => el.value);
+      const selectedValues = selected.map((el) => el?.value);
       selectedValues.forEach((val) => {
         if (!sessionKeys.includes(val)) {
           overlap = false;

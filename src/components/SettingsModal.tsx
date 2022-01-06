@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { ReactComponent as GearIcon } from "../assets/gear.svg";
 import Modal from "react-modal";
 import ClearStateButton from "./ClearStateButton";
+import CreateBackupFileButton from "./CreateBackupFileButton";
 
 export type settingsModalProps = {
   localStoreChangeHandler: React.Dispatch<React.SetStateAction<boolean>>;
@@ -34,6 +35,7 @@ const SettingsModal: React.FC<settingsModalProps> = ({
           className="settings-modal__close-modal-btn"
           onClick={toggleModal}
         />
+        <CreateBackupFileButton />
         <ClearStateButton
           localStoreChangeHandler={localStoreChangeHandler}
           toggleModal={toggleModal}

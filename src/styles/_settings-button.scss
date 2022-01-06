@@ -1,9 +1,12 @@
-.clear-state-button {
+.settings-button {
   @include button-default();
   margin: 0 10px 0 0;
-  border: 1px solid $warningRed;
-  color: $warningRed;
   font-size: 1.8rem;
+}
+
+.clear-state-button {
+  border: 1px dashed $warningRed;
+  color: $warningRed;
 
   &--disabled {
     animation-name: buttonFade;
@@ -12,8 +15,24 @@
     animation-timing-function: linear;
   }
   &__wrap {
+    margin-top: 10px;
     display: flex;
     align-items: center;
+  }
+  &__text {
+    font-size: 2rem;
+    color: $black;
+  }
+}
+
+.create-backup-btn {
+  &__wrap {
+
+  }
+  &__link {
+    color: $darkerSaffron;
+    font-size: 1.8rem;
+    margin: 0 10px 0 0;
   }
   &__text {
     font-size: 2rem;

@@ -25,6 +25,7 @@ import {
 import { hashFromStrings } from "./hashGeneration";
 import generateChartColors from "./colorGeneration";
 import { interpolateTurbo } from "d3-scale-chromatic";
+import { arenaMatchTypeGuard } from "./parseData";
 
 const DC_TEAM_NAME = "~DC~";
 const DISCONNECT = "DISCONNECT";
@@ -53,37 +54,42 @@ export function modifyDataAndAddIds(data: ArenaMatch[]): ModdedArenaMatch[] {
     (match) =>
       Object.keys(ARENA_INSTANCE_IDS).includes(String(match.instanceID)) &&
       match.hasOwnProperty("purpleTeam") &&
-      match.hasOwnProperty("goldTeam")
+      match.hasOwnProperty("goldTeam") &&
+      arenaMatchTypeGuard(match)
   );
-  const moddedArenaMatches = getModdedArenaMatches(filteredData);
+  if (filteredData.length) {
+    const moddedArenaMatches = getModdedArenaMatches(filteredData);
 
-  // Calculate hash values for each match, add as unique ID
-  return moddedArenaMatches.map((match) => {
-    const { instanceID, myTeamName, enemyTeamName, myTeam, enemyTeam } = match;
-    const {
-      MMR: myTeamMMR,
-      rating: myTeamRating,
-      newRating: myTeamNewRating,
-    } = getTeamRatingValues(myTeam);
-    const {
-      MMR: enemyTeamMMR,
-      rating: enemyTeamRating,
-      newRating: enemyTeamNewRating,
-    } = getTeamRatingValues(enemyTeam);
+    // Calculate hash values for each match, add as unique ID
+    return moddedArenaMatches.map((match) => {
+      const { instanceID, myTeamName, enemyTeamName, myTeam, enemyTeam } =
+        match;
+      const {
+        MMR: myTeamMMR,
+        rating: myTeamRating,
+        newRating: myTeamNewRating,
+      } = getTeamRatingValues(myTeam);
+      const {
+        MMR: enemyTeamMMR,
+        rating: enemyTeamRating,
+        newRating: enemyTeamNewRating,
+      } = getTeamRatingValues(enemyTeam);
 
-    match.matchID = hashFromStrings([
-      myTeamName,
-      enemyTeamName,
-      String(instanceID),
-      String(myTeamMMR),
-      String(myTeamRating),
-      String(myTeamNewRating),
-      String(enemyTeamMMR),
-      String(enemyTeamRating),
-      String(enemyTeamNewRating),
-    ]);
-    return match;
-  });
+      match.matchID = hashFromStrings([
+        myTeamName,
+        enemyTeamName,
+        String(instanceID),
+        String(myTeamMMR),
+        String(myTeamRating),
+        String(myTeamNewRating),
+        String(enemyTeamMMR),
+        String(enemyTeamRating),
+        String(enemyTeamNewRating),
+      ]);
+      return match;
+    });
+  }
+  return [];
 }
 
 export function getModdedArenaMatches(data: ArenaMatch[]): ModdedArenaMatch[] {
