@@ -1,0 +1,2 @@
+(this["webpackJsonparena-data-parser"]=this["webpackJsonparena-data-parser"]||[]).push([[10],{240:function(e,t,a){"use strict";a.r(t);a(0);var r=a(1);t.default=function(){return Object(r.jsxs)("div",{className:"empty-route",children:[Object(r.jsx)("div",{children:"Nothing to see here"}),Object(r.jsx)("div",{children:"\xaf\\_(\u30c4)_/\xaf"})]})}}}]);
+//# sourceMappingURL=10.5ceceef3.chunk.js.map

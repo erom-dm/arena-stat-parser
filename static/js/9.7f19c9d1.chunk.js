@@ -1,2 +1,0 @@
-(this["webpackJsonparena-data-parser"]=this["webpackJsonparena-data-parser"]||[]).push([[9],{235:function(t,a,r){"use strict";r.r(a);var e=r(4),n=(r(0),r(15)),s=r(1);a.default=function(t){var a=t.buttonLabels.map((function(t,a){var r=Object(e.a)(t,2),u=r[0],c=r[1];return Object(s.jsx)(n.b,{className:"button-group__button",to:c,children:u},a)}));return Object(s.jsx)("div",{className:"button-group",children:a})}}}]);
-//# sourceMappingURL=9.7f19c9d1.chunk.js.map
