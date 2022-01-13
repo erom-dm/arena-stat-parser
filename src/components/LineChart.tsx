@@ -11,6 +11,7 @@ import {
   getLineChartInputData,
 } from "../utils/dataSetHelpers";
 import dayjs from "dayjs";
+import { isMobile } from "react-device-detect";
 
 type LineChartProps = {
   selectedArenaMatches: ModdedArenaMatch[];
@@ -31,7 +32,6 @@ const LineChart: React.FC<LineChartProps> = ({
         : LineChartTypes.perMatch
     );
   };
-
   const matchDataset = useMemo(
     () => createMatchRatingChangeDataSet(selectedArenaMatches),
     [selectedArenaMatches]
@@ -54,9 +54,18 @@ const LineChart: React.FC<LineChartProps> = ({
     [selectedSessions]
   );
 
+  const chartVars = useMemo(
+    () => ({
+      tickSize: isMobile ? 12 : 15,
+      maxTicksLimitY: isMobile ? 8 : 15,
+      maxTicksLimitX: isMobile ? 10 : 20,
+    }),
+    []
+  );
+
   const ticksConf = {
     color: "#292F36",
-    font: { size: 15, family: "'Roboto', sans-serif" },
+    font: { size: chartVars.tickSize, family: "'Roboto', sans-serif" },
     stepSize: 1,
     beginAtZero: true,
   };
@@ -65,15 +74,30 @@ const LineChart: React.FC<LineChartProps> = ({
     maintainAspectRatio: false,
     scales: {
       "y-axis-1": {
-        ticks: { ...ticksConf, autoSkip: true, maxTicksLimit: 15 },
+        ticks: {
+          ...ticksConf,
+          autoSkip: true,
+          maxTicksLimit: chartVars.maxTicksLimitY,
+        },
         bounds: "ticks",
         grid: { borderDashOffset: 0.9 },
       },
       x: {
-        ticks: { ...ticksConf, autoSkip: true, maxTicksLimit: 20 },
+        ticks: {
+          ...ticksConf,
+          autoSkip: true,
+          maxTicksLimit: chartVars.maxTicksLimitX,
+        },
       },
     },
     plugins: {
+      legend: {
+        rtl: false,
+        labels: {
+          font: { size: chartVars.tickSize, family: "'Roboto', sans-serif" },
+          color: "#292F36",
+        },
+      },
       tooltip: {
         callbacks: {
           afterLabel: (tooltip: any) => {

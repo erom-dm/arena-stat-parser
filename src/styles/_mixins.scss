@@ -15,7 +15,7 @@
   }
 }
 
-@mixin styled-scrollbar {
+@mixin styled-scrollbar($val: $orange, $thumbBorderRadius: $br) {
   &::-webkit-scrollbar {
     margin: 1px 0;
     padding: 0;
@@ -24,8 +24,8 @@
   }
 
   &::-webkit-scrollbar-thumb {
-    background: $orange;
-    border-radius: $br;
+    background: $val;
+    border-radius: $thumbBorderRadius;
   }
 
   &::-webkit-scrollbar-track {
@@ -39,4 +39,19 @@
 
 @mixin maxWidth($val) {
   @media (max-width: $val) { @content; }
+}
+
+@mixin tablet() {
+  $toolboxHeight: 58px;
+  @media (max-width: 899px) { @content; }
+}
+
+@mixin midSizeMobile() {
+  $toolboxHeight: 58px;
+  @media (max-width: 750px) { @content; }
+}
+
+@mixin phone() {
+  $toolboxHeight: 48px;
+  @media (max-width: 520px) { @content; }
 }

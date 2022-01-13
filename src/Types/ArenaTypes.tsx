@@ -250,7 +250,7 @@ export type TeamRatingObject = {
 };
 
 export enum MatchupChartTypes {
-  teamComps = "Team comps",
+  teamComps = "Teams",
   classes = "Classes",
 }
 

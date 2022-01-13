@@ -1,5 +1,5 @@
-@import "vars";
 @import "mixins";
+@import "vars";
 @import "suspense-fallback";
 @import "upload-area";
 @import "dashboard";
@@ -10,14 +10,17 @@
 @import "settings-modal";
 @import "settings-button";
 @import "empty-route";
+@import "drawer";
+@import "toolbar";
 
 html {
   font-size: 62.5%;
 }
 
 html, body, #root {
-  height: 100%;
+  height: 100vh;
   scroll-behavior: smooth;
+  overflow: hidden;
 }
 
 body {
@@ -35,19 +38,6 @@ h1, h2, h3, h4, h5, h6, p {
 
 h1 {
   font-size: 2.6rem;
-}
-
-.main-wrap {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  position: relative;
-  width: 100%;
-  height: auto;
-  min-height: 100vh;
-  padding: 0;
-  background: $gunmetal;
-  color: $saffron;
 }
 
 .mage {

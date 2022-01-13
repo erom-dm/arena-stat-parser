@@ -1,14 +1,45 @@
 .dashboard {
-  background: $spanishGray;
-  padding: 68px 30px 0;
+  display: flex;
+  flex-direction: column;
   flex-grow: 1;
   flex-shrink: 0;
   width: 100%;
+  height: 100%;
   color: $auburn;
   font-size: 1.6rem;
+  background: $spanishGray;
+  &--no-match-data {
+    justify-content: center;
+    align-items: center;
+    .dashboard__btn-wrap {
+      width: 350px;
+    }
+    .upload-area {
+      position: relative;
+      bottom: unset;
+      display: block;
+      left: 0;
+      border: none;
+      margin: 0 0 15px;
+      font-size: 2.5rem;
+      .upload-area__content-wrap {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        animation: boxShadowPulse;
+        animation-duration: 2.5s;
+        animation-iteration-count: infinite;
+        border-radius: $br;
 
-  &__top-bar {
-    position: absolute;
+        img {
+          margin: 0 0 0 15px;
+        }
+      }
+    }
+  }
+
+  &__toolbar-wrap {
+    position: relative;
     top: 0;
     left: 0;
     width: 100%;
@@ -17,33 +48,7 @@
     align-items: center;
     justify-content: center;
     background: $headerBGColor;
-  }
-
-  &__top-bar-wrap {
-    display: flex;
-    align-items: center;
-    margin: 0 -30px;
-    padding: 15px 30px;
-    width: 100%;
-    max-width: calc(#{$maxContainerWidth} + 40px);
-  }
-
-  &__filters {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 38px;
-    flex-grow: 1;
-    padding: 0;
-
-    &-btn {
-      @include button-default;
-    }
-
-    form {
-      display: flex;
-      align-items: center;
-    }
+    box-shadow: inset 0 -6px 13px -12px black;
   }
 
   &__charname-input {
@@ -61,10 +66,19 @@
     border-radius: $br;
   }
 
-  &__sample-data-button {
-    @include button-default;
-    color: $saffron;
-    border-color: $saffron;
-    padding: 20px;
+  @include tablet {
+    &--no-match-data {
+      .dashboard__btn-wrap {
+        width: 310px;
+      }
+      .upload-area {
+        font-size: 2rem;
+      }
+    }
+    &__toolbar-wrap {
+      top: unset;
+      bottom: 0;
+      order: 1;
+    }
   }
 }

@@ -1,0 +1,71 @@
+.toolbar {
+  display: flex;
+  align-items: center;
+  margin: 0 -30px;
+  padding: 15px 30px;
+  width: 100%;
+  max-width: calc(#{$maxContainerWidth} + 40px);
+  height: $desktopToolboxHeight;
+
+  &__sample-data-button {
+    @include button-default;
+    color: $saffron;
+    border-color: $saffron;
+    padding: 12px;
+    margin: 0;
+    width: 100%;
+    box-sizing: border-box;
+    font-size: 1.8rem;
+  }
+  &__filters {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 38px;
+    flex-grow: 1;
+    padding: 0;
+
+    &-btn {
+      @include button-default;
+    }
+
+    form {
+      display: flex;
+      align-items: center;
+    }
+  }
+
+  @include tablet {
+    padding: 10px 15px;
+    box-shadow: inset 0 6px 13px -12px black;
+    height: $tabletToolboxHeight;
+
+    &__filters {
+      .button-group {
+
+      }
+      .session-select {
+        display: none;
+      }
+      .team-select {
+        display: none;
+      }
+      &--in-drawer {
+
+      }
+    }
+
+    &__sample-data-button {
+      padding: 15px;
+      font-size: 1.5rem;
+    }
+  }
+
+  @include phone {
+    padding: 0 0 0 10px;
+    height: $phoneToolboxHeight;
+    &__filters {
+      height: 100%;
+    }
+  }
+}

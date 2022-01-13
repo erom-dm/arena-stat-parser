@@ -5,7 +5,7 @@
   font-size: 1.6rem;
 
   &__control {
-    @include styled-scrollbar;
+    @include styled-scrollbar($spanishGray, 2px);
     border-radius: 4px !important;
     max-height: 38px;
     overflow-y: scroll;
@@ -17,7 +17,7 @@
       max-height: 82px;
       background: $gunmetalLight !important;
       border-color: $gunmetal !important;
-      box-shadow: 0 0 0 1px $gunmetal !important;
+      box-shadow: $focusInsetBoxShadow2 !important;
     }
   }
   &__value-container {
@@ -45,6 +45,7 @@
     height: 100%;
     flex-direction: column !important;
     justify-content: center;
+    align-self: center !important;
   }
   &__dropdown-indicator, &__indicator-separator {
     display: none !important;
@@ -53,7 +54,7 @@
     box-shadow: 0 2px 3px 2px $mainBGColor !important;
   }
   &__menu, &__menu-list {
-    @include styled-scrollbar;
+    @include styled-scrollbar($spanishGray, 2px);
     background: $gunmetal !important;
     border-radius: 4px !important;
     padding: 0 !important;
@@ -68,6 +69,12 @@
     &--is-selected {
       color: black !important;
       background: $orange !important;
+    }
+  }
+
+  @include tablet {
+    &__menu, &__menu-list {
+      max-height: 240px !important;
     }
   }
 }

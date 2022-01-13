@@ -38,11 +38,11 @@ const TeamList: React.FC<teamListProps> = ({ className, team }) => {
             <div
               className={`team-list__player-name ${playerClass.toLowerCase()}`}
             >{`${name}: `}</div>
-            <div>
+            <div className={"team-list__player-damage"}>
               <img className="team-list__dps-icon" src={DpsIcon} alt="dps" />
               <span>{damage.toLocaleString() + " "}</span>
             </div>
-            <div>
+            <div className={"team-list__player-healing"}>
               <img
                 className="team-list__heal-icon"
                 src={HealingIcon}

@@ -38,6 +38,7 @@ const TeamSelect: React.FC<teamSelectProps> = ({ teams, onChange }) => {
       options={options}
       value={selected}
       onChange={handleChange}
+      menuPlacement={"auto"}
     />
   );
 };

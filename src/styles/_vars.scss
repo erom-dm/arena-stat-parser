@@ -2,8 +2,10 @@
 
 $black: #000000;
 $black85: rgba(0,0,0, 0.85);
+$black50: rgba(0,0,0, 0.5);
 $mainBGColor: #313131;
 $headerBGColor: #6a6c6a;
+$darkTitleColor: #1a1c1e;
 $gunmetal: #292f36;
 $gunmetalLight: rgba(41, 47, 54, 0.85);
 $gunmetal50: rgba(41, 47, 54, 0.50);
@@ -36,6 +38,22 @@ $shaman: #0070DD;
 $warlock: #8788EE;
 $warrior: #C69B6D;
 
+$focusInsetBoxShadow: inset 0 0 4px 2.3px $orange;
+$focusInsetBoxShadow2: inset 0 0 4px 1px $orange;
+
 // Vars
+$desktopToolboxHeight: 68px;
+$tabletToolboxHeight: 58px;
+$phoneToolboxHeight: 48px;
+
 $maxContainerWidth: 1200px;
 $br: 12px;
+$containerHorizontalPadding: 30px;
+$containerHorizontalPaddingTablet: 10px;
+$containerHorizontalPaddingMob: 5px;
+$chartHeaderMaxHeightDesktop: 35px;
+$chartWrapTopMarginDesktop: 15px;
+$chartWrapTopMarginTablet: 10px;
+$chartHeaderMaxHeightTablet: 32px;
+$drawerWidth: 290px;
+$drawerButtonContentWidth: 130px;

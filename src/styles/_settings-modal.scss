@@ -14,38 +14,80 @@
     }
   }
   &__settings-btn {
-    display: flex;
-    align-items: center;
     padding: 5px 5px;
     margin: 0;
     border: none;
     background: $black85;
     border-radius: 0 $br $br 0;
     line-height: 28px;
-    text-align: center;
     cursor: pointer;
     color: black;
     &:focus-visible {
       outline: 1px solid $orange;
+    }
+    span {
+      display: none;
+      color: $orange;
+      margin: 0 25px 0 0;
+      font-weight: bold;
     }
     svg {
       width: 30px;
       height: 30px;
     }
   }
+  &__settings-btn-content-wrap {
+    display: flex;
+    align-items: center;
+    text-align: center;
+    width: 100%;
+  }
   &__body {
-    position: absolute;
+    @include styled-scrollbar;
+    &::-webkit-scrollbar {
+      margin: 1px 0;
+      padding: 0;
+      width: 4px;
+      border-radius: $br;
+    }
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
     padding: 25px;
     width: 800px;
     height: auto;
     min-height: 400px;
-    top: calc(50% - 200px);
-    left: calc(50% - 400px);
     background: $headerBGColor;
     border: none;
     border-radius: $br;
     overflow: auto;
     outline: none;
+  }
+  &__misc-section {
+
+  }
+  &__state-deletion-section {
+    position: relative;
+    margin-top: 10px;
+    &:before {
+      position: absolute;
+      top: 0;
+      left: 0;
+      content: "";
+      display: block;
+      width: 100%;
+      border-top: 1px solid $auburn;
+    }
+    &:after {
+      position: absolute;
+      box-sizing: border-box;
+      content: "";
+      top: -4px;
+      left: 0;
+      border: 5px solid transparent;
+      border-left: 5px solid $auburn;
+    }
   }
   &__close-modal-btn {
     position: absolute;
@@ -80,11 +122,43 @@
   }
   &__overlay {
     position: fixed;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     inset: 0;
     background: $gunmetalLight;
     z-index: 3;
   }
   &__content {
     color: $white90;
+  }
+
+  @include tablet {
+    &__body {
+      padding: 20px 15px;
+      min-height: 300px;
+      max-height: 95vh;
+      width: 95%;
+      left: 0;
+    }
+    &__container {
+      display: none;
+      position: relative;
+      bottom: unset;
+      left: unset;
+      z-index: unset;
+    }
+  }
+
+  @include phone {
+    &__state-deletion-section {
+      margin-top: 20px;
+      &:before {
+        top: -10px;
+      }
+      &:after {
+        top: -14px;
+      }
+    }
   }
 }

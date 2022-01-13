@@ -1,15 +1,13 @@
 import React, { useMemo, useState, Suspense } from "react";
 import UploadArea from "./UploadArea";
-import { sampleDataToLocalStorage } from "../utils/stateManagement";
 import { ModdedArenaMatch } from "../Types/ArenaTypes";
-import { CHART_ROUTES, filterMatchData } from "../utils/dataSetHelpers";
+import { filterMatchData } from "../utils/dataSetHelpers";
 import { getSessions } from "../utils/sessionManagement";
 import SuspenseFallback from "./SuspenseFallback";
 import ChartWrapper from "./ChartWrapper";
-const SessionSelect = React.lazy(() => import("./SessionSelect"));
-const TeamSelect = React.lazy(() => import("./TeamSelect"));
-const ButtonGroup = React.lazy(() => import("./ButtonGroup"));
+import { sampleDataToLocalStorage } from "../utils/stateManagement";
 const SettingsModal = React.lazy(() => import("./SettingsModal"));
+const Toolbar = React.lazy(() => import("./ToolBar"));
 
 export type dashboardProps = {
   moddedMatchData: ModdedArenaMatch[];
@@ -34,38 +32,38 @@ const Dashboard: React.FC<dashboardProps> = ({
     [myTeamSelection, moddedMatchData]
   );
 
+  if (matchDataIsEmpty) {
+    return (
+      <div className={`dashboard dashboard--no-match-data`}>
+        <Suspense fallback={<SuspenseFallback />}>
+          <div className={`dashboard__btn-wrap`}>
+            <UploadArea localStoreChangeHandler={setLocalStorageChanged} />
+            <button
+              className={"toolbar__sample-data-button"}
+              onClick={() => sampleDataToLocalStorage(setLocalStorageChanged)}
+            >
+              Or click here to use sample data instead!
+            </button>
+          </div>
+        </Suspense>
+      </div>
+    );
+  }
   return (
-    <div className="dashboard">
+    <div className={`dashboard`}>
       <Suspense fallback={<SuspenseFallback />}>
         <UploadArea localStoreChangeHandler={setLocalStorageChanged} />
         {!matchDataIsEmpty && (
           <SettingsModal localStoreChangeHandler={setLocalStorageChanged} />
         )}
-        <div className="dashboard__top-bar">
-          <div className="dashboard__top-bar-wrap">
-            {matchDataIsEmpty && (
-              <button
-                className={"dashboard__sample-data-button"}
-                onClick={() => sampleDataToLocalStorage(setLocalStorageChanged)}
-              >
-                Or use this sample data instead!
-              </button>
-            )}
-            {!matchDataIsEmpty && (
-              <div className="dashboard__filters">
-                <ButtonGroup buttonLabels={CHART_ROUTES} />
-                {myTeams && (
-                  <TeamSelect onChange={setMyTeamSelection} teams={myTeams} />
-                )}
-                {sessionData && (
-                  <SessionSelect
-                    onChange={setSessionSelection}
-                    sessionData={sessionData}
-                  />
-                )}
-              </div>
-            )}
-          </div>
+        <div className="dashboard__toolbar-wrap">
+          <Toolbar
+            myTeams={myTeams}
+            sessionData={sessionData}
+            setSessionSelection={setSessionSelection}
+            setLocalStorageChanged={setLocalStorageChanged}
+            setMyTeamSelection={setMyTeamSelection}
+          />
         </div>
 
         <ChartWrapper

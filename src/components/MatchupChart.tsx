@@ -1,5 +1,6 @@
 import React, { useMemo, useState } from "react";
 import { Bar } from "react-chartjs-2";
+import { isMobile } from "react-device-detect";
 import {
   TeamCompData,
   MatchupChartTypes,
@@ -14,9 +15,15 @@ import {
   getTeamCompsChartInputData,
 } from "../utils/dataSetHelpers";
 
+const chartVars = {
+  tickSize: isMobile ? 12 : 15,
+  maxTicksLimitY: isMobile ? 8 : 15,
+  maxTicksLimitX: isMobile ? 10 : 20,
+};
+
 const ticksConf = {
   color: "#292F36",
-  font: { size: 15, family: "'Roboto', sans-serif" },
+  font: { size: chartVars.tickSize, family: "'Roboto', sans-serif" },
   stepSize: 1,
   beginAtZero: true,
 };

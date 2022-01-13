@@ -139,6 +139,7 @@ const SessionSelect: React.FC<sessionSelectProps> = ({
       hideSelectedOptions={false}
       closeMenuOnSelect={false}
       isMulti
+      menuPlacement={"auto"}
     />
   );
 };

@@ -11,8 +11,17 @@
     padding: 6px 15px;
     cursor: pointer;
     text-decoration: none;
+    text-align: center;
+    box-shadow: none;
+    transition: box-shadow 150ms;
     &:hover {
       background: $gunmetalLight;
+    }
+    &:focus-visible {
+      box-shadow: $focusInsetBoxShadow;
+      outline: none;
+      border: none;
+      transition: box-shadow 200ms;
     }
     &:not(:last-child) {
       border-right: 1px solid $spanishGray;
@@ -29,6 +38,37 @@
       &:hover {
         background: $gunmetalLight;
       }
+    }
+  }
+
+  @include phone {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: stretch;
+    flex-grow: 1;
+    flex-shrink: 1;
+    height: 100%;
+    &__button {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      white-space: break-spaces;
+      flex-basis: 25%;
+      height: unset;
+      padding: 3px 5px;
+      flex-grow: 1;
+      line-height: 16px;
+      &:not(:last-child), &:first-child, &:last-child {
+        border: none;
+        border-radius: 0;
+      }
+    }
+  }
+
+  @include maxWidth(450px) {
+    &__button {
+      font-size: 1.4rem;
     }
   }
 }

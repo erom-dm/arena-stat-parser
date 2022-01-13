@@ -3,11 +3,7 @@ import "./App.css";
 import DashboardWrap from "./components/DashboardWrap";
 
 function App() {
-  return (
-    <div className="main-wrap">
-      <DashboardWrap />
-    </div>
-  );
+  return <DashboardWrap />;
 }
 
 export default App;

@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { makeTextFile } from "../utils/createBackupFile";
 import { INSTANCE_DATA } from "../utils/stateManagement";
+import dayjs from "dayjs";
 
 const CreateBackupFileButton: React.FC = () => {
   const [file, setFIle] = useState<null | string>(null);
@@ -9,6 +10,8 @@ const CreateBackupFileButton: React.FC = () => {
     const localStorageData = window.localStorage.getItem(INSTANCE_DATA);
     localStorageData && makeTextFile(localStorageData, file, setFIle);
   };
+
+  const currentDate: string = dayjs().format("DD/MM/YY");
 
   return (
     <div className={"create-backup-btn__wrap"}>
@@ -21,7 +24,7 @@ const CreateBackupFileButton: React.FC = () => {
       {file && (
         <a
           className={"create-backup-btn__link"}
-          download="ArenaLogBackup.txt"
+          download={`ArenaLogBackup_${currentDate}.txt`}
           href={file}
         >
           {"Download Backup \uD83D\uDDCE"}

@@ -1,31 +1,80 @@
 .chart-wrapper {
   margin: 0 auto 0;
-  padding: 0;
+  padding: 0 $containerHorizontalPadding;
   position: relative;
   text-align: center;
   width: 100%;
-  height: 100%;
+  height: calc(100vh - #{$desktopToolboxHeight});
+
   .header {
-    display: flex;
-    margin: 15px 0 0;
+    display: grid;
+    grid-template-columns: minmax(80px, 150px) auto minmax(80px, 150px);
+    grid-template-rows: auto;
+    grid-column-gap: 10px;
+    margin: 0;
+    max-height: $chartHeaderMaxHeightDesktop;
 
     button {
       @include button-default;
       min-width: 120px;
       margin: 0;
+      white-space: nowrap;
+      overflow: hidden;
+      flex-shrink: 0;
     }
-    h1 {
+    .title {
       margin: auto;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      overflow: hidden;
+      color: $darkTitleColor;
     }
   }
   .chart-container {
     position: relative;
-    height: calc(100vh - 131px);
+    height: calc(100vh - #{$desktopToolboxHeight} - #{$chartHeaderMaxHeightDesktop} - #{$chartWrapTopMarginDesktop});
   }
 
   .matchup-chart-wrap, .line-chart-wrap, .team-chart-wrap {
     width: 100%;
     max-width: $maxContainerWidth;
-    margin: 0 auto;
+    margin: $chartWrapTopMarginDesktop auto 0;
+  }
+
+  @include tablet {
+    padding: 0 10px;
+    height: calc(100vh - #{$tabletToolboxHeight});
+    .chart-container {
+      height: calc(100vh - #{$tabletToolboxHeight} - #{$chartHeaderMaxHeightTablet} - #{$chartWrapTopMarginTablet});;
+    }
+    .header {
+      grid-template-columns: minmax(70px, 90px) auto;
+      max-height: $chartHeaderMaxHeightTablet;
+      button {
+        padding: 8px 10px;
+        min-width: unset;
+        font-size: 1.3rem;
+      }
+      .title {
+        text-overflow: unset;
+        white-space: break-spaces;
+        overflow: hidden;
+        font-size: 1.7rem;
+      }
+    }
+    .matchup-chart-wrap, .line-chart-wrap, .team-chart-wrap {
+      margin: $chartWrapTopMarginTablet auto 0;
+    }
+  }
+
+  @include phone {
+    padding: 0;
+    height: calc(100vh - #{$phoneToolboxHeight});
+    .header {
+      padding: 0 5px;
+      .title {
+        font-size: 1.5rem;
+      }
+    }
   }
 }
