@@ -4,6 +4,7 @@ import Modal from "react-modal";
 import ClearStateButton from "./ClearStateButton";
 import CreateBackupFileButton from "./CreateBackupFileButton";
 import { SettingsModalContext } from "./ToolBar";
+import LocalStorageStatusDisplay from "./LocalStorageStatusDisplay";
 
 export type settingsModalProps = {
   localStoreChangeHandler: React.Dispatch<React.SetStateAction<boolean>>;
@@ -42,6 +43,7 @@ const SettingsModal: React.FC<settingsModalProps> = ({
           onClick={toggleModal}
         />
         <div className="settings-modal__misc-section">
+          <LocalStorageStatusDisplay />
           <CreateBackupFileButton />
         </div>
         <div className="settings-modal__state-deletion-section">

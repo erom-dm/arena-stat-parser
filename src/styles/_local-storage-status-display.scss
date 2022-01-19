@@ -1,0 +1,53 @@
+.local-storage-status-display {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin: 0 0 20px;
+
+  &__bar {
+    position: relative;
+    width: 100%;
+    margin: 0 0 8px;
+  }
+  &__outer-bar {
+    width: 100%;
+    background: $gunmetal;
+    border-radius: 12px;
+    height: 12px;
+  }
+  &__inner-bar {
+    position: absolute;
+    top: 0;
+    left: 0;
+    background: $saffron;
+    border-radius: 12px;
+    height: 12px;
+  }
+  &__info {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    font-size: 1.8rem;
+    white-space: nowrap;
+    &--no-bar {
+      white-space: normal;
+    }
+  }
+  &__value, &__percentage {
+    text-wrap: none;
+    margin-left: 10px;
+  }
+
+  @include tablet {
+    &__bar {
+      width: 95%;
+    }
+    &__info {
+      flex-wrap: wrap;
+      font-size: 1.6rem;
+    }
+    &__value, &__percentage {
+      margin-left: 5px;
+    }
+  }
+}
