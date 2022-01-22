@@ -3,12 +3,14 @@ import { Player, teamCompArrayType } from "../Types/ArenaTypes";
 export function getTeamCompArray(
   players: (Player | null)[]
 ): teamCompArrayType {
-  return players.map((player) => {
-    if (player) {
-      return player.class;
-    }
-    return "disconnected";
-  });
+  return players
+    .map((player) => {
+      if (player) {
+        return player.class;
+      }
+      return "disconnected";
+    })
+    .sort();
 }
 
 export function getTeamCompString(players: (Player | null)[]): string {
@@ -18,9 +20,6 @@ export function getTeamCompString(players: (Player | null)[]): string {
 }
 
 export function normalizeString(str: string): string {
-  if (!str) {
-    debugger;
-  }
   const lcString = str.replace(/ /g, "").toLowerCase();
   return lcString.charAt(0).toUpperCase() + lcString.slice(1);
 }

@@ -107,7 +107,6 @@ function unfoldCompactTeamData(data: TeamCompact): Team {
     p: playersCompact,
   } = data;
   const bracket = playersCompact.length;
-  debugger;
   const players = unfoldCompactPlayerData(playersCompact);
   const teamCompArray = getTeamCompArray(players);
   const teamCompString = getTeamCompString(players);
