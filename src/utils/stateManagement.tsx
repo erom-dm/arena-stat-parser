@@ -11,34 +11,12 @@ import {
 } from "../Types/ArenaTypes";
 import { sampleData } from "../sampleData";
 import { getTeamCompArray, getTeamCompString } from "./stateHelpers";
-
-export const INSTANCE_DATA = "instanceData";
-export const PLAYER_DC_STRING = "DC";
-
-export const classCompressionMapLC: classCompressionMapType = {
-  Druid: "d",
-  Rogue: "r",
-  Hunter: "h",
-  Mage: "m",
-  Paladin: "p",
-  Priest: "i",
-  Shaman: "s",
-  Warlock: "l",
-  Warrior: "w",
-};
-
-export const raceCompressionMap: raceCompressionMapType = {
-  Undead: "u",
-  Orc: "o",
-  Troll: "t",
-  Tauren: "c",
-  Bloodelf: "b",
-  Human: "h",
-  Dwarf: "d",
-  Nightelf: "n",
-  Draenei: "g",
-  Gnome: "m",
-};
+import {
+  classCompressionMapLC,
+  INSTANCE_DATA,
+  PLAYER_DC_STRING,
+  raceCompressionMap,
+} from "./constants";
 
 export function consolidateState(filteredData: ArenaMatchCompact[]): void {
   const filterKey = "i"; // matchID in ArenaMatchCompact

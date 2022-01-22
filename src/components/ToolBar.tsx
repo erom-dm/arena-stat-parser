@@ -1,12 +1,12 @@
 import React, { useState } from "react";
 import Drawer from "./Drawer";
-import { CHART_ROUTES } from "../utils/dataSetHelpers";
 import UploadArea from "./UploadArea";
 import ButtonGroup from "./ButtonGroup";
 import TeamSelect from "./TeamSelect";
 import SessionSelect from "./SessionSelect";
 import SettingsModal from "./SettingsModal";
 import { MatchSessions } from "../Types/ArenaTypes";
+import { CHART_ROUTES } from "../utils/constants";
 
 export type toolbarProps = {
   myTeams: string[];

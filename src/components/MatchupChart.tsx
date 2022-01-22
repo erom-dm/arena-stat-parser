@@ -26,6 +26,15 @@ const ticksConf = {
   font: { size: chartVars.tickSize, family: "'Roboto', sans-serif" },
   stepSize: 1,
   beginAtZero: true,
+  //TODO try to get separate colors for tick text
+  // callback: (value: any, index: number, ticks: any) => {
+  //   console.group("Tick Callback");
+  //   console.dir(value);
+  //   console.dir(index);
+  //   console.dir(ticks);
+  //   console.groupEnd();
+  //   return "$" + value;
+  // },
 };
 
 type BarChartProps = {

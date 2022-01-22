@@ -1,4 +1,4 @@
-import { classCompressionMapLC } from "../utils/stateManagement";
+import { classCompressionMapLC } from "../utils/constants";
 
 export type ChartNamesAndRoutes = string[];
 

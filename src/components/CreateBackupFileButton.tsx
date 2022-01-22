@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { makeTextFile } from "../utils/createBackupFile";
-import { INSTANCE_DATA } from "../utils/stateManagement";
 import dayjs from "dayjs";
+import { INSTANCE_DATA } from "../utils/constants";
 
 const CreateBackupFileButton: React.FC = () => {
   const [file, setFIle] = useState<null | string>(null);

@@ -1,11 +1,9 @@
 import React, { useState } from "react";
 import Dashboard from "./Dashboard";
 import { ArenaMatchCompact } from "../Types/ArenaTypes";
-import {
-  INSTANCE_DATA,
-  unfoldCompactMatchData,
-} from "../utils/stateManagement";
+import { unfoldCompactMatchData } from "../utils/stateManagement";
 import { getMyTeamNames } from "../utils/dataSetHelpers";
+import { INSTANCE_DATA } from "../utils/constants";
 
 const DashboardWrap: React.FC = () => {
   const [, setLocalStorageChanged] = useState<boolean>(false);

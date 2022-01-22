@@ -1,46 +1,39 @@
 import {
+  ArenaMatch,
+  ArenaMatchCompact,
   ArenaMatchRaw,
-  RawTeam,
+  ClassDistributionChartInputData,
+  ClassDistributionDataset,
+  ColorRangeInfo,
   DetailedTeamRatingObject,
   EnemyTeamData,
+  keyOfCharClasses,
+  LineChartInputData,
   MatchSessions,
+  MathupDataset,
+  PlayerCompact,
   RatingChangeDataset,
   RatingChangeObj,
+  RawTeam,
   SplitNames,
+  TeamCompact,
   TeamCompDataset,
+  TeamCompsChartInputData,
   TeamPerformanceStats,
   TeamsDataset,
-  MathupDataset,
-  ClassDistributionDataset,
-  ClassDistributionChartInputData,
-  TeamCompsChartInputData,
-  ColorRangeInfo,
-  LineChartInputData,
-  ArenaMatch,
-  TeamCompact,
-  ArenaMatchCompact,
-  PlayerCompact,
 } from "../Types/ArenaTypes";
 import { hashFromStrings } from "./hashGeneration";
 import generateChartColors from "./colorGeneration";
 import { interpolateTurbo } from "d3-scale-chromatic";
 import { rawArenaMatchTypeGuard } from "./parseData";
-import { classCompressionMapLC, raceCompressionMap } from "./stateManagement";
 import { normalizeString } from "./stateHelpers";
-
-const DC_TEAM_NAME = "~DC~";
-// export const ARENA_INSTANCE_KEYS = ["572", "562", "559"];
-export const ARENA_INSTANCE_IDS = {
-  [572 as number]: "Ruins of Lordaeron",
-  [562 as number]: "Blade's Edge Arena",
-  [559 as number]: "Nagrand Arena",
-};
-export const CHART_ROUTES = [
-  ["Matches", "/matches"],
-  ["Team comps", "/team-comps"],
-  ["Rating change", "/rating-change"],
-  ["Teams", "/teams"],
-];
+import {
+  ARENA_INSTANCE_IDS,
+  classColorMap,
+  classCompressionMapLC,
+  DC_TEAM_NAME,
+  raceCompressionMap,
+} from "./constants";
 
 export function modifyMatchData(data: ArenaMatchRaw[]): ArenaMatchCompact[] {
   const filteredData = data.filter(
@@ -341,11 +334,6 @@ function fillTeamCompDatasetObject(
 export function getClassDistributionChartInputData(
   dataset: ClassDistributionDataset
 ): ClassDistributionChartInputData {
-  const colorRangeInfo: ColorRangeInfo = {
-    colorStart: 0.05,
-    colorEnd: 0.87,
-    useEndAsStart: true,
-  };
   const sortedEntries = Object.entries(dataset).sort(
     (a, b) => b[1].total - a[1].total
   );
@@ -354,12 +342,7 @@ export function getClassDistributionChartInputData(
       obj.labels.push([entry[0]]); // Push classname into label array
       obj.totalData.push(entry[1].total); // Push corresponding total class count
       obj.inMatchesData.push(entry[1].inMatches); // Push corresponding match count
-      generateChartColors(
-        sortedEntries.length,
-        interpolateTurbo,
-        colorRangeInfo,
-        obj.colorArray
-      );
+      obj.colorArray.push(classColorMap[entry[0] as keyOfCharClasses]);
       return obj;
     },
     {
