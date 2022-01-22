@@ -1,19 +1,23 @@
 import React, { useState } from "react";
 import Dashboard from "./Dashboard";
-import { ModdedArenaMatch } from "../Types/ArenaTypes";
-import { INSTANCE_DATA } from "../utils/stateManagement";
-import getTeams from "../utils/teamManagement";
+import { ArenaMatchCompact } from "../Types/ArenaTypes";
+import {
+  INSTANCE_DATA,
+  unfoldCompactMatchData,
+} from "../utils/stateManagement";
+import { getMyTeamNames } from "../utils/dataSetHelpers";
 
 const DashboardWrap: React.FC = () => {
   const [, setLocalStorageChanged] = useState<boolean>(false);
-  const moddedMatchData: ModdedArenaMatch[] = JSON.parse(
+  const matchDataCompact: ArenaMatchCompact[] = JSON.parse(
     window.localStorage.getItem(INSTANCE_DATA) || "[]"
   );
-  const myTeams: string[] = getTeams(moddedMatchData);
+  const matchData = unfoldCompactMatchData(matchDataCompact);
+  const myTeams = getMyTeamNames(matchData);
 
   return (
     <Dashboard
-      moddedMatchData={moddedMatchData}
+      matchData={matchData}
       myTeams={myTeams}
       setLocalStorageChanged={setLocalStorageChanged}
     />

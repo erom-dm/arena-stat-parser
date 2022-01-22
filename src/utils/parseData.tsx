@@ -1,6 +1,6 @@
-import { ArenaMatch, ModdedArenaMatch } from "../Types/ArenaTypes";
+import { ArenaMatchRaw, ArenaMatchCompact } from "../Types/ArenaTypes";
 
-export const parseData = (data: string): ArenaMatch[] => {
+export const parseData = (data: string): ArenaMatchRaw[] => {
   // Get part of the string with actual instance data
   const start = data.lastIndexOf('["instances"] = ') + 17; // Only works if actual instance object is last in data set
   const newStr = data.slice(start);
@@ -18,7 +18,7 @@ export const parseData = (data: string): ArenaMatch[] => {
     .split(enumRegexp);
 
   // Parse all valid objects
-  let parsedData: ArenaMatch[] = [];
+  let parsedData: ArenaMatchRaw[] = [];
   instanceDataArray.forEach((el) => {
     try {
       parsedData.push(JSON.parse(el));
@@ -30,19 +30,17 @@ export const parseData = (data: string): ArenaMatch[] => {
   return parsedData;
 };
 
-export const parseArenaStatParserLogData = (
-  data: string
-): ModdedArenaMatch[] => {
+export const parseArenaHistoryLogData = (data: string): ArenaMatchCompact[] => {
   let parsed = [];
   try {
     parsed = JSON.parse(data);
   } catch (e) {
     console.log(e);
   }
-  return parsed.filter((match: any) => moddedArenaMatchTypeGuard(match));
+  return parsed.filter((match: any) => arenaMatchTypeGuard(match));
 };
 
-export const arenaMatchTypeGuard = (data: any): data is ArenaMatch => {
+export const rawArenaMatchTypeGuard = (data: any): data is ArenaMatchRaw => {
   return (
     data.class !== undefined &&
     data.classEnglish !== undefined &&
@@ -59,25 +57,13 @@ export const arenaMatchTypeGuard = (data: any): data is ArenaMatch => {
   );
 };
 
-export const moddedArenaMatchTypeGuard = (
-  data: any
-): data is ModdedArenaMatch => {
+export const arenaMatchTypeGuard = (data: any): data is ArenaMatchCompact => {
   return (
-    data.matchID !== undefined &&
-    data.enteredTime !== undefined &&
-    data.instanceID !== undefined &&
-    data.instanceName !== undefined &&
-    data.playerName !== undefined &&
-    data.bracket !== undefined &&
-    data.myTeam !== undefined &&
-    data.myTeamComp !== undefined &&
-    data.myTeamName !== undefined &&
-    data.enemyTeamName !== undefined &&
-    data.enemyTeam !== undefined &&
-    data.enemyTeamComp !== undefined &&
-    data.enemyPlayerNames !== undefined &&
-    data.enemyTeamMMR !== undefined &&
-    data.enemyTeamRating !== undefined &&
-    data.win !== undefined
+    data.i !== undefined &&
+    data.t !== undefined &&
+    data.n !== undefined &&
+    data.w !== undefined &&
+    data.m !== undefined &&
+    data.e !== undefined
   );
 };

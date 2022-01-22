@@ -1,34 +1,30 @@
 import React from "react";
-import { ModdedArenaMatch } from "../Types/ArenaTypes";
+import { ArenaMatch } from "../Types/ArenaTypes";
 import dayjs from "dayjs";
-import { getTeamRatingValues } from "../utils/dataSetHelpers";
 import TeamList from "./TeamList";
 
 export type matchItemProps = {
-  match: ModdedArenaMatch;
+  match: ArenaMatch;
 };
 
 const MatchItem: React.FC<matchItemProps> = ({ match }) => {
+  const { enteredTime, instanceID, win, myTeam, enemyTeam } = match;
   const {
-    enteredTime,
-    instanceID,
-    enemyTeamName,
-    myTeamName,
-    win,
-    myTeam,
-    enemyTeam,
-  } = match;
+    teamName: myTeamName,
+    teamMMR: myMMR,
+    teamRating: myRating,
+    newTeamRating: myNewRating,
+  } = myTeam;
   const {
-    MMR: myMMR,
-    rating: myRating,
-    ratingChange: myRatingChange,
-  } = getTeamRatingValues(myTeam);
-  const {
-    MMR: enemyMMR,
-    rating: enemyRating,
-    ratingChange: enemyRatingChange,
-  } = getTeamRatingValues(enemyTeam);
-  const enemyTeamRealm = Object.values(enemyTeam)[0]?.name.split("-")[1];
+    teamName: enemyTeamName,
+    teamMMR: enemyMMR,
+    teamRating: enemyRating,
+    newTeamRating: enemyNewRating,
+  } = enemyTeam;
+  const myRatingChange = myNewRating - myRating;
+  const enemyRatingChange = enemyNewRating - enemyRating;
+
+  const enemyTeamRealm = enemyTeam.players[0]?.name.split("-")[1];
 
   const date = dayjs.unix(enteredTime).format("DD/MM/YY HH:mm");
   const myRatingChangeString =
@@ -56,7 +52,10 @@ const MatchItem: React.FC<matchItemProps> = ({ match }) => {
               <span className="match-item__mmr-span">{`MMR: ${myMMR}`}</span>
             </div>
           </div>
-          <TeamList team={myTeam} className={"team-list team-list--my-team"} />
+          <TeamList
+            team={myTeam.players}
+            className={"team-list team-list--my-team"}
+          />
         </div>
         <div className={`match-item__team team-right`}>
           <div className="match-item__team-header">
@@ -72,7 +71,7 @@ const MatchItem: React.FC<matchItemProps> = ({ match }) => {
             </div>
           </div>
           <TeamList
-            team={enemyTeam}
+            team={enemyTeam.players}
             className={"team-list team-list--enemy-team"}
           />
         </div>

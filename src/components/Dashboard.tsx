@@ -1,6 +1,6 @@
 import React, { useMemo, useState, Suspense } from "react";
 import UploadArea from "./UploadArea";
-import { ModdedArenaMatch } from "../Types/ArenaTypes";
+import { ArenaMatch } from "../Types/ArenaTypes";
 import { filterMatchData } from "../utils/dataSetHelpers";
 import { getSessions } from "../utils/sessionManagement";
 import SuspenseFallback from "./SuspenseFallback";
@@ -10,26 +10,25 @@ const SettingsModal = React.lazy(() => import("./SettingsModal"));
 const Toolbar = React.lazy(() => import("./ToolBar"));
 
 export type dashboardProps = {
-  moddedMatchData: ModdedArenaMatch[];
+  matchData: ArenaMatch[];
   myTeams: string[];
   setLocalStorageChanged: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 const Dashboard: React.FC<dashboardProps> = ({
-  moddedMatchData,
+  matchData,
   myTeams,
   setLocalStorageChanged,
 }) => {
-  const matchDataIsEmpty = !moddedMatchData.length;
+  const matchDataIsEmpty = !matchData.length;
   const [myTeamSelection, setMyTeamSelection] = useState<string>(
     myTeams?.length ? myTeams[0] : ""
   );
   const [sessionSelection, setSessionSelection] = useState<number[]>([0]);
+
   const sessionData = useMemo(
-    () =>
-      moddedMatchData &&
-      getSessions(filterMatchData(moddedMatchData, myTeamSelection)),
-    [myTeamSelection, moddedMatchData]
+    () => matchData && getSessions(filterMatchData(matchData, myTeamSelection)),
+    [myTeamSelection, matchData]
   );
 
   if (matchDataIsEmpty) {

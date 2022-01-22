@@ -1,8 +1,8 @@
 import React from "react";
 import {
+  ArenaMatch,
   ColorRangeInfo,
   DetailedTeamRatingObject,
-  ModdedArenaMatch,
 } from "../Types/ArenaTypes";
 import generateChartColors from "../utils/colorGeneration";
 import { interpolateTurbo } from "d3-scale-chromatic";
@@ -14,7 +14,7 @@ import {
 } from "../utils/dataSetHelpers";
 
 export type teamsChartProps = {
-  selectedArenaMatches: ModdedArenaMatch[];
+  selectedArenaMatches: ArenaMatch[];
 };
 
 const TeamsChart: React.FC<teamsChartProps> = ({ selectedArenaMatches }) => {

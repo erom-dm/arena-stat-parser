@@ -1,24 +1,33 @@
+import { classCompressionMapLC } from "../utils/stateManagement";
+
 export type ChartNamesAndRoutes = string[];
 
 export enum CharClasses {
-  druid = "DRUID",
-  rogue = "ROGUE",
-  hunter = "HUNTER",
-  mage = "MAGE",
-  paladin = "PALADIN",
-  priest = "PRIEST",
-  shaman = "SHAMAN",
-  warlock = "WARLOCK",
-  warrior = "WARRIOR",
-  disconnected = "!disconnected",
+  Druid = "DRUID",
+  Rogue = "ROGUE",
+  Hunter = "HUNTER",
+  Mage = "MAGE",
+  Paladin = "PALADIN",
+  Priest = "PRIEST",
+  Shaman = "SHAMAN",
+  Warlock = "WARLOCK",
+  Warrior = "WARRIOR",
 }
+// disconnected = "!disconnected",
 
-export interface ArenaMatch {
+export type classCompressionMapType = {
+  [Key in keyof typeof CharClasses]: string;
+};
+
+export type keyOfCharClasses = keyof typeof CharClasses;
+
+// Arena match object from logs
+export interface ArenaMatchRaw {
   class: string;
   classEnglish: string;
   enteredTime: number;
   faction: number;
-  goldTeam: ArenaTeam;
+  goldTeam: RawTeam;
   group: any;
   instanceID: number;
   instanceName: string;
@@ -28,49 +37,20 @@ export interface ArenaMatch {
   mobCount: number;
   mobCountFromKill: number;
   playerName: string;
-  purpleTeam: ArenaTeam;
+  purpleTeam: RawTeam;
   rep: any;
   type: string;
   winningFaction: number;
 }
 
-export interface ModdedArenaMatch {
-  matchID: number;
-  enteredTime: number;
-  instanceID: number;
-  instanceName: string;
-  playerName: string;
-  bracket: number;
-  myTeam: ModdedArenaTeam;
-  myTeamComp: string[];
-  myTeamName: string;
-  enemyTeam: ModdedArenaTeam;
-  enemyTeamComp: CharClasses[];
-  enemyTeamName: string;
-  enemyPlayerNames: string[];
-  enemyTeamMMR: number;
-  enemyTeamRating: number;
-  win: boolean;
+export interface RawTeam {
+  [key: string]: RawPlayer;
 }
 
-export interface ArenaTeam {
-  [key: string]: ArenaPlayer;
-}
-
-export type arenaPlayerKeys =
-  | "player1"
-  | "player2"
-  | "player3"
-  | "player4"
-  | "player5";
-
-export type ModdedArenaTeam = {
-  [Key in arenaPlayerKeys]?: ModdedArenaPlayer | null;
-};
-
-export interface ArenaPlayer {
+export interface RawPlayer {
   kb: number;
   class: string;
+  race: string;
   teamMMR: number;
   teamName: string;
   faction: number;
@@ -80,16 +60,74 @@ export interface ArenaPlayer {
   damage: number;
 }
 
-export interface ModdedArenaPlayer extends ArenaPlayer {
-  name: string;
+// ArenaMatch for local storage
+export interface ArenaMatchCompact {
+  i: number; // matchID
+  t: number; // enteredTime
+  n: number; // instanceID
+  w: boolean; // win
+  m: TeamCompact; // myTeam
+  e: TeamCompact; // enemyTeam
 }
+
+export type TeamCompact = {
+  n: string; // name
+  r: number; // teamRating
+  e: number; // newTeamRating
+  m: number; // teamMMR
+  p: (PlayerCompact | null)[]; // players
+};
+
+export interface PlayerCompact {
+  n: string; // name
+  c: typeof classCompressionMapLC[keyof typeof classCompressionMapLC]; // class
+  r: string | undefined; // race
+  d: number; // damage
+  h: number; // healing
+}
+
+// ArenaMatch for React state
+export interface ArenaMatch {
+  matchID: number;
+  enteredTime: number;
+  instanceID: number;
+  win: boolean;
+  myTeam: Team;
+  enemyTeam: Team;
+}
+
+export interface Team {
+  teamName: string;
+  teamRating: number;
+  newTeamRating: number;
+  teamMMR: number;
+  players: (Player | null)[];
+  bracket: number;
+  teamCompArray: teamCompArrayType;
+  teamCompString: string;
+  playerNamesArr: string[];
+}
+
+export interface Player {
+  name: string;
+  class: keyOfCharClasses;
+  race: string | undefined;
+  damage: number;
+  healing: number;
+}
+//
+
+export type teamCompArrayType = (keyOfCharClasses | "disconnected")[];
 
 export interface TeamCompDataset {
   [Key: string]: TeamcompDatasetObj;
 }
 
 export type ClassDistributionDataset = {
-  [Key in CharClasses]: { total: number; inMatches: number };
+  [Key in keyOfCharClasses | "disconnected"]: {
+    total: number;
+    inMatches: number;
+  };
 };
 
 export interface MathupDataset {
@@ -225,7 +263,7 @@ export type ColorRangeInfo = {
   useEndAsStart?: boolean;
 };
 
-export type MatchSessions = Map<number, ModdedArenaMatch[]>;
+export type MatchSessions = Map<number, ArenaMatch[]>;
 
 export type SessionSelectOption = {
   value: number;

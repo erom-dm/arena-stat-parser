@@ -4,8 +4,8 @@ import { isMobile } from "react-device-detect";
 import {
   TeamCompData,
   MatchupChartTypes,
-  ModdedArenaMatch,
   ClassDistributionData,
+  ArenaMatch,
 } from "../Types/ArenaTypes";
 import {
   createMatchupDataSet,
@@ -29,7 +29,7 @@ const ticksConf = {
 };
 
 type BarChartProps = {
-  selectedArenaMatches: ModdedArenaMatch[];
+  selectedArenaMatches: ArenaMatch[];
 };
 
 const MatchupChart: React.FC<BarChartProps> = ({ selectedArenaMatches }) => {

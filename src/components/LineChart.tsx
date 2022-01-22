@@ -1,9 +1,9 @@
 import React, { useMemo, useState } from "react";
 import { Line } from "react-chartjs-2";
 import {
+  ArenaMatch,
   LineChartTypes,
   MatchSessions,
-  ModdedArenaMatch,
 } from "../Types/ArenaTypes";
 import {
   createMatchRatingChangeDataSet,
@@ -14,7 +14,7 @@ import dayjs from "dayjs";
 import { isMobile } from "react-device-detect";
 
 type LineChartProps = {
-  selectedArenaMatches: ModdedArenaMatch[];
+  selectedArenaMatches: ArenaMatch[];
   selectedSessions: MatchSessions;
 };
 

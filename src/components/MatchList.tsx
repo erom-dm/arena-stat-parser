@@ -1,10 +1,10 @@
 import React, { useMemo, useState } from "react";
-import { ModdedArenaMatch } from "../Types/ArenaTypes";
+import {ArenaMatch} from "../Types/ArenaTypes";
 import MatchItem from "./MatchItem";
 import useInfiniteScroll from "react-infinite-scroll-hook";
 
 export type matchListProps = {
-  selectedArenaMatches: ModdedArenaMatch[];
+  selectedArenaMatches: ArenaMatch[];
 };
 
 const LIST_ITEMS_PER_STEP = 10;

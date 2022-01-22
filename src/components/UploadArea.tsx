@@ -1,9 +1,9 @@
 import React, { useCallback, useState } from "react";
-import { parseArenaStatParserLogData, parseData } from "../utils/parseData";
+import { parseArenaHistoryLogData, parseData } from "../utils/parseData";
 import { arrayBufferToString } from "../utils/ArrayBuffer-StringHelper";
 import { useDropzone } from "react-dropzone";
 import { consolidateState } from "../utils/stateManagement";
-import { modifyDataAndAddIds } from "../utils/dataSetHelpers";
+import { modifyMatchData } from "../utils/dataSetHelpers";
 import FileIcon from "../assets/upload-icon.svg";
 import { debounce } from "../utils/debounce";
 
@@ -35,9 +35,9 @@ const UploadArea: React.FC<landingProps> = ({ localStoreChangeHandler }) => {
           const isNovaInstanceTrackerLogFile =
             dataString.startsWith("\r\nNITdatabase");
           if (isNovaInstanceTrackerLogFile) {
-            consolidateState(modifyDataAndAddIds(parseData(dataString)));
+            consolidateState(modifyMatchData(parseData(dataString)));
           } else {
-            consolidateState(parseArenaStatParserLogData(dataString));
+            consolidateState(parseArenaHistoryLogData(dataString));
           }
           localStoreChangeHandler((prevState) => !prevState);
           setText("Log parsed!");

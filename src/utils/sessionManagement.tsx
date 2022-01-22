@@ -1,14 +1,14 @@
-import { MatchSessions, ModdedArenaMatch } from "../Types/ArenaTypes";
+import {ArenaMatch, MatchSessions} from "../Types/ArenaTypes";
 import dayjs from "dayjs";
 import isBetween from "dayjs/plugin/isBetween";
 dayjs.extend(isBetween);
 
-export function getSessions(matches: ModdedArenaMatch[]): MatchSessions {
+export function getSessions(matches: ArenaMatch[]): MatchSessions {
   const matchSessions: MatchSessions = new Map();
   matches.sort((a, b) => a.enteredTime - b.enteredTime);
 
   let sessionKey: number | null = null;
-  let prevMatch: ModdedArenaMatch;
+  let prevMatch: ArenaMatch;
   matches.every((match) => {
     if (sessionKey) {
       // If session object is present, find if new match fits that session time frame

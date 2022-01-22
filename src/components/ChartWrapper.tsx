@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { MatchSessions, ModdedArenaMatch } from "../Types/ArenaTypes";
+import {ArenaMatch, MatchSessions} from "../Types/ArenaTypes";
 import { Routes, Route, Navigate } from "react-router-dom";
 import { matchArrayFromSelectedSessions } from "../utils/dataSetHelpers";
 const MatchupChart = React.lazy(() => import("./MatchupChart"));
@@ -18,7 +18,7 @@ const ChartWrapper: React.FC<chartContainerProps> = ({
   sessionSelection,
 }) => {
   const [selectedArenaMatches, setSelectedArenaMatches] = useState<
-    ModdedArenaMatch[]
+    ArenaMatch[]
   >([]);
   const [selectedSessions, setSelectedSessions] = useState<MatchSessions>(
     new Map()
