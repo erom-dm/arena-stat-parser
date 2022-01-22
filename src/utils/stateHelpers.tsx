@@ -21,5 +21,6 @@ export function normalizeString(str: string): string {
   if (!str) {
     debugger;
   }
-  return str.replace(/ /g, "").toLowerCase();
+  const lcString = str.replace(/ /g, "").toLowerCase();
+  return lcString.charAt(0).toUpperCase() + lcString.slice(1);
 }

@@ -27,16 +27,16 @@ export const classCompressionMapLC: classCompressionMapType = {
 };
 
 export const raceCompressionMap = {
-  undead: "u",
-  orc: "o",
-  troll: "t",
-  tauren: "c",
-  bloodelf: "b",
-  human: "h",
-  dwarf: "d",
-  nightelf: "n",
-  draenei: "g",
-  gnome: "m",
+  Undead: "u",
+  Orc: "o",
+  Troll: "t",
+  Tauren: "c",
+  BloodElf: "b",
+  Human: "h",
+  Dwarf: "d",
+  NightElf: "n",
+  Draenei: "g",
+  Gnome: "m",
 };
 
 export function consolidateState(filteredData: ArenaMatchCompact[]): void {
@@ -107,6 +107,7 @@ function unfoldCompactTeamData(data: TeamCompact): Team {
     p: playersCompact,
   } = data;
   const bracket = playersCompact.length;
+  debugger;
   const players = unfoldCompactPlayerData(playersCompact);
   const teamCompArray = getTeamCompArray(players);
   const teamCompString = getTeamCompString(players);
