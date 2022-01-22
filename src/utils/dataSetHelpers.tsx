@@ -194,19 +194,6 @@ function getTeamData(
     }
     return player;
   });
-  // sort players array alphabetically, with null values in the end of the array
-  players.sort((a, b) => {
-    if (a === null && b === null) {
-      return 0;
-    }
-    if (a === null) {
-      return 1;
-    }
-    if (b === null) {
-      return -1;
-    }
-    return +(a > b) || -(a < b);
-  });
 
   return {
     n: teamName,
@@ -295,7 +282,6 @@ function fillClassDistributionData(obj: MathupDataset, match: ArenaMatch) {
 
 function fillTeamCompDatasetObject(
   matchupDataset: MathupDataset,
-  // key: string, // match.enemyTeam.teamCompString, || DISCONNECT
   match: ArenaMatch
 ): void {
   const { teamCompsDataset } = matchupDataset;
@@ -319,7 +305,7 @@ function fillTeamCompDatasetObject(
     });
   }
 
-  const entryKey = match.enemyTeam.teamCompString;
+  const entryKey = DC_MATCH ? "Disconnect" : match.enemyTeam.teamCompString;
   const entry = teamCompsDataset[entryKey];
 
   if (entry) {

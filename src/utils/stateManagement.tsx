@@ -132,27 +132,41 @@ function unfoldCompactTeamData(data: TeamCompact): Team {
 function unfoldCompactPlayerData(
   data: (PlayerCompact | null)[]
 ): (Player | null)[] {
-  return data.map((player) => {
-    if (player) {
-      const { n: name, c, r, d: damage, h: healing } = player;
+  return data
+    .map((player) => {
+      if (player) {
+        const { n: name, c, r, d: damage, h: healing } = player;
 
-      const playerClassEntries = Object.entries(classCompressionMapLC) as [
-        keyof classCompressionMapType,
-        string
-      ][];
-      const playerClass = playerClassEntries.filter((el) =>
-        el.includes(c)
-      )[0][0];
-
-      let race;
-      if (r) {
-        race = Object.entries(raceCompressionMap).filter((el) =>
-          el.includes(r)
+        const playerClassEntries = Object.entries(classCompressionMapLC) as [
+          keyof classCompressionMapType,
+          string
+        ][];
+        const playerClass = playerClassEntries.filter((el) =>
+          el.includes(c)
         )[0][0];
+
+        let race;
+        if (r) {
+          race = Object.entries(raceCompressionMap).filter((el) =>
+            el.includes(r)
+          )[0][0];
+        }
+        return { name, class: playerClass, race, damage, healing };
       }
-      return { name, class: playerClass, race, damage, healing };
-    }
-    return null;
-  });
+      return null;
+    })
+    .sort((a, b) => {
+      // sort players array alphabetically, with null values in the end of the array
+      if (a === null && b === null) {
+        return 0;
+      }
+      if (a === null) {
+        return 1;
+      }
+      if (b === null) {
+        return -1;
+      }
+      return +(a.name > b.name) || -(a.name < b.name);
+    });
 }
 //

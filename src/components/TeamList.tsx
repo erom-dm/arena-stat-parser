@@ -9,7 +9,7 @@ export type teamListProps = {
 };
 
 const TeamList: React.FC<teamListProps> = ({ className, team }) => {
-  const playerArr = team.map((player) => {
+  const playerArr = team.map((player, idx) => {
     if (player) {
       const {
         name: nameAndRealm,
@@ -41,8 +41,16 @@ const TeamList: React.FC<teamListProps> = ({ className, team }) => {
         </React.Fragment>
       );
     }
-    //TODO: return DC fragment?
-    return null;
+
+    return (
+      <React.Fragment key={idx + "DC"}>
+        <div
+          className={`team-list__player-name disconnected-player`}
+        >{`Disconnected`}</div>
+        <div className={"team-list__player-damage"} />
+        <div className={"team-list__player-healing"} />
+      </React.Fragment>
+    );
   });
 
   return <div className={className}>{playerArr}</div>;
