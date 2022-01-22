@@ -180,14 +180,21 @@
   display: grid;
   grid-template-rows: auto;
   grid-template-columns: fit-content(33.3%) fit-content(33.3%) fit-content(33.3%);
+  align-items: center;
   column-gap: 10px;
+  grid-row-gap: 1px;
   font-size: 1.6rem;
   position: relative;
   text-align: left;
 
   &__player-name {
+    display: flex;
     font-size: 1.8rem;
-    //text-shadow: 0.5px 0.5px 0px #000000;
+  }
+  &__player-race-icon {
+    margin: 0 2px 0 0;
+    max-height: 20px;
+    max-width: 20px;
   }
   &--my-team {
 

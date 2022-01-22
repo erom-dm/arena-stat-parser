@@ -19,7 +19,23 @@ export type classCompressionMapType = {
   [Key in keyof typeof CharClasses]: string;
 };
 
+export type raceCompressionMapType = {
+  [key in racesStringLiterals]: string;
+};
+
 export type keyOfCharClasses = keyof typeof CharClasses;
+
+export type racesStringLiterals =
+  | "Bloodelf"
+  | "Draenei"
+  | "Dwarf"
+  | "Gnome"
+  | "Human"
+  | "Nightelf"
+  | "Orc"
+  | "Tauren"
+  | "Troll"
+  | "Undead";
 
 // Arena match object from logs
 export interface ArenaMatchRaw {
@@ -50,7 +66,7 @@ export interface RawTeam {
 export interface RawPlayer {
   kb: number;
   class: string;
-  race: string;
+  race?: racesStringLiterals;
   teamMMR: number;
   teamName: string;
   faction: number;
@@ -111,7 +127,7 @@ export interface Team {
 export interface Player {
   name: string;
   class: keyOfCharClasses;
-  race: string | undefined;
+  race: racesStringLiterals | undefined;
   damage: number;
   healing: number;
 }

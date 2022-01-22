@@ -5,6 +5,7 @@ import {
   classCompressionMapType,
   Player,
   PlayerCompact,
+  raceCompressionMapType,
   Team,
   TeamCompact,
 } from "../Types/ArenaTypes";
@@ -26,15 +27,15 @@ export const classCompressionMapLC: classCompressionMapType = {
   Warrior: "w",
 };
 
-export const raceCompressionMap = {
+export const raceCompressionMap: raceCompressionMapType = {
   Undead: "u",
   Orc: "o",
   Troll: "t",
   Tauren: "c",
-  BloodElf: "b",
+  Bloodelf: "b",
   Human: "h",
   Dwarf: "d",
-  NightElf: "n",
+  Nightelf: "n",
   Draenei: "g",
   Gnome: "m",
 };
@@ -147,9 +148,11 @@ function unfoldCompactPlayerData(
 
         let race;
         if (r) {
-          race = Object.entries(raceCompressionMap).filter((el) =>
-            el.includes(r)
-          )[0][0];
+          const raceEntries = Object.entries(raceCompressionMap) as [
+            keyof raceCompressionMapType,
+            string
+          ][];
+          race = raceEntries.filter((el) => el.includes(r))[0][0];
         }
         return { name, class: playerClass, race, damage, healing };
       }
