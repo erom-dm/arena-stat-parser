@@ -143,7 +143,12 @@ export type ClassDistributionDataset = {
   [Key in keyOfCharClasses | "disconnected"]: {
     total: number;
     inMatches: number;
+    raceDistribution: RaceDistributionObject;
   };
+};
+
+export type RaceDistributionObject = {
+  [Key in racesStringLiterals]: number;
 };
 
 export interface MathupDataset {
@@ -155,6 +160,7 @@ export interface ClassDistributionChartInputData {
   labels: (string | string[])[];
   totalData: number[];
   inMatchesData: number[];
+  raceDistributionData: RaceDistributionObject[];
   colorArray: string[];
 }
 

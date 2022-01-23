@@ -75,6 +75,7 @@ const MatchupChart: React.FC<BarChartProps> = ({ selectedArenaMatches }) => {
     labels: classLabels,
     totalData: totalClassData,
     inMatchesData: inMatchesClassData,
+    raceDistributionData: raceDistributionPerClassData,
     colorArray: classColorArray,
   } = useMemo(
     () => getClassDistributionChartInputData(classDistributionDataset),
@@ -168,6 +169,7 @@ const MatchupChart: React.FC<BarChartProps> = ({ selectedArenaMatches }) => {
           label: "",
           data: totalClassData,
           inMatchesData: inMatchesClassData,
+          raceDistribution: raceDistributionPerClassData,
           totalClassCount: totalClassData.reduce(
             (prev, next) => prev + next,
             0
@@ -184,6 +186,7 @@ const MatchupChart: React.FC<BarChartProps> = ({ selectedArenaMatches }) => {
       classLabels,
       totalClassData,
       inMatchesClassData,
+      raceDistributionPerClassData,
       totalMatchNumber,
       classColorArray,
     ]

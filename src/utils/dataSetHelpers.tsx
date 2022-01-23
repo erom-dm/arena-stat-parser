@@ -12,6 +12,7 @@ import {
   MatchSessions,
   MathupDataset,
   PlayerCompact,
+  RaceDistributionObject,
   RatingChangeDataset,
   RatingChangeObj,
   RawTeam,
@@ -257,17 +258,38 @@ export function createSessionRatingChangeDataSet(
   return dataset;
 }
 
-function fillClassDistributionData(obj: MathupDataset, match: ArenaMatch) {
-  const { teamCompArray: enemyTeamCompArr } = match.enemyTeam;
+function fillClassDistributionData(
+  obj: MathupDataset,
+  match: ArenaMatch
+): void {
+  const { enemyTeam } = match;
+  const { teamCompArray: enemyTeamCompArr, players } = enemyTeam;
   const { classDistributionDataset: dataset } = obj;
-  enemyTeamCompArr.forEach((el) => {
-    if (dataset[el]) {
-      dataset[el].total++;
-    } else {
-      dataset[el] = { total: 1, inMatches: 0 };
+  // new
+  players.forEach((player) => {
+    if (player) {
+      const { class: playerClass, race } = player;
+      if (!dataset[playerClass]) {
+        dataset[playerClass] = {
+          total: 1,
+          inMatches: 0,
+          raceDistribution: {} as RaceDistributionObject,
+        };
+      } else {
+        dataset[playerClass].total++;
+      }
+      if (race) {
+        if (dataset[playerClass].raceDistribution[race]) {
+          dataset[playerClass].raceDistribution[race]++;
+        } else {
+          dataset[playerClass].raceDistribution[race] = 1;
+        }
+      }
     }
   });
-  const teamCompSet = new Set(enemyTeamCompArr);
+  const teamCompSet = new Set(
+    enemyTeamCompArr.filter((el) => el !== "disconnected")
+  );
   teamCompSet.forEach((el) => {
     dataset[el].inMatches++;
   });
@@ -342,6 +364,7 @@ export function getClassDistributionChartInputData(
       obj.labels.push([entry[0]]); // Push classname into label array
       obj.totalData.push(entry[1].total); // Push corresponding total class count
       obj.inMatchesData.push(entry[1].inMatches); // Push corresponding match count
+      obj.raceDistributionData.push(entry[1].raceDistribution); // Push race distribution object
       obj.colorArray.push(classColorMap[entry[0] as keyOfCharClasses]);
       return obj;
     },
@@ -349,6 +372,7 @@ export function getClassDistributionChartInputData(
       labels: [],
       totalData: [],
       inMatchesData: [],
+      raceDistributionData: [],
       colorArray: [],
     } as ClassDistributionChartInputData
   );
@@ -483,10 +507,24 @@ export function formatClassDistributionChartTooltip(tooltip: any): string[] {
     (inMatchesClassCount / totalMatchNumber) *
     100
   ).toFixed(1);
+  const RaceDistributionObject: RaceDistributionObject =
+    tooltip.dataset.raceDistribution[index];
+  const raceData = Object.entries(RaceDistributionObject)
+    .sort((a, b) => b[1] - a[1])
+    .map(
+      (entry) =>
+        `${entry[0]}: ${entry[1]}   ${((entry[1] / classCount) * 100).toFixed(
+          1
+        )}%`
+    );
+  const raceDataStrings = raceData.length
+    ? ["", "Race Distribution:", ...raceData]
+    : [];
 
   return [
     `${percentOfTotal}% of total players`,
     `${percentOfMatches}% of matches had at least one`,
+    ...raceDataStrings,
   ];
 }
 
