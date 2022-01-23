@@ -464,35 +464,31 @@ export function formatTeamCompsChartTooltip(tooltip: any): string[] {
   const performanceStats = tooltip.dataset.performanceStats[index];
   const winrate: string = calcWinrate(matchCount, wins);
 
-  const zoneStatsStringArr: string[] = [];
-  Object.keys(zoneStats).forEach((key) => {
-    zoneStatsStringArr.push(
-      `${ARENA_INSTANCE_IDS[Number(key)]}: ${calcWinrate(
-        zoneStats[key].matches,
-        zoneStats[key].wins
-      )}%`
-    );
+  const zoneStatsStringArr = Object.keys(zoneStats).map((key) => {
+    return `${(ARENA_INSTANCE_IDS[Number(key)] + ":").padEnd(
+      19,
+      " "
+    )} ${calcWinrate(zoneStats[key].matches, zoneStats[key].wins)}%`;
   });
 
-  const performanceStatsStringArr: string[] = [];
-  Object.keys(performanceStats).forEach((key) => {
+  const performanceStatsStringArr = Object.keys(performanceStats).map((key) => {
     const avgDamage = +(performanceStats[key].damage / matchCount).toFixed(0);
     const avgHealing = +(performanceStats[key].healing / matchCount)
       .toFixed(0)
       .toLocaleString();
-    performanceStatsStringArr.push(
-      `${key}: damage: ${avgDamage.toLocaleString()} | healing: ${avgHealing.toLocaleString()}`
-    );
+    return `${key.padEnd(10, " ")} dmg ${avgDamage
+      .toLocaleString()
+      .padEnd(6, " ")} | heal ${avgHealing.toLocaleString().padEnd(6, " ")}`;
   });
 
   return [
     `Wins: ${wins}, Losses: ${matchCount - wins}`,
     `Winrate: ${winrate}%`,
     " ",
-    "Zone win rates:",
+    "Zone win rates",
     ...zoneStatsStringArr,
     " ",
-    "Average performance stats:",
+    "Average performance stats",
     ...performanceStatsStringArr,
   ];
 }
@@ -513,9 +509,11 @@ export function formatClassDistributionChartTooltip(tooltip: any): string[] {
     .sort((a, b) => b[1] - a[1])
     .map(
       (entry) =>
-        `${entry[0]}: ${entry[1]}   ${((entry[1] / classCount) * 100).toFixed(
-          1
-        )}%`
+        // Orc: 15   28%
+        `${entry[0].padEnd(10, " ")} ${String(entry[1]).padEnd(4, " ")} ${(
+          (entry[1] / classCount) *
+          100
+        ).toFixed(1)}%`
     );
   const raceDataStrings = raceData.length
     ? ["", "Race Distribution:", ...raceData]

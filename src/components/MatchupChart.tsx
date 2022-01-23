@@ -21,6 +21,17 @@ const chartVars = {
   maxTicksLimitX: isMobile ? 10 : 20,
 };
 
+const tooltipFontConf = {
+  titleFont: {
+    size: 18,
+    family: "'Roboto', sans-serif",
+  },
+  bodyFont: {
+    size: 14,
+    family: "'Roboto Mono', monospace",
+  },
+};
+
 const ticksConf = {
   color: "#292F36",
   font: { size: chartVars.tickSize, family: "'Roboto', sans-serif" },
@@ -97,6 +108,7 @@ const MatchupChart: React.FC<BarChartProps> = ({ selectedArenaMatches }) => {
       },
       plugins: {
         tooltip: {
+          ...tooltipFontConf,
           callbacks: {
             afterLabel: formatTeamCompsChartTooltip,
             label: (tooltip: any) => {
@@ -146,6 +158,8 @@ const MatchupChart: React.FC<BarChartProps> = ({ selectedArenaMatches }) => {
       },
       plugins: {
         tooltip: {
+          ...tooltipFontConf,
+          padding: 6,
           callbacks: {
             afterLabel: formatClassDistributionChartTooltip,
             label: (tooltip: any) => {
