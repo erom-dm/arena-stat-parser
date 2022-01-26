@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import Select, { MenuPlacement, SingleValue } from "react-select";
+import { isMobile } from "react-device-detect";
 import { TeamSelectOption } from "../Types/ArenaTypes";
 
 type teamSelectProps = {
@@ -60,6 +61,7 @@ const TeamSelect: React.FC<teamSelectProps> = ({
       options={options}
       value={selected}
       onChange={handleChange}
+      isSearchable={!isMobile}
       menuPlacement={menuPlacement}
     />
   );

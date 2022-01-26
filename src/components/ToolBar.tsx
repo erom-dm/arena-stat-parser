@@ -34,13 +34,18 @@ const ToolBar: React.FC<toolbarProps> = ({
           <>
             <div className="drawer__filters-section">
               {myTeams && (
-                <TeamSelect onChange={setMyTeamSelection} teams={myTeams} />
+                <TeamSelect
+                  onChange={setMyTeamSelection}
+                  teams={myTeams}
+                  menuPlacement={"top"}
+                />
               )}
               <ButtonGroup buttonLabels={CHART_ROUTES} />
               {sessionData && (
                 <SessionSelect
                   onChange={setSessionSelection}
                   sessionData={sessionData}
+                  menuPlacement={"top"}
                 />
               )}
             </div>

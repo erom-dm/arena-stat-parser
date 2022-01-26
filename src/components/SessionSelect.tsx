@@ -5,8 +5,9 @@ import React, {
   useRef,
   useState,
 } from "react";
-import { MatchSessions, SessionSelectOption } from "../Types/ArenaTypes";
 import Select, { ActionMeta, MenuPlacement, MultiValue } from "react-select";
+import { isMobile } from "react-device-detect";
+import { MatchSessions, SessionSelectOption } from "../Types/ArenaTypes";
 import dayjs from "dayjs";
 
 export type sessionSelectProps = {
@@ -146,6 +147,7 @@ const SessionSelect: React.FC<sessionSelectProps> = ({
       hideSelectedOptions={false}
       closeMenuOnSelect={false}
       isMulti
+      isSearchable={!isMobile}
       menuPlacement={menuPlacement}
     />
   );
