@@ -14,7 +14,7 @@ const SettingsModal = React.lazy(() => import("./SettingsModal"));
 const Toolbar = React.lazy(() => import("./ToolBar"));
 
 const Dashboard: React.FC = () => {
-  const setLocalStorageChanged = useContext(LsChangeContext);
+  const [, setLocalStorageChanged] = useContext(LsChangeContext);
   const matchData = useContext(MatchDataContext);
   const myTeams = useContext(MyTeamsContext);
   const matchDataIsEmpty = !matchData.length;

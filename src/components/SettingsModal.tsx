@@ -7,11 +7,9 @@ import { SettingsModalContext } from "./ToolBar";
 import LocalStorageStatusDisplay from "./LocalStorageStatusDisplay";
 import ClearSessionState from "./ClearSessionState";
 
-export type settingsModalProps = {};
-
 Modal.setAppElement("#root");
 
-const SettingsModal: React.FC<settingsModalProps> = () => {
+const SettingsModal: React.FC = () => {
   const [open, setOpen] = useState<boolean>(false);
   const modalContext = useContext(SettingsModalContext);
   const toggleModal = () => {

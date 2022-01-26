@@ -9,7 +9,7 @@ import { debounce } from "../utils/debounce";
 import { LsChangeContext } from "./DashboardWrap";
 
 const UploadArea: React.FC = () => {
-  const localStoreChangeHandler = useContext(LsChangeContext);
+  const [, localStoreChangeHandler] = useContext(LsChangeContext);
   const [text, setText] = useState("Parse log");
   const [dragHover, setDragHover] = useState("");
 

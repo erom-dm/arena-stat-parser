@@ -8,7 +8,7 @@ export type clearStateBtnProps = {
 };
 
 const ClearStateButton: React.FC<clearStateBtnProps> = ({ toggleModal }) => {
-  const localStoreChangeHandler = useContext(LsChangeContext);
+  const [, localStoreChangeHandler] = useContext(LsChangeContext);
   const navigate = useNavigate();
   const [pressed, setPressed] = useState<boolean>(false);
   const [disabled, setDisabled] = useState<boolean>(false);

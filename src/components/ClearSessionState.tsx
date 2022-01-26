@@ -13,7 +13,7 @@ import { setLocalStorageField } from "../utils/stateManagement";
 import { ArenaMatchCompact } from "../Types/ArenaTypes";
 
 const ClearSessionState: React.FC = () => {
-  const localStoreChangeHandler = useContext(LsChangeContext);
+  const [, localStoreChangeHandler] = useContext(LsChangeContext);
   const matchData = useContext(MatchDataContext);
 
   const myTeams = useContext(MyTeamsContext);

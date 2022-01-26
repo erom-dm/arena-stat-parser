@@ -8,11 +8,12 @@ import { INSTANCE_DATA } from "../utils/constants";
 export const MatchDataContext = React.createContext<ArenaMatch[]>([]);
 export const MyTeamsContext = React.createContext<string[]>([]);
 export const LsChangeContext = React.createContext<
-  React.Dispatch<React.SetStateAction<boolean>>
->(() => {});
+  [boolean, React.Dispatch<React.SetStateAction<boolean>>]
+>([false, () => {}]);
 
 const DashboardWrap: React.FC = () => {
-  const [, setLocalStorageChanged] = useState<boolean>(false);
+  const [localStorageChanged, setLocalStorageChanged] =
+    useState<boolean>(false);
   const matchDataCompact: ArenaMatchCompact[] = JSON.parse(
     window.localStorage.getItem(INSTANCE_DATA) || "[]"
   );
@@ -20,7 +21,9 @@ const DashboardWrap: React.FC = () => {
   const myTeams = getMyTeamNames(matchData);
 
   return (
-    <LsChangeContext.Provider value={setLocalStorageChanged}>
+    <LsChangeContext.Provider
+      value={[localStorageChanged, setLocalStorageChanged]}
+    >
       <MatchDataContext.Provider value={matchData}>
         <MyTeamsContext.Provider value={myTeams}>
           <Dashboard />
