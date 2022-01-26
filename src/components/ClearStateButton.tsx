@@ -1,16 +1,14 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { clearLocalStorage } from "../utils/stateManagement";
 import { useNavigate } from "react-router-dom";
+import { LsChangeContext } from "./DashboardWrap";
 
 export type clearStateBtnProps = {
-  localStoreChangeHandler: React.Dispatch<React.SetStateAction<boolean>>;
   toggleModal: () => void;
 };
 
-const ClearStateButton: React.FC<clearStateBtnProps> = ({
-  localStoreChangeHandler,
-  toggleModal,
-}) => {
+const ClearStateButton: React.FC<clearStateBtnProps> = ({ toggleModal }) => {
+  const localStoreChangeHandler = useContext(LsChangeContext);
   const navigate = useNavigate();
   const [pressed, setPressed] = useState<boolean>(false);
   const [disabled, setDisabled] = useState<boolean>(false);
@@ -19,7 +17,7 @@ const ClearStateButton: React.FC<clearStateBtnProps> = ({
     if (!pressed) {
       setPressed((prevState) => !prevState);
       setDisabled(true);
-      setTimeout(() => setDisabled(false), 5000);
+      setTimeout(() => setDisabled(false), 3500);
     }
     if (pressed) {
       setPressed((prevState) => !prevState);
@@ -33,18 +31,20 @@ const ClearStateButton: React.FC<clearStateBtnProps> = ({
 
   const buttonClass = disabled
     ? "clear-state-button clear-state-button--disabled settings-button"
+    : pressed
+    ? "clear-state-button clear-state-button--enabled settings-button"
     : "clear-state-button settings-button";
 
   return (
-    <div className="clear-state-button__wrap">
+    <div className="settings-group__wrap">
+      <div className="settings-group__text">
+        {pressed
+          ? "Are you sure?"
+          : "Wipe ALL uploaded log data. Make sure to have backup"}
+      </div>
       <button className={buttonClass} onClick={handleClick} disabled={disabled}>
         {pressed ? "Yes, I'm sure" : "Clear local storage"}
       </button>
-      <div className="clear-state-button__text">
-        {pressed
-          ? "Are you sure?"
-          : "- Wipe all uploaded log data. Make sure to have backup."}
-      </div>
     </div>
   );
 };

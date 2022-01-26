@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useContext, useState } from "react";
 import { parseArenaHistoryLogData, parseData } from "../utils/parseData";
 import { arrayBufferToString } from "../utils/ArrayBuffer-StringHelper";
 import { useDropzone } from "react-dropzone";
@@ -6,12 +6,10 @@ import { consolidateState } from "../utils/stateManagement";
 import { modifyMatchData } from "../utils/dataSetHelpers";
 import FileIcon from "../assets/upload-icon.svg";
 import { debounce } from "../utils/debounce";
+import { LsChangeContext } from "./DashboardWrap";
 
-export type landingProps = {
-  localStoreChangeHandler: React.Dispatch<React.SetStateAction<boolean>>;
-};
-
-const UploadArea: React.FC<landingProps> = ({ localStoreChangeHandler }) => {
+const UploadArea: React.FC = () => {
+  const localStoreChangeHandler = useContext(LsChangeContext);
   const [text, setText] = useState("Parse log");
   const [dragHover, setDragHover] = useState("");
 

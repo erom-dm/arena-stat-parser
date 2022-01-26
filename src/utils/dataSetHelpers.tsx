@@ -410,10 +410,15 @@ export function getTeamCompsChartInputData(
   dataset: TeamCompDataset
 ): TeamCompsChartInputData {
   const colorRangeInfo: ColorRangeInfo = {
-    colorStart: 0.05,
-    colorEnd: 0.87,
+    colorStart: 0.07,
+    colorEnd: 0.85,
     useEndAsStart: true,
   };
+  // const colorRangeInfoGrey: ColorRangeInfo = {
+  //   colorStart: 1,
+  //   colorEnd: 0.6,
+  //   useEndAsStart: true,
+  // };
   const sortedEntries = Object.entries(dataset).sort(
     (a, b) => b[1].matchCount - a[1].matchCount
   );

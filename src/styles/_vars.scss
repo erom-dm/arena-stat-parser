@@ -41,6 +41,7 @@ $disconnected-player: #a68181;
 
 $focusInsetBoxShadow: inset 0 0 4px 2.3px $orange;
 $focusInsetBoxShadow2: inset 0 0 4px 1px $orange;
+$focusInsetBoxShadow3: inset 0 0 4px 1px $spanishGrayLight;
 
 // Vars
 $desktopToolboxHeight: 68px;
@@ -49,6 +50,7 @@ $phoneToolboxHeight: 48px;
 
 $maxContainerWidth: 1200px;
 $br: 12px;
+$buttonBr: 4px;
 $containerHorizontalPadding: 30px;
 $containerHorizontalPaddingTablet: 10px;
 $containerHorizontalPaddingMob: 5px;
@@ -58,3 +60,4 @@ $chartWrapTopMarginTablet: 10px;
 $chartHeaderMaxHeightTablet: 32px;
 $drawerWidth: 290px;
 $drawerButtonContentWidth: 130px;
+$mobileModalContentMaxWidth: 320px;

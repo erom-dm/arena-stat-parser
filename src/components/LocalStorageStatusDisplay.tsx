@@ -35,13 +35,6 @@ const LocalStorageStatusDisplay: React.FC<localStorageStatusDisplayProps> =
 
     return (
       <div className={"local-storage-status-display"}>
-        <div className="local-storage-status-display__bar">
-          <div className={"local-storage-status-display__outer-bar"} />
-          <div
-            className={"local-storage-status-display__inner-bar"}
-            style={{ width: `${fractionOfFull}%` }}
-          />
-        </div>
         <div className="local-storage-status-display__info">
           <div>Local storage status:</div>
           <div className="local-storage-status-display__percentage">
@@ -50,6 +43,13 @@ const LocalStorageStatusDisplay: React.FC<localStorageStatusDisplayProps> =
           <div className="local-storage-status-display__value">
             {lsSize + " KB"}
           </div>
+        </div>
+        <div className="local-storage-status-display__bar">
+          <div className={"local-storage-status-display__outer-bar"} />
+          <div
+            className={"local-storage-status-display__inner-bar"}
+            style={{ width: `${fractionOfFull}%` }}
+          />
         </div>
       </div>
     );

@@ -1,13 +1,15 @@
 @mixin button-default {
   text-align: center;
-  margin: 0 0 0 15px;
-  padding: 8px 12px;
-  border: 1px solid $orange;
+  margin: 0;
+  padding: 9px 12px;
+  border: none;
   color: $orange;
   background: $gunmetal;
-  border-radius: $br;
+  border-radius: $buttonBr;
   box-sizing: content-box;
-  font-size: 1.5rem;
+  font-size: 1.8rem;
+  line-height: 2rem;
+  cursor: pointer;
 
   &:hover {
     background: $gunmetalLight;

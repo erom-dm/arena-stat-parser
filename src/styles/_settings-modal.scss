@@ -55,7 +55,7 @@
     flex-direction: column;
     justify-content: space-between;
     padding: 25px;
-    width: 800px;
+    width: 850px;
     height: auto;
     min-height: 400px;
     background: $headerBGColor;
@@ -70,24 +70,7 @@
   &__state-deletion-section {
     position: relative;
     margin-top: 10px;
-    &:before {
-      position: absolute;
-      top: 0;
-      left: 0;
-      content: "";
-      display: block;
-      width: 100%;
-      border-top: 1px solid $auburn;
-    }
-    &:after {
-      position: absolute;
-      box-sizing: border-box;
-      content: "";
-      top: -4px;
-      left: 0;
-      border: 5px solid transparent;
-      border-left: 5px solid $auburn;
-    }
+    padding-top: 10px;
   }
   &__close-modal-btn {
     position: absolute;
@@ -136,8 +119,6 @@
   @include tablet {
     &__body {
       padding: 20px 15px;
-      min-height: 300px;
-      max-height: 95vh;
       width: 95%;
       left: 0;
     }
@@ -150,7 +131,19 @@
     }
   }
 
+  @include maxWidth(710px) {
+    &__body {
+      width: 80%;
+      max-width: 400px;
+    }
+  }
+
   @include phone {
+    &__body {
+      padding: 30px 10px;
+      width: 95%;
+      max-width: unset;
+    }
     &__state-deletion-section {
       margin-top: 20px;
       &:before {

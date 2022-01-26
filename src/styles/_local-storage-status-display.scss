@@ -2,12 +2,12 @@
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  margin: 0 0 20px;
+  margin: 0 0 12px;
 
   &__bar {
     position: relative;
     width: 100%;
-    margin: 0 0 8px;
+    margin: 0;
   }
   &__outer-bar {
     width: 100%;
@@ -27,8 +27,9 @@
     display: flex;
     align-items: center;
     justify-content: flex-start;
-    font-size: 1.8rem;
+    font-size: 1.6rem;
     white-space: nowrap;
+    margin: 0 0 5px;
     &--no-bar {
       white-space: normal;
     }
@@ -39,9 +40,6 @@
   }
 
   @include tablet {
-    &__bar {
-      width: 95%;
-    }
     &__info {
       flex-wrap: wrap;
       font-size: 1.6rem;
@@ -49,5 +47,11 @@
     &__value, &__percentage {
       margin-left: 5px;
     }
+  }
+
+  @include maxWidth(710px) {
+    width: 100%;
+    max-width: $mobileModalContentMaxWidth;
+    margin: 0 auto 20px;
   }
 }

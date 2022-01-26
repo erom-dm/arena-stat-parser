@@ -14,25 +14,27 @@ const CreateBackupFileButton: React.FC = () => {
   const currentDate: string = dayjs().format("DD/MM/YY");
 
   return (
-    <div className={"create-backup-btn__wrap"}>
-      <button
-        className={"create-backup-btn settings-button"}
-        onClick={handleClick}
-      >
-        Create Data Backup
-      </button>
-      {file && (
-        <a
-          className={"create-backup-btn__link"}
-          download={`ArenaLogBackup_${currentDate}.txt`}
-          href={file}
-        >
-          {"Download Backup \uD83D\uDDCE"}
-        </a>
-      )}
-      <span className="create-backup-btn__text">
-        - Download all logged data as text file.
+    <div className={"settings-group__wrap"}>
+      <span className="settings-group__text">
+        Download all logged data as text file:
       </span>
+      <div className="settings-group__selection-wrap">
+        <button
+          className={"settings-group settings-button"}
+          onClick={handleClick}
+        >
+          Create Data Backup
+        </button>
+        {file && (
+          <a
+            className={"settings-group__link"}
+            download={`ArenaLogBackup_${currentDate}.txt`}
+            href={file}
+          >
+            {"Download Backup \uD83D\uDDCE"}
+          </a>
+        )}
+      </div>
     </div>
   );
 };

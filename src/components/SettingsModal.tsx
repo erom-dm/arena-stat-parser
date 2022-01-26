@@ -5,16 +5,13 @@ import ClearStateButton from "./ClearStateButton";
 import CreateBackupFileButton from "./CreateBackupFileButton";
 import { SettingsModalContext } from "./ToolBar";
 import LocalStorageStatusDisplay from "./LocalStorageStatusDisplay";
+import ClearSessionState from "./ClearSessionState";
 
-export type settingsModalProps = {
-  localStoreChangeHandler: React.Dispatch<React.SetStateAction<boolean>>;
-};
+export type settingsModalProps = {};
 
 Modal.setAppElement("#root");
 
-const SettingsModal: React.FC<settingsModalProps> = ({
-  localStoreChangeHandler,
-}) => {
+const SettingsModal: React.FC<settingsModalProps> = () => {
   const [open, setOpen] = useState<boolean>(false);
   const modalContext = useContext(SettingsModalContext);
   const toggleModal = () => {
@@ -47,10 +44,8 @@ const SettingsModal: React.FC<settingsModalProps> = ({
           <CreateBackupFileButton />
         </div>
         <div className="settings-modal__state-deletion-section">
-          <ClearStateButton
-            localStoreChangeHandler={localStoreChangeHandler}
-            toggleModal={toggleModal}
-          />
+          <ClearStateButton toggleModal={toggleModal} />
+          <ClearSessionState />
         </div>
       </Modal>
     </div>

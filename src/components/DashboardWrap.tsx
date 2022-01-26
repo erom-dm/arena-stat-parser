@@ -1,9 +1,15 @@
 import React, { useState } from "react";
 import Dashboard from "./Dashboard";
-import { ArenaMatchCompact } from "../Types/ArenaTypes";
+import { ArenaMatch, ArenaMatchCompact } from "../Types/ArenaTypes";
 import { unfoldCompactMatchData } from "../utils/stateManagement";
 import { getMyTeamNames } from "../utils/dataSetHelpers";
 import { INSTANCE_DATA } from "../utils/constants";
+
+export const MatchDataContext = React.createContext<ArenaMatch[]>([]);
+export const MyTeamsContext = React.createContext<string[]>([]);
+export const LsChangeContext = React.createContext<
+  React.Dispatch<React.SetStateAction<boolean>>
+>(() => {});
 
 const DashboardWrap: React.FC = () => {
   const [, setLocalStorageChanged] = useState<boolean>(false);
@@ -14,11 +20,13 @@ const DashboardWrap: React.FC = () => {
   const myTeams = getMyTeamNames(matchData);
 
   return (
-    <Dashboard
-      matchData={matchData}
-      myTeams={myTeams}
-      setLocalStorageChanged={setLocalStorageChanged}
-    />
+    <LsChangeContext.Provider value={setLocalStorageChanged}>
+      <MatchDataContext.Provider value={matchData}>
+        <MyTeamsContext.Provider value={myTeams}>
+          <Dashboard />
+        </MyTeamsContext.Provider>
+      </MatchDataContext.Provider>
+    </LsChangeContext.Provider>
   );
 };
 

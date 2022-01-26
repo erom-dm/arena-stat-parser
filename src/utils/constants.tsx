@@ -2,6 +2,7 @@ import {
   classCompressionMapType,
   raceCompressionMapType,
 } from "../Types/ArenaTypes";
+import { isMobile } from "react-device-detect";
 
 // export const ARENA_INSTANCE_KEYS = ["572", "562", "559"];
 export const ARENA_INSTANCE_IDS = {
@@ -51,4 +52,27 @@ export const classColorMap = {
   Shaman: "#0070DD",
   Warlock: "#8788EE",
   Warrior: "#C69B6D",
+};
+
+// Matchup chart constants
+const chartVars = {
+  tickSize: isMobile ? 12 : 15,
+  maxTicksLimitY: isMobile ? 8 : 15,
+  maxTicksLimitX: isMobile ? 10 : 20,
+};
+export const tooltipFontConf = {
+  titleFont: {
+    size: 18,
+    family: "'Roboto', sans-serif",
+  },
+  bodyFont: {
+    size: 14,
+    family: "'Roboto Mono', monospace",
+  },
+};
+export const ticksConf = {
+  color: "#292F36",
+  font: { size: chartVars.tickSize, family: "'Roboto', sans-serif" },
+  stepSize: 1,
+  beginAtZero: true,
 };

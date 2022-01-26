@@ -1,0 +1,150 @@
+.settings-button {
+  @include button-default();
+  color: $spanishGrayLight;
+}
+
+.clear-session-state-button {
+  margin: 0 0 0 5px;
+}
+
+.clear-state-button, .clear-session-state-button {
+  width: fit-content;
+  color: $spanishGrayLight;
+  &--disabled {
+    animation-name: buttonFade;
+    animation-duration: 3.5s;
+    animation-iteration-count: 1;
+    animation-timing-function: linear;
+  }
+  &--enabled {
+    color: $warningRed;
+  }
+}
+
+.settings-group {
+  &__wrap {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    margin: 0 0 8px;
+    &:last-child {
+      margin: 0 auto;
+    }
+  }
+  &__text {
+    margin: 0 0 4px;
+    font-size: 1.6rem;
+    color: $black;
+  }
+  &__link {
+    color: $darkerSaffron;
+    font-size: 1.8rem;
+    margin: 0 15px 0;
+  }
+  &__selection-wrap {
+    display: flex;
+    align-items: center;
+    justify-self: flex-start;
+    flex-wrap: wrap;
+
+    button {
+    }
+    .team-select, .session-select {
+      max-width: 240px;
+      &__control {
+        &--is-focused {
+          max-height: 38px;
+          box-shadow: $focusInsetBoxShadow3 !important;
+        }
+      }
+      &__single-value {
+        color: $spanishGrayLight !important;
+      }
+      &__multi-value {
+        background: $spanishGrayLight !important;
+        &__remove {
+          &:hover {
+            background-color: $spanishGrayLight !important;
+          }
+        }
+      }
+      &__option {
+        color: $spanishGrayLight !important;
+        &--is-focused {
+          background-color: $headerBGColor !important;
+        }
+        &--is-selected {
+          color: black !important;
+          background: $spanishGrayLight !important;
+        }
+      }
+    }
+    .team-select {
+      margin: 0;
+    }
+    .session-select {
+      margin: 0 0 0 5px;
+    }
+  }
+}
+
+
+@include maxWidth(710px) {
+  .settings-button {
+    align-self: stretch;
+    width: unset;
+  }
+  .settings-group {
+    &__text {
+      text-align: center;
+    }
+    &__wrap {
+      width: 100%;
+      max-width: $mobileModalContentMaxWidth;
+      margin: 0 auto 20px;
+      justify-content: center;
+      align-items: center;
+      &:last-child {
+        margin: 0 auto 0;
+      }
+    }
+    &__selection-wrap {
+      width: 100%;
+      flex-direction: column;
+      button {
+        margin: 0 0 5px;
+      }
+      .team-select, .session-select {
+        margin: 0 0 5px;
+        max-width: unset;
+        width: 100%;
+      }
+    }
+  }
+}
+
+@include phone {
+  .settings-button {
+    max-height: 60px;
+  }
+  .clear-state-button, .create-backup-btn {
+    &__wrap {
+      margin-top: 0;
+      &:not(:first-child) {
+        margin-top: 5px;
+      }
+    }
+  }
+  .clear-state-section {
+    .team-select, .session-select {
+      max-width: 240px;
+    }
+  }
+}
+
+@keyframes buttonFade {
+  0% {color: $spanishGray; border-color: $spanishGray; background: $gunmetal50;}
+  60%  {color: $spanishGray; border-color: $spanishGray; background: $gunmetal50;}
+  100% {color: $warningRed; border-color: $warningRed; background: $gunmetal}
+}

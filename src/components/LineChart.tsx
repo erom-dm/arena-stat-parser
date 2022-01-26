@@ -1,10 +1,6 @@
 import React, { useMemo, useState } from "react";
 import { Line } from "react-chartjs-2";
-import {
-  ArenaMatch,
-  LineChartTypes,
-  MatchSessions,
-} from "../Types/ArenaTypes";
+import { ArenaMatch, LineChartTypes, MatchSessions } from "../Types/ArenaTypes";
 import {
   createMatchRatingChangeDataSet,
   createSessionRatingChangeDataSet,
@@ -141,7 +137,6 @@ const LineChart: React.FC<LineChartProps> = ({
       tooltip: {
         callbacks: {
           afterLabel: (tooltip: any) => {
-            console.dir(tooltip);
             const index = tooltip.dataIndex;
             const rating = tooltip.dataset.data[index];
             const dateString = tooltip.dataset.sessionDates[index];

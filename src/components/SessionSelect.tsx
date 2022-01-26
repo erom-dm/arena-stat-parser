@@ -6,17 +6,21 @@ import React, {
   useState,
 } from "react";
 import { MatchSessions, SessionSelectOption } from "../Types/ArenaTypes";
-import Select, { ActionMeta, MultiValue } from "react-select";
+import Select, { ActionMeta, MenuPlacement, MultiValue } from "react-select";
 import dayjs from "dayjs";
 
 export type sessionSelectProps = {
   sessionData: MatchSessions;
   onChange: (value: number[]) => void;
+  menuPlacement?: MenuPlacement;
+  setDefaultValue?: boolean;
 };
 
 const SessionSelect: React.FC<sessionSelectProps> = ({
   sessionData,
   onChange,
+  menuPlacement = "auto",
+  setDefaultValue = true,
 }) => {
   const selectAllOption: SessionSelectOption = useMemo(
     () => ({
@@ -29,10 +33,7 @@ const SessionSelect: React.FC<sessionSelectProps> = ({
   const valueRef = useRef(selected);
   valueRef.current = selected;
 
-  const sessionKeys: number[] = useMemo(
-    () => [...sessionData.keys()],
-    [sessionData]
-  );
+  const sessionKeys = useMemo(() => [...sessionData.keys()], [sessionData]);
   const options: SessionSelectOption[] = useMemo(() => {
     return sessionKeys
       .reduce((array, current, index) => {
@@ -107,14 +108,16 @@ const SessionSelect: React.FC<sessionSelectProps> = ({
   }, [selected, sessionKeys]);
 
   useEffect(() => {
-    if (options.length) {
-      setSelected((prevSelected) => (!prevSelected ? [options[0]] : []));
+    if (setDefaultValue) {
+      if (options.length) {
+        setSelected((prevSelected) => (!prevSelected ? [options[0]] : []));
+      }
+      handleChange([options[0]], {
+        action: "select-option",
+        option: options[0],
+      });
     }
-    handleChange([options[0]], {
-      action: "select-option",
-      option: options[0],
-    });
-  }, [options, handleChange]);
+  }, [setDefaultValue, options, handleChange]);
 
   const isOptionSelected = (option: SessionSelectOption): boolean => {
     return (
@@ -124,8 +127,12 @@ const SessionSelect: React.FC<sessionSelectProps> = ({
   };
 
   const getValue = useCallback(() => {
-    return isSelectAllSelected() ? [selectAllOption] : selected;
-  }, [isSelectAllSelected, selectAllOption, selected]);
+    return !isSelectAllSelected()
+      ? selected
+      : options.length
+      ? [selectAllOption]
+      : [];
+  }, [isSelectAllSelected, selectAllOption, selected, options]);
 
   return (
     <Select
@@ -139,7 +146,7 @@ const SessionSelect: React.FC<sessionSelectProps> = ({
       hideSelectedOptions={false}
       closeMenuOnSelect={false}
       isMulti
-      menuPlacement={"auto"}
+      menuPlacement={menuPlacement}
     />
   );
 };

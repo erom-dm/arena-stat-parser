@@ -1,13 +1,20 @@
 import React, { useCallback, useEffect, useMemo, useState } from "react";
-import Select, { SingleValue } from "react-select";
+import Select, { MenuPlacement, SingleValue } from "react-select";
 import { TeamSelectOption } from "../Types/ArenaTypes";
 
 type teamSelectProps = {
   onChange: (value: string) => void;
   teams: string[];
+  menuPlacement?: MenuPlacement;
+  setDefaultValue?: boolean;
 };
 
-const TeamSelect: React.FC<teamSelectProps> = ({ teams, onChange }) => {
+const TeamSelect: React.FC<teamSelectProps> = ({
+  teams,
+  onChange,
+  menuPlacement = "auto",
+  setDefaultValue = true,
+}) => {
   const [selected, setSelected] = useState<SingleValue<TeamSelectOption>>();
   const options: TeamSelectOption[] = useMemo(
     () =>
@@ -25,20 +32,35 @@ const TeamSelect: React.FC<teamSelectProps> = ({ teams, onChange }) => {
     [setSelected, onChange]
   );
   useEffect(() => {
-    if (options.length) {
-      setSelected((prevSelected) => (!prevSelected ? options[0] : null));
+    if (setDefaultValue) {
+      if (options.length) {
+        setSelected((prevSelected) => (!prevSelected ? options[0] : null));
+      }
+      handleChange(options[0]);
+    } else {
+      if (options.length) {
+        setSelected((prevState) => {
+          if (prevState) {
+            if (!teams.includes(prevState?.value)) {
+              return null;
+            } else {
+              return prevState;
+            }
+          }
+        });
+      }
     }
-    handleChange(options[0]);
-  }, [teams, options, handleChange]);
+  }, [teams, options, handleChange, setDefaultValue]);
 
   return (
     <Select
       className={"team-select"}
       classNamePrefix={"team-select"}
+      placeholder={"Select team..."}
       options={options}
       value={selected}
       onChange={handleChange}
-      menuPlacement={"auto"}
+      menuPlacement={menuPlacement}
     />
   );
 };

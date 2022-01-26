@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import Drawer from "./Drawer";
 import UploadArea from "./UploadArea";
 import ButtonGroup from "./ButtonGroup";
@@ -7,11 +7,10 @@ import SessionSelect from "./SessionSelect";
 import SettingsModal from "./SettingsModal";
 import { MatchSessions } from "../Types/ArenaTypes";
 import { CHART_ROUTES } from "../utils/constants";
+import { MyTeamsContext } from "./DashboardWrap";
 
 export type toolbarProps = {
-  myTeams: string[];
   sessionData: MatchSessions;
-  setLocalStorageChanged: React.Dispatch<React.SetStateAction<boolean>>;
   setMyTeamSelection: React.Dispatch<React.SetStateAction<string>>;
   setSessionSelection: React.Dispatch<React.SetStateAction<number[]>>;
 };
@@ -21,13 +20,13 @@ export const SettingsModalContext = React.createContext<
 >(() => {});
 
 const ToolBar: React.FC<toolbarProps> = ({
-  myTeams,
   sessionData,
-  setLocalStorageChanged,
   setMyTeamSelection,
   setSessionSelection,
 }) => {
+  const myTeams = useContext(MyTeamsContext);
   const [modalToggled, setModalToggled] = useState(false);
+
   return (
     <SettingsModalContext.Provider value={setModalToggled}>
       <div className="toolbar">
@@ -46,8 +45,8 @@ const ToolBar: React.FC<toolbarProps> = ({
               )}
             </div>
             <div className="drawer__top-btn-section">
-              <SettingsModal localStoreChangeHandler={setLocalStorageChanged} />
-              <UploadArea localStoreChangeHandler={setLocalStorageChanged} />
+              <SettingsModal />
+              <UploadArea />
             </div>
           </>
         </Drawer>

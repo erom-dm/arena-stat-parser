@@ -1,11 +1,10 @@
 import React, { useMemo, useState } from "react";
 import { Bar } from "react-chartjs-2";
-import { isMobile } from "react-device-detect";
 import {
-  TeamCompData,
-  MatchupChartTypes,
-  ClassDistributionData,
   ArenaMatch,
+  ClassDistributionData,
+  MatchupChartTypes,
+  TeamCompData,
 } from "../Types/ArenaTypes";
 import {
   createMatchupDataSet,
@@ -14,39 +13,7 @@ import {
   getClassDistributionChartInputData,
   getTeamCompsChartInputData,
 } from "../utils/dataSetHelpers";
-
-const chartVars = {
-  tickSize: isMobile ? 12 : 15,
-  maxTicksLimitY: isMobile ? 8 : 15,
-  maxTicksLimitX: isMobile ? 10 : 20,
-};
-
-const tooltipFontConf = {
-  titleFont: {
-    size: 18,
-    family: "'Roboto', sans-serif",
-  },
-  bodyFont: {
-    size: 14,
-    family: "'Roboto Mono', monospace",
-  },
-};
-
-const ticksConf = {
-  color: "#292F36",
-  font: { size: chartVars.tickSize, family: "'Roboto', sans-serif" },
-  stepSize: 1,
-  beginAtZero: true,
-  //TODO try to get separate colors for tick text
-  // callback: (value: any, index: number, ticks: any) => {
-  //   console.group("Tick Callback");
-  //   console.dir(value);
-  //   console.dir(index);
-  //   console.dir(ticks);
-  //   console.groupEnd();
-  //   return "$" + value;
-  // },
-};
+import { ticksConf, tooltipFontConf } from "../utils/constants";
 
 type BarChartProps = {
   selectedArenaMatches: ArenaMatch[];
