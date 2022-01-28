@@ -278,6 +278,8 @@ const MatchupChart: React.FC<BarChartProps> = ({ selectedArenaMatches }) => {
   );
 
   const chartTitle: string = `Matches Played: ${totalMatchNumber}, Wins: ${totalWins}, Losses: ${totalLosses}, WR: ${totalWinrate}%,`;
+  const matchupChartTitle: string = `${matchupTeamComp}`;
+
   let chartData, chartOptions;
   switch (chartType) {
     case MatchupChartTypes.teamComps:
@@ -301,7 +303,11 @@ const MatchupChart: React.FC<BarChartProps> = ({ selectedArenaMatches }) => {
     <div className={"matchup-chart-wrap"}>
       <div className="header">
         <button onClick={toggleChartType}>{chartType}</button>
-        <h1 className="title">{chartTitle}</h1>
+        <h1 className="title">
+          {chartType === MatchupChartTypes.matchup
+            ? matchupChartTitle
+            : chartTitle}
+        </h1>
       </div>
       <div className={"chart-container"}>
         <Bar data={chartData} options={chartOptions} />
