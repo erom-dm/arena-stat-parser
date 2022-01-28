@@ -1,9 +1,12 @@
 import React, { useCallback, useContext, useState } from "react";
-import { parseArenaHistoryLogData, parseData } from "../utils/parseData";
-import { arrayBufferToString } from "../utils/ArrayBuffer-StringHelper";
+import {
+  parseArenaHistoryLogData,
+  parseData,
+} from "../utils/dataParsingHelpers";
+import { arrayBufferToString } from "../utils/fileHelpers";
 import { useDropzone } from "react-dropzone";
-import { consolidateState } from "../utils/stateManagement";
-import { modifyMatchData } from "../utils/dataSetHelpers";
+import { consolidateState } from "../utils/localStorageManagement";
+import { modifyMatchData } from "../utils/appStateHelpers";
 import FileIcon from "../assets/upload-icon.svg";
 import { debounce } from "../utils/debounce";
 import { LsChangeContext } from "./DashboardWrap";

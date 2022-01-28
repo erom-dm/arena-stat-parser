@@ -4,16 +4,27 @@ import {
   ArenaMatch,
   ClassDistributionData,
   MatchupChartTypes,
+  MatchupData,
   TeamCompData,
 } from "../Types/ArenaTypes";
 import {
-  createMatchupDataSet,
-  formatClassDistributionChartTooltip,
+  ticksConf,
+  ticksConfMatchupChart,
+  tooltipFontConf,
+} from "../utils/constants";
+import {
+  formatMatchupChartTooltip,
+  generateMatchupRaceData,
+} from "../utils/charts/matchupChart";
+import {
+  createTeamCompChartDatasets,
   formatTeamCompsChartTooltip,
+  getTeamCompsInputData,
+} from "../utils/charts/teamCompChart";
+import {
+  formatClassDistributionChartTooltip,
   getClassDistributionChartInputData,
-  getTeamCompsChartInputData,
-} from "../utils/dataSetHelpers";
-import { ticksConf, tooltipFontConf } from "../utils/constants";
+} from "../utils/charts/classChart";
 
 type BarChartProps = {
   selectedArenaMatches: ArenaMatch[];
@@ -23,17 +34,21 @@ const MatchupChart: React.FC<BarChartProps> = ({ selectedArenaMatches }) => {
   const [chartType, setChartType] = useState<MatchupChartTypes>(
     MatchupChartTypes.teamComps
   );
+  const [matchupTeamComp, setMatchupTeamComp] = useState<string | null>(null);
+
   const toggleChartType = () => {
-    setChartType((prevState) =>
-      prevState === MatchupChartTypes.classes
-        ? MatchupChartTypes.teamComps
-        : MatchupChartTypes.classes
-    );
+    setChartType((prevState) => {
+      return prevState === MatchupChartTypes.teamComps
+        ? MatchupChartTypes.classes
+        : MatchupChartTypes.teamComps;
+    });
   };
+
   const { teamCompsDataset, classDistributionDataset } = useMemo(
-    () => createMatchupDataSet(selectedArenaMatches),
+    () => createTeamCompChartDatasets(selectedArenaMatches),
     [selectedArenaMatches]
   );
+
   const {
     totalMatchNumber,
     totalWins,
@@ -46,7 +61,7 @@ const MatchupChart: React.FC<BarChartProps> = ({ selectedArenaMatches }) => {
     performanceStatsArr,
     colorArray,
   } = useMemo(
-    () => getTeamCompsChartInputData(teamCompsDataset),
+    () => getTeamCompsInputData(teamCompsDataset),
     [teamCompsDataset]
   );
   const {
@@ -59,6 +74,28 @@ const MatchupChart: React.FC<BarChartProps> = ({ selectedArenaMatches }) => {
     () => getClassDistributionChartInputData(classDistributionDataset),
     [classDistributionDataset]
   );
+
+  const [matchupInputData, matchupArenaMatches] = useMemo(() => {
+    if (selectedArenaMatches.length && matchupTeamComp) {
+      return generateMatchupRaceData(
+        selectedArenaMatches,
+        matchupTeamComp,
+        labelArr,
+        colorArray
+      );
+    }
+    return [
+      {
+        matchupLabels: [],
+        matchupTotalGames: [],
+        matchupWins: [],
+        matchupWinrate: [],
+        matchupLosses: [],
+        matchupColorArray: [],
+      },
+      [],
+    ];
+  }, [matchupTeamComp, selectedArenaMatches, labelArr, colorArray]);
 
   const teamCompOptions: any = useMemo(
     () => ({
@@ -88,9 +125,19 @@ const MatchupChart: React.FC<BarChartProps> = ({ selectedArenaMatches }) => {
           display: false,
         },
       },
+      onClick: (event: any, element: any, chart: any) => {
+        if (element.length) {
+          const data = chart?.tooltip?.dataPoints;
+          if (data.length) {
+            setMatchupTeamComp(data[0].label);
+            setChartType(MatchupChartTypes.matchup);
+          }
+        }
+      },
     }),
     []
   );
+
   const teamCompData: TeamCompData = useMemo(
     () => ({
       labels: labelArr,
@@ -173,15 +220,82 @@ const MatchupChart: React.FC<BarChartProps> = ({ selectedArenaMatches }) => {
     ]
   );
 
+  const matchupOptions: any = useMemo(
+    () => ({
+      maintainAspectRatio: false,
+      indexAxis: "y",
+      responsive: true,
+      scales: {
+        y: {
+          ticks: ticksConfMatchupChart,
+        },
+        x: {
+          ticks: ticksConfMatchupChart,
+        },
+      },
+      plugins: {
+        tooltip: {
+          ...tooltipFontConf,
+          callbacks: {
+            afterLabel: formatMatchupChartTooltip,
+            label: (tooltip: any) => {
+              const value = tooltip.formattedValue;
+              return `Total: ${value}`;
+            },
+          },
+        },
+        legend: {
+          display: false,
+        },
+      },
+      onClick: (event: any, element: any) => {
+        if (element.length) {
+          setChartType(MatchupChartTypes.teamComps);
+        }
+      },
+    }),
+    []
+  );
+  const matchupData: MatchupData = useMemo(
+    () => ({
+      labels: matchupInputData.matchupLabels,
+      datasets: [
+        {
+          label: "",
+          data: matchupInputData?.matchupTotalGames,
+          wins: matchupInputData?.matchupWins,
+          winrates: matchupInputData?.matchupWinrate,
+          losses: matchupInputData?.matchupLosses,
+          allMatchupMatches: matchupArenaMatches,
+          backgroundColor: matchupInputData?.matchupColorArray,
+          borderColor: [],
+          borderWidth: 1,
+          hoverOffset: 6,
+        },
+      ],
+    }),
+    [matchupInputData, matchupArenaMatches]
+  );
+
   const chartTitle: string = `Matches Played: ${totalMatchNumber}, Wins: ${totalWins}, Losses: ${totalLosses}, WR: ${totalWinrate}%,`;
-  const chartData =
-    chartType === MatchupChartTypes.teamComps
-      ? teamCompData
-      : classDistributionData;
-  const chartOptions =
-    chartType === MatchupChartTypes.teamComps
-      ? teamCompOptions
-      : classDistributionOptions;
+  let chartData, chartOptions;
+  switch (chartType) {
+    case MatchupChartTypes.teamComps:
+      chartData = teamCompData;
+      chartOptions = teamCompOptions;
+      break;
+    case MatchupChartTypes.classes:
+      chartData = classDistributionData;
+      chartOptions = classDistributionOptions;
+      break;
+    case MatchupChartTypes.matchup:
+      chartData = matchupData;
+      chartOptions = matchupOptions;
+      break;
+    default:
+      chartData = teamCompData;
+      chartOptions = teamCompOptions;
+  }
 
   return (
     <div className={"matchup-chart-wrap"}>

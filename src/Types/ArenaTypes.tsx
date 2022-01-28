@@ -279,6 +279,40 @@ export interface ClassDistributionData {
   }[];
 }
 
+export interface MatchupData {
+  labels: (string | string[])[];
+  datasets: {
+    label: string;
+    data: number[];
+    wins: number[];
+    winrates: string[];
+    losses: number[];
+    allMatchupMatches: ArenaMatch[];
+    backgroundColor: string[];
+    borderColor: [];
+    borderWidth: 1;
+    hoverOffset: 6;
+  }[];
+}
+
+export interface MatchupInputData {
+  matchupLabels: string[];
+  matchupTotalGames: number[];
+  matchupWins: number[];
+  matchupWinrate: string[];
+  matchupLosses: number[];
+  matchupColorArray: string[];
+}
+
+export interface RaceMatchupObject {
+  [key: string]: {
+    totalMatches: number;
+    wins: number;
+    losses: number;
+    winrate: string;
+  };
+}
+
 export type ColorRangeInfo = {
   colorStart: number;
   colorEnd: number;
@@ -312,6 +346,7 @@ export type TeamRatingObject = {
 export enum MatchupChartTypes {
   teamComps = "Teams",
   classes = "Classes",
+  matchup = "Matchup",
 }
 
 export enum LineChartTypes {

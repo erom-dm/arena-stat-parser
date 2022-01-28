@@ -1,13 +1,13 @@
 import React, { useMemo, useState } from "react";
 import { Line } from "react-chartjs-2";
 import { ArenaMatch, LineChartTypes, MatchSessions } from "../Types/ArenaTypes";
+import dayjs from "dayjs";
+import { isMobile } from "react-device-detect";
 import {
   createMatchRatingChangeDataSet,
   createSessionRatingChangeDataSet,
-  getLineChartInputData,
-} from "../utils/dataSetHelpers";
-import dayjs from "dayjs";
-import { isMobile } from "react-device-detect";
+  getSessionChangeChartInputData,
+} from "../utils/charts/ratingChangeChart";
 
 type LineChartProps = {
   selectedArenaMatches: ArenaMatch[];
@@ -37,11 +37,14 @@ const LineChart: React.FC<LineChartProps> = ({
     [selectedSessions]
   );
   const { teamRatingArr, teamMMRArr, enemyTeamCompArr, labelArr, winArray } =
-    useMemo(() => getLineChartInputData(matchDataset), [matchDataset]);
+    useMemo(() => getSessionChangeChartInputData(matchDataset), [matchDataset]);
   const {
     teamRatingArr: teamRatingArrPerSession,
     labelArr: labelArrPerSession,
-  } = useMemo(() => getLineChartInputData(sessionDataset), [sessionDataset]);
+  } = useMemo(
+    () => getSessionChangeChartInputData(sessionDataset),
+    [sessionDataset]
+  );
   const sessionDates = useMemo(
     () =>
       Array.from(selectedSessions.keys()).map((timestamp) =>

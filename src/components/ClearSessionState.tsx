@@ -1,15 +1,14 @@
 import React, { useContext, useMemo, useState } from "react";
 import TeamSelect from "./TeamSelect";
 import SessionSelect from "./SessionSelect";
-import { getSessions } from "../utils/sessionManagement";
-import { filterMatchData } from "../utils/dataSetHelpers";
+import { filterMatchData, getSessions } from "../utils/appStateHelpers";
 import {
   LsChangeContext,
   MatchDataContext,
   MyTeamsContext,
 } from "./DashboardWrap";
 import { INSTANCE_DATA } from "../utils/constants";
-import { setLocalStorageField } from "../utils/stateManagement";
+import { setLocalStorageField } from "../utils/localStorageManagement";
 import { ArenaMatchCompact } from "../Types/ArenaTypes";
 
 const ClearSessionState: React.FC = () => {

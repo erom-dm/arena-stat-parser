@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
-import {ArenaMatch, MatchSessions} from "../Types/ArenaTypes";
+import { ArenaMatch, MatchSessions } from "../Types/ArenaTypes";
 import { Routes, Route, Navigate } from "react-router-dom";
-import { matchArrayFromSelectedSessions } from "../utils/dataSetHelpers";
+import { matchArrayFromSelectedSessions } from "../utils/appStateHelpers";
 const MatchupChart = React.lazy(() => import("./MatchupChart"));
 const LineChart = React.lazy(() => import("./LineChart"));
 const TeamsChart = React.lazy(() => import("./TeamsChart"));

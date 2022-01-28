@@ -9,9 +9,9 @@ import { interpolateTurbo } from "d3-scale-chromatic";
 import { Bar } from "react-chartjs-2/dist";
 import {
   calcWinrate,
-  createTeamsDataSet,
   separateNamesFromRealm,
-} from "../utils/dataSetHelpers";
+} from "../utils/miscHelperFunctions";
+import { createTeamsDataSet } from "../utils/charts/teamsChart";
 
 export type teamsChartProps = {
   selectedArenaMatches: ArenaMatch[];

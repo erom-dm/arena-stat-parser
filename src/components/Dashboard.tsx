@@ -1,10 +1,9 @@
 import React, { useMemo, useState, Suspense, useContext } from "react";
 import UploadArea from "./UploadArea";
-import { filterMatchData } from "../utils/dataSetHelpers";
-import { getSessions } from "../utils/sessionManagement";
+import { filterMatchData, getSessions } from "../utils/appStateHelpers";
 import SuspenseFallback from "./SuspenseFallback";
 import ChartWrapper from "./ChartWrapper";
-import { sampleDataToLocalStorage } from "../utils/stateManagement";
+import { sampleDataToLocalStorage } from "../utils/localStorageManagement";
 import {
   LsChangeContext,
   MatchDataContext,

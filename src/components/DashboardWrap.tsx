@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import Dashboard from "./Dashboard";
 import { ArenaMatch, ArenaMatchCompact } from "../Types/ArenaTypes";
-import { unfoldCompactMatchData } from "../utils/stateManagement";
-import { getMyTeamNames } from "../utils/dataSetHelpers";
+import { unfoldCompactMatchData } from "../utils/localStorageManagement";
 import { INSTANCE_DATA } from "../utils/constants";
+import { getMyTeamNames } from "../utils/miscHelperFunctions";
 
 export const MatchDataContext = React.createContext<ArenaMatch[]>([]);
 export const MyTeamsContext = React.createContext<string[]>([]);

@@ -1,5 +1,5 @@
 import React, { useContext, useState } from "react";
-import { clearLocalStorage } from "../utils/stateManagement";
+import { clearLocalStorage } from "../utils/localStorageManagement";
 import { useNavigate } from "react-router-dom";
 import { LsChangeContext } from "./DashboardWrap";
 

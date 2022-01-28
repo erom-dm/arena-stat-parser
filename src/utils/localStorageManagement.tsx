@@ -10,7 +10,7 @@ import {
   TeamCompact,
 } from "../Types/ArenaTypes";
 import { sampleData } from "../sampleData";
-import { getTeamCompArray, getTeamCompString } from "./stateHelpers";
+import { getTeamCompArray, getTeamCompString } from "./miscHelperFunctions";
 import {
   classCompressionMapLC,
   INSTANCE_DATA,
@@ -137,7 +137,7 @@ function unfoldCompactPlayerData(
       return null;
     })
     .sort((a, b) => {
-      // sort players array alphabetically, with null values in the end of the array
+      // sort players array alphabetically by class name, with null values in the end of the array
       if (a === null && b === null) {
         return 0;
       }
@@ -147,7 +147,7 @@ function unfoldCompactPlayerData(
       if (b === null) {
         return -1;
       }
-      return +(a.name > b.name) || -(a.name < b.name);
+      return +(a.class > b.class) || -(a.class < b.class);
     });
 }
 //

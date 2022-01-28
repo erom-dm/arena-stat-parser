@@ -1,5 +1,6 @@
 import {
   classCompressionMapType,
+  ColorRangeInfo,
   raceCompressionMapType,
 } from "../Types/ArenaTypes";
 import { isMobile } from "react-device-detect";
@@ -56,7 +57,7 @@ export const classColorMap = {
 
 // Matchup chart constants
 const chartVars = {
-  tickSize: isMobile ? 12 : 15,
+  tickSize: isMobile ? 14 : 17,
   maxTicksLimitY: isMobile ? 8 : 15,
   maxTicksLimitX: isMobile ? 10 : 20,
 };
@@ -75,4 +76,23 @@ export const ticksConf = {
   font: { size: chartVars.tickSize, family: "'Roboto', sans-serif" },
   stepSize: 1,
   beginAtZero: true,
+};
+
+export const ticksConfMatchupChart = {
+  color: "#292F36",
+  font: { size: isMobile ? 12 : 15, family: "'Roboto Mono', monospace" },
+  stepSize: 1,
+  beginAtZero: true,
+};
+
+export const colorRangeInfoTurbo: ColorRangeInfo = {
+  colorStart: 0.07,
+  colorEnd: 0.85,
+  useEndAsStart: true,
+};
+
+export const colorRangeInfoGreys: ColorRangeInfo = {
+  colorStart: 0.54,
+  colorEnd: 0.76,
+  useEndAsStart: true,
 };
