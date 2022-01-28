@@ -277,7 +277,7 @@ const MatchupChart: React.FC<BarChartProps> = ({ selectedArenaMatches }) => {
     [matchupInputData, matchupArenaMatches]
   );
 
-  const chartTitle: string = `Matches Played: ${totalMatchNumber}, Wins: ${totalWins}, Losses: ${totalLosses}, WR: ${totalWinrate}%,`;
+  const chartTitle: string = `Matches Played ${totalMatchNumber}, Win ${totalWins} - Loss ${totalLosses}, WR ${totalWinrate}%`;
   const matchupChartTitle: string = `${matchupTeamComp}`;
 
   let chartData, chartOptions;

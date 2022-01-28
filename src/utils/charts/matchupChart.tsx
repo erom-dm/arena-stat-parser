@@ -20,6 +20,7 @@ export function generateMatchupRaceData(
   let totalWins = 0;
 
   const teamCompStrings = teamComp.split(" \\ ");
+  // !RmuObjectEntries sorting later in this function directly relies on string separator set here!
   const teamCompFormatted = `[ ${teamCompStrings.join(" ] [ ")} ]`;
 
   // Get matchup race data
@@ -88,8 +89,8 @@ export function generateMatchupRaceData(
   };
 
   const sortedRmuObjectEntries = Object.entries(RmuObject).sort((a, b) => {
-    const aIsCategory = +a[0].includes("\\");
-    const bIsCategory = +b[0].includes("\\");
+    const aIsCategory = +a[0].includes("] [");
+    const bIsCategory = +b[0].includes("] [");
     return bIsCategory - aIsCategory || b[1].totalMatches - a[1].totalMatches;
   });
   // Transform data into set of arrays
