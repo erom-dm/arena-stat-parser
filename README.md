@@ -1,3 +1,6 @@
+# You can try the app here:
+[https://arena-stat-parser.netlify.app/#/team-comps]
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
