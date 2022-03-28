@@ -1,5 +1,5 @@
 # You can try the app here:
-[https://arena-stat-parser.netlify.app/#/team-comps]
+[World of Warcraft Arena Stat Parser](https://arena-stat-parser.netlify.app/#/team-comps)
 
 # Getting Started with Create React App
 
