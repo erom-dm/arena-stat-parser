@@ -19,6 +19,7 @@ you can get data from matches where you DC'ed.
 In order to upload either type of file, drag it to the bottom-left side of the screen, and drop it on expandable "Parse Log" area:
 
 ![img](https://i.imgur.com/qMcQSBW.png)
+
 A gear icon below, opens storage management modal, where you can create backup, delete specific play sessions or clear all locally stored data at once.
 
 Application has no back-end, or database. All data is stored locally in browser's local storage.
