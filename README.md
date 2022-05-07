@@ -16,9 +16,10 @@ If you plan on using app regularly, I'd recommend creating a shortcut for this f
 teammates can parse their own nova logs, then create backup file, and share it with you so
 you can get data from matches where you DC'ed.
 
-In order to upload file drag it to the bottom-left side of the screen:
+In order to upload either type of file, drag it to the bottom-left side of the screen, and drop it on expandable "Parse Log" area:
 
 ![img](https://i.imgur.com/qMcQSBW.png)
+A gear icon below, opens storage management modal, where you can create backup, delete specific play sessions or clear all locally stored data at once.
 
 Application has no back-end, or database. All data is stored locally in browser's local storage.
 Which means that in order to use app on a second device you'll need to make a backup file and upload it on the second device.
