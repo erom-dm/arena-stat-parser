@@ -1,6 +1,6 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
-import { ChartNamesAndRoutes } from "../Types/ArenaTypes";
+import { ChartNamesAndRoutes } from "../types/ArenaTypes";
 
 export type buttonGroupProps = {
   buttonLabels: ChartNamesAndRoutes[];

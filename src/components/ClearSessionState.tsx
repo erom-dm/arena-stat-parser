@@ -9,7 +9,7 @@ import {
 } from "./DashboardWrap";
 import { INSTANCE_DATA } from "../utils/constants";
 import { setLocalStorageField } from "../utils/localStorageManagement";
-import { ArenaMatchCompact } from "../Types/ArenaTypes";
+import { ArenaMatchCompact } from "../types/ArenaTypes";
 
 const ClearSessionState: React.FC = () => {
   const [, localStoreChangeHandler] = useContext(LsChangeContext);

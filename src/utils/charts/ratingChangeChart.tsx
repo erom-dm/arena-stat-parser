@@ -4,7 +4,7 @@ import {
   MatchSessions,
   RatingChangeDataset,
   RatingChangeObj,
-} from "../../Types/ArenaTypes";
+} from "../../types/ArenaTypes";
 
 export function createMatchRatingChangeDataSet(
   data: ArenaMatch[]

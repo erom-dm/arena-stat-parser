@@ -4,7 +4,7 @@ import {
   TeamCompDataset,
   TeamCompsChartInputData,
   TeamPerformanceStats,
-} from "../../Types/ArenaTypes";
+} from "../../types/ArenaTypes";
 import generateChartColors from "../colorGeneration";
 import { interpolateTurbo } from "d3-scale-chromatic";
 import { ARENA_INSTANCE_IDS, colorRangeInfoTurbo } from "../constants";

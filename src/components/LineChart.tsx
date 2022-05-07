@@ -1,6 +1,6 @@
 import React, { useMemo, useState } from "react";
 import { Line } from "react-chartjs-2";
-import { ArenaMatch, LineChartTypes, MatchSessions } from "../Types/ArenaTypes";
+import { ArenaMatch, LineChartTypes, MatchSessions } from "../types/ArenaTypes";
 import dayjs from "dayjs";
 import { isMobile } from "react-device-detect";
 import {

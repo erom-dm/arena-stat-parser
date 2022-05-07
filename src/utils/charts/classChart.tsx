@@ -5,7 +5,7 @@ import {
   keyOfCharClasses,
   MathupDataset,
   RaceDistributionObject,
-} from "../../Types/ArenaTypes";
+} from "../../types/ArenaTypes";
 import { classColorMap } from "../constants";
 
 export function fillClassDistributionData(

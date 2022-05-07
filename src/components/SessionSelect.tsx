@@ -7,7 +7,7 @@ import React, {
 } from "react";
 import Select, { ActionMeta, MenuPlacement, MultiValue } from "react-select";
 import { isMobile } from "react-device-detect";
-import { MatchSessions, SessionSelectOption } from "../Types/ArenaTypes";
+import { MatchSessions, SessionSelectOption } from "../types/ArenaTypes";
 import dayjs from "dayjs";
 
 export type sessionSelectProps = {

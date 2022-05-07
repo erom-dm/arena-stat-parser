@@ -2,7 +2,7 @@ import {
   classCompressionMapType,
   ColorRangeInfo,
   raceCompressionMapType,
-} from "../Types/ArenaTypes";
+} from "../types/ArenaTypes";
 import { isMobile } from "react-device-detect";
 
 // export const ARENA_INSTANCE_KEYS = ["572", "562", "559"];

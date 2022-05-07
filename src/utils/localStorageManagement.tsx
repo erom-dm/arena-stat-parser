@@ -8,7 +8,7 @@ import {
   raceCompressionMapType,
   Team,
   TeamCompact,
-} from "../Types/ArenaTypes";
+} from "../types/ArenaTypes";
 import { sampleData } from "../sampleData";
 import { getTeamCompArray, getTeamCompString } from "./miscHelperFunctions";
 import {

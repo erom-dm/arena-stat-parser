@@ -1,5 +1,5 @@
 import React from "react";
-import { ArenaMatch } from "../Types/ArenaTypes";
+import { ArenaMatch } from "../types/ArenaTypes";
 import dayjs from "dayjs";
 import TeamList from "./TeamList";
 

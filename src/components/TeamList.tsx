@@ -1,5 +1,5 @@
 import React from "react";
-import { Player } from "../Types/ArenaTypes";
+import { Player } from "../types/ArenaTypes";
 import DpsIcon from "../assets/swords.png";
 import HealingIcon from "../assets/heal.png";
 import BloodElfIcon from "../assets/charRaceIcons/bloodelf.png";

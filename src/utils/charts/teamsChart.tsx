@@ -3,7 +3,7 @@ import {
   DetailedTeamRatingObject,
   EnemyTeamData,
   TeamsDataset,
-} from "../../Types/ArenaTypes";
+} from "../../types/ArenaTypes";
 
 export function createTeamsDataSet(data: ArenaMatch[]): TeamsDataset {
   const dataset: TeamsDataset = {};

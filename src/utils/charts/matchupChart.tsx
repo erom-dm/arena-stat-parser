@@ -2,7 +2,7 @@ import {
   ArenaMatch,
   MatchupInputData,
   RaceMatchupObject,
-} from "../../Types/ArenaTypes";
+} from "../../types/ArenaTypes";
 import generateChartColors from "../colorGeneration";
 import { interpolateGreys } from "d3-scale-chromatic";
 import { colorRangeInfoGreys } from "../constants";

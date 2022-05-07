@@ -3,7 +3,7 @@ import {
   Player,
   SplitNames,
   teamCompArrayType,
-} from "../Types/ArenaTypes";
+} from "../types/ArenaTypes";
 
 export function getTeamCompArray(
   players: (Player | null)[]

@@ -1,4 +1,4 @@
-import { ArenaMatchRaw, ArenaMatchCompact } from "../Types/ArenaTypes";
+import { ArenaMatchRaw, ArenaMatchCompact } from "../types/ArenaTypes";
 
 export const parseData = (data: string): ArenaMatchRaw[] => {
   // Get part of the string with actual instance data

@@ -1,5 +1,5 @@
 import React, { useMemo, useState } from "react";
-import {ArenaMatch} from "../Types/ArenaTypes";
+import { ArenaMatch } from "../types/ArenaTypes";
 import MatchItem from "./MatchItem";
 import useInfiniteScroll from "react-infinite-scroll-hook";
 

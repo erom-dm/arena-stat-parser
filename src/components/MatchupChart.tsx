@@ -6,7 +6,7 @@ import {
   MatchupChartTypes,
   MatchupData,
   TeamCompData,
-} from "../Types/ArenaTypes";
+} from "../types/ArenaTypes";
 import {
   ticksConf,
   ticksConfMatchupChart,

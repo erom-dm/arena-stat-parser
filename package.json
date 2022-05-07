@@ -16,7 +16,6 @@
     "chart.js": "^3.5.1",
     "d3-scale-chromatic": "^3.0.0",
     "dayjs": "^1.10.7",
-    "node-sass": "4.14.1",
     "normalize.css": "^8.0.1",
     "react": "^17.0.2",
     "react-chartjs-2": "^3.0.5",
@@ -29,6 +28,7 @@
     "react-scripts": "4.0.3",
     "react-select": "^5.1.0",
     "react-swipeable": "^6.2.0",
+    "sass": "^1.51.0",
     "typescript": "^4.4.4",
     "web-vitals": "^1.0.1"
   },

@@ -3,7 +3,7 @@ import {
   ArenaMatch,
   ColorRangeInfo,
   DetailedTeamRatingObject,
-} from "../Types/ArenaTypes";
+} from "../types/ArenaTypes";
 import generateChartColors from "../utils/colorGeneration";
 import { interpolateTurbo } from "d3-scale-chromatic";
 import { Bar } from "react-chartjs-2/dist";

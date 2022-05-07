@@ -5,7 +5,7 @@ import ButtonGroup from "./ButtonGroup";
 import TeamSelect from "./TeamSelect";
 import SessionSelect from "./SessionSelect";
 import SettingsModal from "./SettingsModal";
-import { MatchSessions } from "../Types/ArenaTypes";
+import { MatchSessions } from "../types/ArenaTypes";
 import { CHART_ROUTES } from "../utils/constants";
 import { MyTeamsContext } from "./DashboardWrap";
 

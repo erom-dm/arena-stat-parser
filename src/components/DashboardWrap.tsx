@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import Dashboard from "./Dashboard";
-import { ArenaMatch, ArenaMatchCompact } from "../Types/ArenaTypes";
+import { ArenaMatch, ArenaMatchCompact } from "../types/ArenaTypes";
 import { unfoldCompactMatchData } from "../utils/localStorageManagement";
 import { INSTANCE_DATA } from "../utils/constants";
 import { getMyTeamNames } from "../utils/miscHelperFunctions";

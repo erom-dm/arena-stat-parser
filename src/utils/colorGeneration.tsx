@@ -1,4 +1,4 @@
-import { ColorRangeInfo } from "../Types/ArenaTypes";
+import { ColorRangeInfo } from "../types/ArenaTypes";
 
 function calculatePoint(
   index: number,

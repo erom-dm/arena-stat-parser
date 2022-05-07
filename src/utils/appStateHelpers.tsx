@@ -6,7 +6,7 @@ import {
   PlayerCompact,
   RawTeam,
   TeamCompact,
-} from "../Types/ArenaTypes";
+} from "../types/ArenaTypes";
 import { rawArenaMatchTypeGuard } from "./dataParsingHelpers";
 import { normalizeString } from "./miscHelperFunctions";
 import {
