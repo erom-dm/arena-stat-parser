@@ -1,4 +1,3 @@
-import React from "react";
 import {
   ArenaMatch,
   ArenaMatchCompact,
@@ -9,53 +8,35 @@ import {
   Team,
   TeamCompact,
 } from "../types/ArenaTypes";
-import { sampleData } from "../sampleData";
 import { getTeamCompArray, getTeamCompString } from "./miscHelperFunctions";
 import {
   classCompressionMapLC,
-  INSTANCE_DATA,
   PLAYER_DC_STRING,
   raceCompressionMap,
 } from "./constants";
 
-export function consolidateState(filteredData: ArenaMatchCompact[]): void {
+export function consolidateState(
+  filteredData: ArenaMatchCompact[],
+  state: ArenaMatchCompact[],
+  setLocalStorage: (val: any) => void
+): void {
   const filterKey = "i"; // matchID in ArenaMatchCompact
-  const state = window.localStorage.getItem(INSTANCE_DATA);
 
-  if (!state) {
-    setLocalStorageField(INSTANCE_DATA, filteredData);
+  if (state.length === 0) {
+    setLocalStorage(filteredData);
     return;
   }
-  const parsedState = JSON.parse(state);
-  const intState = [...parsedState, ...filteredData];
+
+  const intState = [...state, ...filteredData];
   const mergedState = [
     ...new Map(intState.map((item) => [item[filterKey], item])).values(),
   ];
 
-  setLocalStorageField(INSTANCE_DATA, mergedState);
-}
-
-export function localStorageToState(
-  key: string,
-  setReactState: React.Dispatch<React.SetStateAction<any>>
-): void {
-  const currentState = window.localStorage.getItem(key);
-  currentState && setReactState(JSON.parse(currentState));
+  setLocalStorage(mergedState);
 }
 
 export function clearLocalStorage(): void {
   window.localStorage.clear();
-}
-
-export function setLocalStorageField(key: string, data: any): void {
-  localStorage.setItem(key, JSON.stringify(data));
-}
-
-export function sampleDataToLocalStorage(
-  setLsChanged: React.Dispatch<React.SetStateAction<boolean>>
-): void {
-  setLocalStorageField(INSTANCE_DATA, sampleData);
-  setLsChanged((prevState) => !prevState);
 }
 
 // Unfolding of compressed local storage state

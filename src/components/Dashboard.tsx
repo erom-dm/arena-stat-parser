@@ -3,17 +3,16 @@ import UploadArea from "./UploadArea";
 import { filterMatchData, getSessions } from "../utils/appStateHelpers";
 import SuspenseFallback from "./SuspenseFallback";
 import ChartWrapper from "./ChartWrapper";
-import { sampleDataToLocalStorage } from "../utils/localStorageManagement";
-import {
-  LsChangeContext,
-  MatchDataContext,
-  MyTeamsContext,
-} from "./DashboardWrap";
+import { MatchDataContext, MyTeamsContext } from "./DashboardWrap";
+import { sampleData } from "../sampleData";
+import { ArenaMatchCompact } from "../types/ArenaTypes";
 const SettingsModal = React.lazy(() => import("./SettingsModal"));
 const Toolbar = React.lazy(() => import("./ToolBar"));
 
-const Dashboard: React.FC = () => {
-  const [, setLocalStorageChanged] = useContext(LsChangeContext);
+const Dashboard: React.FC<{
+  compactMatchData: ArenaMatchCompact[];
+  setCompactMatchData: (val: any) => void;
+}> = ({ setCompactMatchData }) => {
   const matchData = useContext(MatchDataContext);
   const myTeams = useContext(MyTeamsContext);
   const matchDataIsEmpty = !matchData.length;
@@ -36,7 +35,7 @@ const Dashboard: React.FC = () => {
             <UploadArea />
             <button
               className={"toolbar__sample-data-button"}
-              onClick={() => sampleDataToLocalStorage(setLocalStorageChanged)}
+              onClick={() => setCompactMatchData(sampleData)}
             >
               Or click here to use sample data instead!
             </button>

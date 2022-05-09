@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { LsChangeContext } from "./DashboardWrap";
 
 const LocalStorageStatusDisplay: React.FC = () => {
-  const [hasChanged] = useContext(LsChangeContext);
+  const [localStorageHasChanged] = useContext(LsChangeContext);
   const fullSize = 5120; // 5mb local storage for most browsers
   const [lsSize, setLsSize] = useState<string>("");
   useEffect(() => {
@@ -18,7 +18,7 @@ const LocalStorageStatusDisplay: React.FC = () => {
       lsTotal += xLen;
     }
     setLsSize((lsTotal / 1024).toFixed(2));
-  }, [hasChanged]);
+  }, [localStorageHasChanged]);
 
   const fractionOfFull = ((Number(lsSize) / fullSize) * 100).toFixed(0);
 

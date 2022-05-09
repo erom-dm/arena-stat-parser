@@ -7,13 +7,16 @@ import {
   MatchDataContext,
   MyTeamsContext,
 } from "./DashboardWrap";
-import { INSTANCE_DATA } from "../utils/constants";
-import { setLocalStorageField } from "../utils/localStorageManagement";
+import { MATCH_DATA_MIN } from "../utils/constants";
 import { ArenaMatchCompact } from "../types/ArenaTypes";
+import { useLocalStorage } from "../utils/hooks";
 
 const ClearSessionState: React.FC = () => {
-  const [, localStoreChangeHandler] = useContext(LsChangeContext);
+  const [, localStorageChangeHandler] = useContext(LsChangeContext);
   const matchData = useContext(MatchDataContext);
+  const [compactMatchData, setCompactMatchData] = useLocalStorage<
+    ArenaMatchCompact[]
+  >(MATCH_DATA_MIN, []);
 
   const myTeams = useContext(MyTeamsContext);
   const [myTeamSelection, setMyTeamSelection] = useState<string>("");
@@ -32,15 +35,12 @@ const ClearSessionState: React.FC = () => {
           return match?.matchID;
         });
 
-      const matchDataCompact: ArenaMatchCompact[] = JSON.parse(
-        window.localStorage.getItem(INSTANCE_DATA) || "[]"
-      );
-      const filteredMatches = matchDataCompact.filter(
+      const filteredMatches = compactMatchData.filter(
         (match) => !selectedMatches.includes(match.i)
       );
 
-      setLocalStorageField(INSTANCE_DATA, filteredMatches);
-      localStoreChangeHandler((prevState) => !prevState);
+      setCompactMatchData(filteredMatches);
+      localStorageChangeHandler((prevState) => !prevState);
     }
   };
 

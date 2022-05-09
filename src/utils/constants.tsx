@@ -18,7 +18,7 @@ export const CHART_ROUTES = [
   ["Teams", "/teams"],
 ];
 export const DC_TEAM_NAME = "~DC~";
-export const INSTANCE_DATA = "instanceData";
+export const MATCH_DATA_MIN = "matchDataMinified";
 export const PLAYER_DC_STRING = "DC";
 export const classCompressionMapLC: classCompressionMapType = {
   Druid: "d",
