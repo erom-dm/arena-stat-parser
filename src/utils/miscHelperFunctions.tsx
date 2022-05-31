@@ -2,12 +2,12 @@ import {
   ArenaMatch,
   Player,
   SplitNames,
-  teamCompArrayType,
+  TeamCompArrayType,
 } from "../types/ArenaTypes";
 
 export function getTeamCompArray(
   players: (Player | null)[]
-): teamCompArrayType {
+): TeamCompArrayType {
   return players
     .map((player) => {
       if (player) {

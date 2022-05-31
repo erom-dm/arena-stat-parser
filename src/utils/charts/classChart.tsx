@@ -2,7 +2,7 @@ import {
   ArenaMatch,
   ClassDistributionChartInputData,
   ClassDistributionDataset,
-  keyOfCharClasses,
+  KeyOfCharClasses,
   MathupDataset,
   RaceDistributionObject,
 } from "../../types/ArenaTypes";
@@ -57,7 +57,7 @@ export function getClassDistributionChartInputData(
       obj.totalData.push(entry[1].total); // Push corresponding total class count
       obj.inMatchesData.push(entry[1].inMatches); // Push corresponding match count
       obj.raceDistributionData.push(entry[1].raceDistribution); // Push race distribution object
-      obj.colorArray.push(classColorMap[entry[0] as keyOfCharClasses]);
+      obj.colorArray.push(classColorMap[entry[0] as KeyOfCharClasses]);
       return obj;
     },
     {

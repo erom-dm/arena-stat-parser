@@ -13,19 +13,18 @@ export enum CharClasses {
   Warlock = "WARLOCK",
   Warrior = "WARRIOR",
 }
-// disconnected = "!disconnected",
 
-export type classCompressionMapType = {
+export type ClassCompressionMapType = {
   [Key in keyof typeof CharClasses]: string;
 };
 
-export type raceCompressionMapType = {
-  [key in racesStringLiterals]: string;
+export type RaceCompressionMapType = {
+  [key in RacesStringLiterals]: string;
 };
 
-export type keyOfCharClasses = keyof typeof CharClasses;
+export type KeyOfCharClasses = keyof typeof CharClasses;
 
-export type racesStringLiterals =
+export type RacesStringLiterals =
   | "Bloodelf"
   | "Draenei"
   | "Dwarf"
@@ -66,7 +65,7 @@ export interface RawTeam {
 export interface RawPlayer {
   kb: number;
   class: string;
-  race?: racesStringLiterals;
+  race?: RacesStringLiterals;
   teamMMR: number;
   teamName: string;
   faction: number;
@@ -119,28 +118,28 @@ export interface Team {
   teamMMR: number;
   players: (Player | null)[];
   bracket: number;
-  teamCompArray: teamCompArrayType;
+  teamCompArray: TeamCompArrayType;
   teamCompString: string;
   playerNamesArr: string[];
 }
 
 export interface Player {
   name: string;
-  class: keyOfCharClasses;
-  race: racesStringLiterals | undefined;
+  class: KeyOfCharClasses;
+  race: RacesStringLiterals | undefined;
   damage: number;
   healing: number;
 }
 //
 
-export type teamCompArrayType = (keyOfCharClasses | "disconnected")[];
+export type TeamCompArrayType = (KeyOfCharClasses | "disconnected")[];
 
 export interface TeamCompDataset {
   [Key: string]: TeamcompDatasetObj;
 }
 
 export type ClassDistributionDataset = {
-  [Key in keyOfCharClasses | "disconnected"]: {
+  [Key in KeyOfCharClasses | "disconnected"]: {
     total: number;
     inMatches: number;
     raceDistribution: RaceDistributionObject;
@@ -148,7 +147,7 @@ export type ClassDistributionDataset = {
 };
 
 export type RaceDistributionObject = {
-  [Key in racesStringLiterals]: number;
+  [Key in RacesStringLiterals]: number;
 };
 
 export interface MathupDataset {

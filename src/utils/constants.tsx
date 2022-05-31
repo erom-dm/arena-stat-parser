@@ -1,7 +1,7 @@
 import {
-  classCompressionMapType,
+  ClassCompressionMapType,
   ColorRangeInfo,
-  raceCompressionMapType,
+  RaceCompressionMapType,
 } from "../types/ArenaTypes";
 import { isMobile } from "react-device-detect";
 
@@ -20,7 +20,7 @@ export const CHART_ROUTES = [
 export const DC_TEAM_NAME = "~DC~";
 export const MATCH_DATA_MIN = "matchDataMinified";
 export const PLAYER_DC_STRING = "DC";
-export const classCompressionMapLC: classCompressionMapType = {
+export const classCompressionMapLC: ClassCompressionMapType = {
   Druid: "d",
   Rogue: "r",
   Hunter: "h",
@@ -31,7 +31,7 @@ export const classCompressionMapLC: classCompressionMapType = {
   Warlock: "l",
   Warrior: "w",
 };
-export const raceCompressionMap: raceCompressionMapType = {
+export const raceCompressionMap: RaceCompressionMapType = {
   Undead: "u",
   Orc: "o",
   Troll: "t",

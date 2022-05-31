@@ -1,10 +1,10 @@
 import {
   ArenaMatch,
   ArenaMatchCompact,
-  classCompressionMapType,
+  ClassCompressionMapType,
   Player,
   PlayerCompact,
-  raceCompressionMapType,
+  RaceCompressionMapType,
   Team,
   TeamCompact,
 } from "../types/ArenaTypes";
@@ -98,7 +98,7 @@ function unfoldCompactPlayerData(
         const { n: name, c, r, d: damage, h: healing } = player;
 
         const playerClassEntries = Object.entries(classCompressionMapLC) as [
-          keyof classCompressionMapType,
+          keyof ClassCompressionMapType,
           string
         ][];
         const playerClass = playerClassEntries.filter((el) =>
@@ -108,7 +108,7 @@ function unfoldCompactPlayerData(
         let race;
         if (r) {
           const raceEntries = Object.entries(raceCompressionMap) as [
-            keyof raceCompressionMapType,
+            keyof RaceCompressionMapType,
             string
           ][];
           race = raceEntries.filter((el) => el.includes(r))[0][0];
