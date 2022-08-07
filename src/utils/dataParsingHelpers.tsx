@@ -46,6 +46,7 @@ export const parseLUA = (data: string): ArenaMatchRaw[] => {
             } catch (e) {
               console.error(e)
             }
+            return res;
           }, {});
         }
         default: {
