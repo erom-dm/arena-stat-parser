@@ -23,7 +23,7 @@ dayjs.extend(isBetween);
 export function modifyMatchData(data: ArenaMatchRaw[]): ArenaMatchCompact[] {
   const filteredData = data.filter(
     (match) =>
-      Object.keys(ARENA_INSTANCE_IDS).includes(String(match.instanceID)) &&
+      Object.keys(ARENA_INSTANCE_IDS).includes(String(match?.instanceID)) &&
       match.hasOwnProperty("purpleTeam") &&
       match.hasOwnProperty("goldTeam") &&
       rawArenaMatchTypeGuard(match)
@@ -32,7 +32,7 @@ export function modifyMatchData(data: ArenaMatchRaw[]): ArenaMatchCompact[] {
     return getModdedArenaMatches(filteredData);
   }
 
-  return [];
+  throw new Error("Log file wasn't parsed, nothing has been added to app state. Check file type.")
 }
 
 export function getModdedArenaMatches(

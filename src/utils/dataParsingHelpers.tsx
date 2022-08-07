@@ -1,39 +1,74 @@
 import { ArenaMatchRaw, ArenaMatchCompact } from "../types/ArenaTypes";
+import {BACKUP_FILE_PREFIX} from "./constants";
+const luaparse = require("luaparse");
+const jp = require('jsonpath');
 
-export const parseData = (data: string): ArenaMatchRaw[] => {
-  // Get part of the string with actual instance data
-  const start = data.lastIndexOf('["instances"] = ') + 17; // Only works if actual instance object is last in data set
-  const newStr = data.slice(start);
+function cleanupRawString(str: string) {
+  return str.replaceAll("\\", "").replaceAll('"', "");
+}
 
-  // Clean up the string and split it in separate objects
-  const enumRegexp = new RegExp(/, -- \[\d+\]/, "g");
-  const instanceDataArray = newStr
-    .replaceAll("\n", "")
-    .replaceAll("\r", "")
-    .replaceAll("\t", "")
-    .replaceAll('["', '"')
-    .replaceAll('"]', '"')
-    .replaceAll(" = ", ":")
-    .replaceAll(",}", "}")
-    .split(enumRegexp);
-
-  // Parse all valid objects
-  let parsedData: ArenaMatchRaw[] = [];
-  instanceDataArray.forEach((el) => {
-    try {
-      parsedData.push(JSON.parse(el));
-    } catch (e) {
-      // Ignore failed parses (random strings and AB instances)
-      // console.log(e);
-    }
+export const parseLUA = (data: string): ArenaMatchRaw[] => {
+  // Create custom Abstract Syntax Tree (AST)
+  Object.keys(luaparse.ast).forEach((type) => {
+    const original = luaparse.ast[type];
+    luaparse.ast[type] = function () {
+      const node = original.apply(null, arguments);
+      switch (node?.type) {
+        case "Chunk": {
+          return node?.body[0]?.NITdatabase;
+        }
+        case "AssignmentStatement": {
+          return { [node?.variables[0]?.name]: node?.init[0] };
+        }
+        case "StringLiteral": {
+          return cleanupRawString(node?.raw);
+        }
+        case "BooleanLiteral": {
+          return node.value;
+        }
+        case "NumericLiteral": {
+          return node.value;
+        }
+        case "TableConstructorExpression": {
+          return node?.fields.reduce((res: any, el: any) => {
+            try {
+              const key = node?.fields[0].key;
+              if (key) {
+                res[el?.key] = el?.value
+                return res;
+              } else {
+                if (Symbol.iterator in Object(res)) {
+                  return [...res, el?.value]
+                } else {
+                  return [el?.value]
+                }
+              }
+            } catch (e) {
+              console.error(e)
+            }
+          }, {});
+        }
+        default: {
+          return node;
+        }
+      }
+    };
   });
-  return parsedData;
+  // Parse LUA data
+  const rawJSONData = luaparse.parse(data, {comments: false, encodingMode: 'none'});
+  // Return array with all instance data
+  return jp.query(rawJSONData, '$..instances').reduce((res: ArenaMatchRaw[], el: any) => {
+    if (Array.isArray(el)) {
+      return [...res, ...el]
+    }
+    return res
+  }, [])
 };
 
 export const parseArenaHistoryLogData = (data: string): ArenaMatchCompact[] => {
   let parsed = [];
   try {
-    parsed = JSON.parse(data);
+    parsed = JSON.parse(data.replace(BACKUP_FILE_PREFIX, ""));
   } catch (e) {
     console.log(e);
   }

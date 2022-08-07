@@ -7,7 +7,7 @@ import React, {
 } from "react";
 import {
   parseArenaHistoryLogData,
-  parseData,
+  parseLUA,
 } from "../utils/dataParsingHelpers";
 import { arrayBufferToString } from "../utils/fileHelpers";
 import { useDropzone } from "react-dropzone";
@@ -17,7 +17,7 @@ import FileIcon from "../assets/upload-icon.svg";
 import { debounce } from "../utils/debounce";
 import { useLocalStorage } from "../utils/hooks";
 import { ArenaMatchCompact } from "../types/ArenaTypes";
-import { MATCH_DATA_MIN } from "../utils/constants";
+import {BACKUP_FILE_PREFIX, MATCH_DATA_MIN} from "../utils/constants";
 import { LsChangeContext } from "./DashboardWrap";
 
 const UploadArea: React.FC = () => {
@@ -53,22 +53,27 @@ const UploadArea: React.FC = () => {
           const binaryStr = reader.result;
           const dataString = arrayBufferToString(binaryStr);
           const isNovaInstanceTrackerLogFile =
-            dataString.startsWith("\r\nNITdatabase");
-          if (isNovaInstanceTrackerLogFile) {
-            consolidateState(
-              modifyMatchData(parseData(dataString)),
-              compactMatchData,
-              setCompactMatchData
-            );
-          } else {
-            consolidateState(
-              parseArenaHistoryLogData(dataString),
-              compactMatchData,
-              setCompactMatchData
-            );
+            dataString.startsWith(BACKUP_FILE_PREFIX);
+          try {
+            if (isNovaInstanceTrackerLogFile) {
+              consolidateState(
+                parseArenaHistoryLogData(dataString),
+                compactMatchData,
+                setCompactMatchData
+              );
+            } else {
+              consolidateState(
+                modifyMatchData(parseLUA(dataString)),
+                compactMatchData,
+                setCompactMatchData
+              );
+            }
+            setText("Log parsed!");
+          } catch (e) {
+            console.error(e);
+            setText("File reading failed");
           }
           localStorageChangeHandler((prevState) => !prevState);
-          setText("Log parsed!");
           timeout.current = setTimeout(() => {
             setText("Parse log");
           }, 4000);

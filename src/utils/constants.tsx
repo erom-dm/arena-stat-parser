@@ -6,6 +6,7 @@ import {
 import { isMobile } from "react-device-detect";
 
 // export const ARENA_INSTANCE_KEYS = ["572", "562", "559"];
+export const BACKUP_FILE_PREFIX = "ASP_BACKUP_FILE\n"
 export const ARENA_INSTANCE_IDS = {
   [572 as number]: "Ruins of Lordaeron",
   [562 as number]: "Blade's Edge Arena",

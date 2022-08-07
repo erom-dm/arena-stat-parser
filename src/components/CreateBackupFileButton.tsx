@@ -1,13 +1,13 @@
 import React, { useState } from "react";
 import dayjs from "dayjs";
-import { MATCH_DATA_MIN } from "../utils/constants";
+import {BACKUP_FILE_PREFIX, MATCH_DATA_MIN} from "../utils/constants";
 import { makeTextFile } from "../utils/fileHelpers";
 
 const CreateBackupFileButton: React.FC = () => {
   const [file, setFIle] = useState<null | string>(null);
 
   const handleClick = () => {
-    const localStorageData = window.localStorage.getItem(MATCH_DATA_MIN);
+    const localStorageData = BACKUP_FILE_PREFIX.concat(window.localStorage.getItem(MATCH_DATA_MIN) || "");
     localStorageData && makeTextFile(localStorageData, file, setFIle);
   };
 
